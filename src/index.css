@@ -2,4 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles to prevent horizontal overflow */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Custom carousel card sizing for mobile */
+@media (max-width: 639px) {
+  .event-card {
+    min-width: 280px !important;
+    max-width: 280px !important;
+  }
+}
+
 /* Remove body padding and handle header spacing in individual components */

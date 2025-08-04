@@ -289,7 +289,7 @@ function OurGrowthThroughYears({ isDarkMode }) {
   ];
 
   return (
-    <section ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 ${
+    <section ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
       isDarkMode ? 'bg-black' : 'bg-gray-100'
     }`}>
       <div className="max-w-7xl mx-auto">
@@ -317,20 +317,20 @@ function OurGrowthThroughYears({ isDarkMode }) {
                 const isBlackCircle = year === '2016' || year === '2020' || year === '2024' || year === '2026';
                
                                return (
-                  <div key={index} className={`flex items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+                  <div key={index} className={`flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
                     {/* Content Banner */}
-                    <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-16' : 'lg:pl-16'} ${index % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right'}`}>
-                      <div className={`p-8 rounded-2xl shadow-lg relative ${
+                    <div className={`w-full lg:flex-1 ${index % 2 === 0 ? 'lg:pr-16' : 'lg:pl-16'} ${index % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right'}`}>
+                      <div className={`p-6 sm:p-8 rounded-2xl shadow-lg relative ${
                         isDarkMode 
                           ? (milestone.color === 'bg-[#26A0A2]' ? 'bg-[#26A0A2] text-white' : 'bg-black text-white')
                           : milestone.color
                       }`}>
                         <div className="flex items-center mb-4">
-                          <h3 className={`text-2xl font-bold ${
+                          <h3 className={`text-xl sm:text-2xl font-bold ${
                             isDarkMode ? 'text-white' : 'text-white'
                           }`}>{milestone.title.split('(')[0].trim()}</h3>
                         </div>
-                        <p className={`leading-relaxed text-lg ${
+                        <p className={`leading-relaxed text-base sm:text-lg ${
                           isDarkMode ? 'text-gray-300' : 'text-white/90'
                         }`}>
                           {milestone.description}
@@ -347,8 +347,14 @@ function OurGrowthThroughYears({ isDarkMode }) {
                        <div className="text-xl font-bold text-white">{year}</div>
                      </div>
                     
-                    {/* Spacer for mobile */}
-                    <div className="lg:hidden flex-1"></div>
+                    {/* Mobile Timeline Circle */}
+                    <div className={`lg:hidden flex items-center justify-center w-16 h-16 rounded-full shadow-lg z-10 relative scroll-animate-scale mt-4 ${
+                       isDarkMode 
+                         ? (isBlackCircle ? 'bg-black' : 'bg-[#26A0A2]')
+                         : (isBlackCircle ? 'bg-gray-600' : 'bg-[#26A0A2]')
+                     }`}>
+                       <div className="text-lg font-bold text-white">{year}</div>
+                     </div>
                   </div>
                 );
              })}
@@ -361,7 +367,7 @@ function OurGrowthThroughYears({ isDarkMode }) {
 
 function MissionVision({ isDarkMode }) {
   return (
-    <section className="w-full py-20 px-4 bg-[#26A0A2]">
+    <section className="w-full py-20 px-4 bg-[#26A0A2] overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: Image */}
@@ -437,7 +443,7 @@ function OurValues({ isDarkMode }) {
   ];
 
   return (
-    <section className={`w-full py-20 px-4 transition-colors duration-300 ${
+    <section className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
       isDarkMode ? 'bg-black' : 'bg-white'
     }`}>
       <div className="max-w-7xl mx-auto">
@@ -497,7 +503,7 @@ function OurValues({ isDarkMode }) {
 
 function WhatWeThink({ isDarkMode }) {
   return (
-    <section className={`w-full py-12 px-4 transition-colors duration-300 ${
+    <section className={`w-full py-12 px-4 transition-colors duration-300 overflow-hidden ${
       isDarkMode ? 'bg-black' : 'bg-white'
     }`}>
       <div className="max-w-7xl text-justify mx-auto">
@@ -965,7 +971,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       <AboutHero />
       <OurGrowthThroughYears isDarkMode={isDarkMode} />

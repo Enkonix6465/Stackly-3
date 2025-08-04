@@ -54,7 +54,7 @@ function ContactUs() {
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+    <div className={`min-h-screen overflow-x-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       <Header />
       {/* Section 1 */}
       <section className="w-full h-screen flex flex-col items-center justify-center relative overflow-hidden">
@@ -168,17 +168,17 @@ function ContactUs() {
       </section>
 
       {/* Section 3 */}
-      <section className="w-full py-16 px-4 bg-teal-700">
+      <section className="w-full py-24 pb-32 px-4 bg-teal-700 overflow-hidden">
         <div className="max-w-7xl mx-auto">
             {/* Main Title */}
-            <h2 className="text-4xl md:text-5xl font-bold text-center text-white leading-tight mb-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-center text-white leading-tight mb-16">
                 Get In Touch
               </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 h-[600px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Image */}
             <div className="flex flex-col">
               {/* Image - fills remaining height */}
-              <div className="flex-1 rounded-xl overflow-hidden">
+              <div className="h-[600px] rounded-xl overflow-hidden">
                 <img
                   src={formSection}
                   alt="Contact Form Section"
@@ -188,7 +188,7 @@ function ContactUs() {
             </div>
 
                                                    {/* Right Column - Contact Form */}
-              <div className={`${isDarkMode ? 'bg-black' : 'bg-teal-50'} rounded-xl p-8 shadow-lg`}>
+              <div className={`${isDarkMode ? 'bg-black' : 'bg-teal-50'} rounded-xl p-8 shadow-lg h-[600px] mb-8 overflow-y-auto`}>
                <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -240,7 +240,7 @@ function ContactUs() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-teal-500 mb-2">
+                  <label className="block text-sm font-medium text-teal-500 mb-3">
                     Message
                   </label>
                                      <textarea
@@ -251,32 +251,37 @@ function ContactUs() {
                    ></textarea>
                 </div>
 
-                                 <button
-                   type="submit"
-                   className="w-full bg-teal-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-600 transition-colors"
-                 >
-                   Send Message
-                 </button>
-                 
-                 {/* Success Notification */}
-                 {messageSent && (
-                   <div className="mt-2 p-1 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center">
-                     <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                     </svg>
-                     <span className="font-medium">Message sent successfully! We'll get back to you soon.</span>
-                   </div>
-                 )}
-               </form>
+                <div className="pt-4">
+                  <button
+                    type="submit"
+                    className="w-full bg-teal-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-teal-600 transition-colors"
+                  >
+                    Send Message
+                  </button>
+                  
+                  {/* Success Notification */}
+                  {messageSent && (
+                    <div className="mt-2 p-1 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center">
+                      <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      <span className="font-medium">Message sent successfully! We'll get back to you soon.</span>
+                    </div>
+                  )}
+                </div>
+              </form>
              </div>
           </div>
         </div>
       </section>
 
+      {/* Visual Separator */}
+      <div className="w-full h-24 bg-gradient-to-b from-teal-700 to-transparent"></div>
+
              {/* Section 4 */}
-       <section className={`w-full py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+       <section className={`w-full py-32 px-4 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-20">
             <h2 className="text-3xl font-bold text-teal-500 mb-4">Find Us</h2>
           </div>
 

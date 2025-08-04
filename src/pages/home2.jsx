@@ -153,7 +153,7 @@ const Home2 = () => {
   // Calculate card dimensions based on screen size
   const getCardDimensions = () => {
     const isMobile = window.innerWidth < 640; // sm breakpoint
-    const cardWidth = isMobile ? 288 : 320; // w-72 = 288px, w-80 = 320px
+    const cardWidth = isMobile ? 280 : 320; // Reduced from 288 to 280 for mobile
     const gap = 24; // gap-6 = 24px
     return {
       cardWidth,
@@ -280,7 +280,7 @@ const Home2 = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-[#f6fffd]'}`}>
+    <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-[#f6fffd]'}`}>
       <Header />
       {/* Hero Section - Redesigned */}
       <section className="w-full min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 relative overflow-hidden">
@@ -318,7 +318,7 @@ const Home2 = () => {
       </section>
 
                                                        {/* Our Experts Section */}
-         <section id="experts-section" className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-gray-50'}`}>
+         <section id="experts-section" className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-gray-50'}`}>
            <div className="max-w-7xl mx-auto">
                           {/* Header */}
                               <div className="text-center mb-8 sm:mb-12" data-aos="fade-up" data-aos-duration="800">
@@ -408,7 +408,7 @@ const Home2 = () => {
         </div>
       </section>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           {/* Meet Our CEO Section */}
-                <section className="w-full relative min-h-screen">
+                <section className="w-full relative min-h-screen overflow-hidden">
                   {/* CEO Image as Background */}
                   <div className="absolute inset-0">
                     <img 
@@ -467,7 +467,7 @@ const Home2 = () => {
                 </section>
 
              {/* Why Choose Us Section */}
-       <section className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+       <section className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
          <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-10">
            {/* Headline */}
            <div className="text-center mb-6 sm:mb-8" data-aos="fade-up" data-aos-duration="800">
@@ -554,11 +554,11 @@ const Home2 = () => {
          
 
       {/* Upcoming Events & Classes Section */}
-      <section className="w-full bg-gradient-to-br from-[#26A0A2] to-[#20c997] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <section className="w-full bg-gradient-to-br from-[#26A0A2] to-[#20c997] py-12 sm:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-8 sm:mb-12">Upcoming Events & Classes</h2>
         <div className="max-w-7xl mx-auto">
           <div 
-            className="relative overflow-hidden"
+            className="relative overflow-hidden w-full"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             ref={carouselRef}
@@ -567,7 +567,8 @@ const Home2 = () => {
               className="flex gap-6 transition-transform duration-100 ease-linear"
               style={{ 
                 transform: `translateX(-${scrollPosition}px)`,
-                width: `${duplicatedEvents.length * getCardDimensions().totalWidth}px`
+                width: `${duplicatedEvents.length * getCardDimensions().totalWidth}px`,
+                maxWidth: 'none'
               }}
             >
               {duplicatedEvents.map((event, idx) => (
@@ -602,7 +603,7 @@ const Home2 = () => {
 
       {/* Registration Form Modal */}
       {showRegistrationForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-hidden">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               {/* Header */}
@@ -707,7 +708,7 @@ const Home2 = () => {
 
       {/* Success Message Modal */}
       {showSuccessMessage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-hidden">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
             {/* Success Icon */}
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -743,7 +744,7 @@ const Home2 = () => {
       )}
 
       {/* Insights Section */}
-      <section className={`w-full py-12 sm:py-16 text-justify px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      <section className={`w-full py-12 sm:py-16 text-justify px-4 sm:px-6 lg:px-8 transition-colors duration-300 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Left Content */}

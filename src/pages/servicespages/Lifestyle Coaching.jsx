@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../Header.jsx';
+import Footer from '../../footer.jsx';
+import { useScrollToTop } from '../../hooks/useScrollToTop';
 import AOS from 'aos';
 import '../../aos-custom.css';
 import lifestyleHeroVideo from '../../assets/lifehero.mp4';
@@ -9,6 +11,9 @@ import lifestyleServe from '../../assets/lifeserves.jpg';
 
 const LifestyleCoaching = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Scroll to top when component mounts
+  useScrollToTop();
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -75,7 +80,7 @@ const LifestyleCoaching = () => {
   ];
 
   return (
-    <div className={`min-h-screen w-full overflow-x-hidden transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen w-full overflow-x-hidden transition-colors duration-300 flex flex-col ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       
       {/* Hero Section */}
@@ -578,6 +583,7 @@ const LifestyleCoaching = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

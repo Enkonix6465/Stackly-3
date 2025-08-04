@@ -30,7 +30,7 @@ function ServicesHero() {
   };
 
   return (
-    <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden">
+    <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden pt-20 sm:pt-24 md:pt-16">
       {/* Background Video */}
       <video 
         autoPlay 
@@ -45,13 +45,13 @@ function ServicesHero() {
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40"></div>
       
-      <div className="max-w-7xl mx-auto text-center relative z-10">
-        <h1 className={`text-5xl md:text-7xl font-bold mb-6 leading-tight text-white transition-all duration-1000 ease-out ${
+      <div className="max-w-7xl mx-auto text-center relative z-10 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-white transition-all duration-1000 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
           Explore Our Services
         </h1>
-        <p className={`text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8 transition-all duration-1000 ease-out delay-300 ${
+        <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 px-4 transition-all duration-1000 ease-out delay-300 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
           Comprehensive wellness solutions designed to transform your life. 
@@ -176,19 +176,19 @@ function OurServices({ isDarkMode }) {
   const currentServices = currentSection === 0 ? section1 : section2;
 
   return (
-    <section id="our-services" ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 ${
+    <section id="our-services" ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
       isDarkMode ? 'bg-black' : 'bg-white'
     }`}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out delay-300 ${
+          <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 transition-all duration-1000 ease-out delay-300 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-white' : 'text-gray-900'
           }`}>
             Our Services
           </h2>
-          <p className={`text-xl max-w-3xl mx-auto transition-all duration-1000 ease-out delay-500 ${
+          <p className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-4 transition-all duration-1000 ease-out delay-500 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-gray-300' : 'text-gray-600'
@@ -219,11 +219,11 @@ function OurServices({ isDarkMode }) {
             </svg>
           </button>
 
-          <div className={`grid grid-cols-3 text-justify gap-0 transition-opacity duration-1000 ${currentSection === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-3 text-justify gap-0 transition-opacity duration-1000 ${currentSection === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
             {section1.map((service, index) => (
               <div key={index} className="relative">
                 {service.type === "image" ? (
-                  <div className="w-full h-64 bg-gray-200 overflow-hidden">
+                  <div className="w-full h-48 md:h-64 bg-gray-200 overflow-hidden">
                     <img 
                       src={service.image} 
                       alt={service.title}
@@ -231,11 +231,11 @@ function OurServices({ isDarkMode }) {
                     />
                   </div>
                 ) : (
-                  <div className="bg-[#26A0A2] p-8 h-64 flex flex-col justify-center">
-                    <h3 className="text-xl font-bold text-white mb-4">
+                  <div className="bg-[#26A0A2] p-6 md:p-8 h-48 md:h-64 flex flex-col justify-center">
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
+                    <p className="text-white/90 text-xs md:text-sm leading-relaxed">
                       {service.description}
                     </p>
                   </div>
@@ -244,11 +244,11 @@ function OurServices({ isDarkMode }) {
             ))}
           </div>
           
-          <div className={`grid grid-cols-3 gap-0 text-justify transition-opacity duration-1000 ${currentSection === 1 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-0 text-justify transition-opacity duration-1000 ${currentSection === 1 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
             {section2.map((service, index) => (
               <div key={index} className="relative">
                 {service.type === "image" ? (
-                  <div className="w-full h-64 bg-gray-200 overflow-hidden">
+                  <div className="w-full h-48 md:h-64 bg-gray-200 overflow-hidden">
                     <img 
                       src={service.image} 
                       alt={service.title}
@@ -256,11 +256,11 @@ function OurServices({ isDarkMode }) {
                     />
                   </div>
                 ) : (
-                  <div className="bg-[#26A0A2] p-8 h-64 flex flex-col justify-center">
-                    <h3 className="text-xl font-bold text-white mb-4">
+                  <div className="bg-[#26A0A2] p-6 md:p-8 h-48 md:h-64 flex flex-col justify-center">
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-white/90 text-sm leading-relaxed">
+                    <p className="text-white/90 text-xs md:text-sm leading-relaxed">
                       {service.description}
                     </p>
                   </div>
@@ -922,7 +922,7 @@ export default function Services() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <Header />
       <ServicesHero />
       <OurServices isDarkMode={isDarkMode} />

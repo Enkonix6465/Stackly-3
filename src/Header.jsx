@@ -6,6 +6,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [homeDropdown, setHomeDropdown] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
+  const [mobileServicesDropdown, setMobileServicesDropdown] = useState(false);
   const [initials, setInitials] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [servicesTimeout, setServicesTimeout] = useState(null);
@@ -82,6 +83,7 @@ export default function Header() {
     setIsMobileMenuOpen(false);
     setHomeDropdown(false);
     setServicesDropdown(false);
+    setMobileServicesDropdown(false);
   };
 
   const handleLogout = () => {
@@ -306,7 +308,7 @@ export default function Header() {
       {/* Mobile Navigation Menu */}
       {isMobileMenuOpen && (
         <div className={`lg:hidden border-t ${isDarkMode ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-white'}`}>
-          <div className="px-4 py-6 space-y-4">
+          <div className={`px-4 py-6 space-y-4 max-h-[70vh] overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full ${isDarkMode ? '[&::-webkit-scrollbar-track]:bg-gray-800 [&::-webkit-scrollbar-thumb]:bg-gray-600' : ''}`}>
             {/* Home Dropdown */}
             <div>
               <button
@@ -350,14 +352,60 @@ export default function Header() {
             {/* Services Dropdown */}
             <div>
               <button
-                onClick={() => { closeMobileMenu(); navigate('/services'); }}
+                onClick={() => setMobileServicesDropdown(!mobileServicesDropdown)}
                 className={`w-full text-left flex items-center justify-between py-3 px-4 rounded-lg transition-colors duration-200 ${isDarkMode ? 'text-white hover:bg-gray-800' : 'text-black hover:bg-gray-100'}`}
               >
                 <span className="font-semibold">Services</span>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 9l6 6 6-6" />
+                <svg className={`w-5 h-5 transition-transform duration-200 ${mobileServicesDropdown ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
+              {mobileServicesDropdown && (
+                <div className="ml-4 mt-2 space-y-2">
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/services'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    View All Services
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/yoga'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Yoga & Meditation
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/diet-nutrition'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Diet & Nutrition
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/mental-wellness'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Mental Wellness
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/fitness-programs'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Fitness Programs
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/sleep-therapy'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Sleep Therapy
+                  </div>
+                  <div 
+                    onClick={() => { closeMobileMenu(); navigate('/lifestyle-coaching'); scrollToTop(); }}
+                    className={`block py-2 px-4 rounded-lg transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-100'}`}
+                  >
+                    Lifestyle Coaching
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Blog */}
@@ -385,6 +433,9 @@ export default function Header() {
                 <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>User Profile</span>
               </div>
             </div>
+            
+            {/* Bottom padding for scroll space */}
+            <div className="pb-8"></div>
           </div>
         </div>
       )}
