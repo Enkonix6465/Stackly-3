@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube, FaWhatsapp, FaSpa, FaAppleAlt, FaBrain, FaDumbbell, FaBed, FaUserTie } from "react-icons/fa";
+import logo from './assets/logo.png';
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -34,7 +35,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 pb-8">
                  {/* Brand & Tagline */}
          <div className="flex flex-col items-start space-y-3">
-           <img src="/src/assets/logo.png" alt="Logo" className="h-28 w-28 object-contain" />
+           <img src={logo} alt="Logo" className="h-28 w-28 object-contain" />
            <span className="font-bold text-lg text-green-700">Health & Wellness</span>
            <span className="text-sm  text-white">Empowering healthy lifestyles every day.</span>
          </div>

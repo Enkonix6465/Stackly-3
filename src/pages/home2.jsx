@@ -283,7 +283,7 @@ const Home2 = () => {
     <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-[#f6fffd]'}`}>
       <Header />
       {/* Hero Section - Redesigned */}
-      <section className="w-full min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 relative overflow-hidden">
+      <section className="w-full min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 relative overflow-hidden pt-20 sm:pt-24">
         {/* Video Background */}
         <video 
           autoPlay 
@@ -299,7 +299,7 @@ const Home2 = () => {
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         
         {/* Centered Content */}
-        <div className="relative z-10 text-center max-w-4xl px-4">
+        <div className="relative z-10 text-center max-w-4xl px-4 py-8 sm:py-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in-up">
             <span className="inline-block animate-fade-in-up-delay-1">Discover Your Potential and</span> <br className="hidden sm:block" /> 
             <span className="inline-block animate-fade-in-up-delay-2">Achieve <span className="text-teal-500">Wellness</span></span>

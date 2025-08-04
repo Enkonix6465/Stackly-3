@@ -42,21 +42,21 @@ function Hero({ isDarkMode }) {
       />
       {/* Content */}
       <div className="relative z-20 flex flex-col items-center justify-center">
-        <h1 className={`text-6xl md:text-7xl font-extrabold text-white mb-8 drop-shadow transition-all duration-1000 ease-out ${
+        <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white mb-6 sm:mb-8 drop-shadow transition-all duration-1000 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
           Your Wellness Journey
         </h1>
-        <p className={`text-2xl md:text-3xl text-white mb-12 max-w-2xl mx-auto transition-all duration-1000 ease-out delay-300 ${
+        <p className={`text-lg sm:text-xl md:text-2xl lg:text-3xl text-white mb-8 sm:mb-12 max-w-2xl mx-auto px-4 transition-all duration-1000 ease-out delay-300 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
           Discover holistic health, expert guidance, and a supportive community. Your path to a healthier, happier you starts here.
         </p>
         <button 
           onClick={scrollToWhoWeAre}
-          className={`font-semibold px-12 py-5 rounded-full shadow transition-all duration-1000 ease-out delay-500 transform hover:scale-105 ${
+          className={`font-semibold px-8 sm:px-12 py-4 sm:py-5 rounded-full shadow transition-all duration-1000 ease-out delay-500 transform hover:scale-105 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-          } text-xl ${
+          } text-base sm:text-lg md:text-xl ${
             isDarkMode 
               ? 'bg-black text-white hover:bg-gray-800' 
               : 'bg-[#26A0A2] text-white hover:bg-charcoal'
