@@ -77,9 +77,9 @@ function WhoWeAre({ isDarkMode }) {
   };
 
   return (
-    <section id="who-we-are" ref={elementRef} className="w-full py-20 px-4 bg-[#26A0A2]">
+    <section id="who-we-are" ref={elementRef} className="w-full py-12 sm:py-20 px-4 bg-[#26A0A2]">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-16">
           {/* Left: Image - Slide from left */}
           <div className={`flex-1 transition-all duration-1000 ease-out transform ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : '-translate-x-full opacity-0 scale-95'
@@ -88,7 +88,7 @@ function WhoWeAre({ isDarkMode }) {
               <img 
                 src={whoweareImg} 
                 alt="Who We Are" 
-                className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+                className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
             </div>
@@ -98,13 +98,13 @@ function WhoWeAre({ isDarkMode }) {
           <div className={`flex-1 lg:pl-8 transition-all duration-1000 ease-out delay-300 transform ${
             isVisible ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-full opacity-0 scale-95'
           }`}>
-            <div className="mb-6">
-              <span className={`inline-block bg-white/20 text-white font-semibold px-4 py-2 rounded-full text-sm mb-4 transition-all duration-700 delay-400 ${
+            <div className="mb-4 sm:mb-6">
+              <span className={`inline-block bg-white/20 text-white font-semibold px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm mb-3 sm:mb-4 transition-all duration-700 delay-400 ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               }`}>
                 About Us
               </span>
-              <h2 className={`text-4xl md:text-5xl font-bold mb-6 leading-tight transition-all duration-700 delay-500 ${
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight transition-all duration-700 delay-500 ${
                 isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
               } ${
                 isDarkMode ? 'text-black' : 'text-white'
@@ -113,55 +113,55 @@ function WhoWeAre({ isDarkMode }) {
               </h2>
             </div>
             
-            <p className="text-lg text-justify text-white/90 mb-8 leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-justify text-white/90 mb-6 sm:mb-8 leading-relaxed">
               We are a dedicated team of wellness professionals committed to transforming lives through comprehensive health and wellness solutions. Our mission is to empower individuals to achieve their optimal well-being through personalized care, expert guidance, and evidence-based practices.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-[#26A0A2] text-sm font-bold">✓</span>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-[#26A0A2] text-xs sm:text-sm font-bold">✓</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Expert Team</h4>
-                  <p className="text-white/80 text-sm">Certified professionals with years of experience</p>
+                  <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Expert Team</h4>
+                  <p className="text-white/80 text-xs sm:text-sm">Certified professionals with years of experience</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-[#26A0A2] text-sm font-bold">✓</span>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-[#26A0A2] text-xs sm:text-sm font-bold">✓</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Personalized Care</h4>
-                  <p className="text-white/80 text-sm">Tailored wellness plans for individual needs</p>
+                  <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Personalized Care</h4>
+                  <p className="text-white/80 text-xs sm:text-sm">Tailored wellness plans for individual needs</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-[#26A0A2] text-sm font-bold">✓</span>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-[#26A0A2] text-xs sm:text-sm font-bold">✓</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Holistic Approach</h4>
-                  <p className="text-white/80 text-sm">Mind, body, and spirit wellness integration</p>
+                  <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Holistic Approach</h4>
+                  <p className="text-white/80 text-xs sm:text-sm">Mind, body, and spirit wellness integration</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-[#26A0A2] text-sm font-bold">✓</span>
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                  <span className="text-[#26A0A2] text-xs sm:text-sm font-bold">✓</span>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-1">Proven Results</h4>
-                  <p className="text-white/80 text-sm">Evidence-based methods with measurable outcomes</p>
+                  <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Proven Results</h4>
+                  <p className="text-white/80 text-xs sm:text-sm">Evidence-based methods with measurable outcomes</p>
                 </div>
               </div>
             </div>
             
             <button 
               onClick={navigateToAbout}
-              className={`font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
+              className={`font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base ${
                 isDarkMode 
                   ? 'bg-black text-white hover:bg-gray-800' 
                   : 'bg-white text-[#26A0A2] hover:bg-gray-100'
@@ -232,20 +232,20 @@ function ServicesOverview({ isDarkMode }) {
   ];
 
   return (
-    <section ref={sectionRef} className={`w-full py-16 px-4 transition-colors duration-300 ${
+    <section ref={sectionRef} className={`w-full py-8 sm:py-16 px-4 transition-colors duration-300 ${
       isDarkMode ? 'bg-black' : 'bg-white'
     }`}>
       <div className="max-w-7xl mx-auto">
-        <h2 className={`text-3xl md:text-4xl font-bold text-center text-[#26A0A2] mb-10 transition-all duration-1000 ease-out ${
+        <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-center text-[#26A0A2] mb-6 sm:mb-10 transition-all duration-1000 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
         }`}>
           Our Top Services
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {services.map((s, i) => (
             <div
               key={i}
-              className={`relative group w-full h-[360px] bg-[#26A0A2] rounded-[10px] overflow-hidden shadow-md transition-all duration-1000 ease-out hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col ${
+              className={`relative group w-full h-[280px] sm:h-[320px] md:h-[360px] bg-[#26A0A2] rounded-[10px] overflow-hidden shadow-md transition-all duration-1000 ease-out hover:shadow-2xl hover:-translate-y-2 cursor-pointer flex flex-col ${
                 isVisible 
                   ? 'translate-y-0 opacity-100' 
                   : 'translate-y-12 opacity-0'
@@ -255,22 +255,22 @@ function ServicesOverview({ isDarkMode }) {
               }}
             >
               {/* Image always visible */}
-              <div className="w-full h-[250px] bg-cover bg-center" style={{ backgroundImage: `url(${s.img})` }} />
+              <div className="w-full h-[180px] sm:h-[220px] md:h-[250px] bg-cover bg-center" style={{ backgroundImage: `url(${s.img})` }} />
               {/* Title (default) in white area */}
-              <div className="flex-1 w-full min-h-[60px] flex items-center justify-center">
-                 <h3 className="text-lg font-bold text-white uppercase tracking-wide text-center mt-2 group-hover:opacity-0 transition-opacity duration-300">{s.title}</h3>
+              <div className="flex-1 w-full min-h-[60px] flex items-center justify-center px-2">
+                 <h3 className="text-sm sm:text-base md:text-lg font-bold text-white uppercase tracking-wide text-center mt-2 group-hover:opacity-0 transition-opacity duration-300">{s.title}</h3>
               </div>
-              {/* Overlay: covers entire card on hover */}
-              <div className={`absolute inset-0 flex flex-col items-center justify-center px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 ${
+              {/* Overlay: covers entire card on hover/touch */}
+              <div className={`absolute inset-0 flex flex-col items-center justify-center px-2 sm:px-4 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-500 z-20 ${
                 isDarkMode ? 'bg-black' : 'bg-white'
               }`}>
-                <h3 className={`text-xl md:text-2xl font-bold uppercase tracking-wide text-center mb-2 ${
+                <h3 className={`text-lg sm:text-xl md:text-2xl font-bold uppercase tracking-wide text-center mb-2 ${
                   isDarkMode ? 'text-white' : 'text-[#26A0A2]'
                 }`}>{s.title}</h3>
-                <p className={`text-lg text-justify md:text-xl mb-2 text-center font-semibold ${
+                <p className={`text-sm sm:text-base md:text-lg text-justify mb-2 text-center font-semibold ${
                   isDarkMode ? 'text-gray-300' : 'text-gray-600'
                 }`}>{s.tagline}</p>
-                <p className={`text-base text-justify md:text-lg mb-2 text-center ${
+                <p className={`text-xs sm:text-sm md:text-base text-justify mb-2 text-center ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-700'
                 }`}>{s.details}</p>
               </div>
@@ -348,7 +348,7 @@ function ImpactMetrics({ isDarkMode }) {
   }, [hasAnimated]);
 
   return (
-    <section ref={sectionRef} className="w-full py-20 px-4 relative overflow-hidden">
+    <section ref={sectionRef} className="w-full py-12 sm:py-20 px-4 relative overflow-hidden">
       {/* Background Video */}
       <video
         className="absolute inset-0 w-full h-full object-cover z-0"
@@ -363,15 +363,15 @@ function ImpactMetrics({ isDarkMode }) {
       <div className="absolute inset-0 bg-[#26A0A2]/80 z-10"></div>
       
       <div className="max-w-7xl mx-auto relative z-20">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-16">
           {/* Left: Content - Slide from left */}
           <div className={`flex-1 lg:pr-8 transition-all duration-1000 ease-out ${
             hasAnimated ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
           }`}>
-                         <h2 className="text-3xl md:text-4xl font-bold text-justify text-white mb-6 leading-tight">
+                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-justify text-white mb-4 sm:mb-6 leading-tight">
                Wellness Studio is a <span className="font-bold text-yellow-300">more reliable partner,</span> that listens to your needs
              </h2>
-                         <p className="text-white text-lg text-justify leading-relaxed mb-8">
+                         <p className="text-white text-sm sm:text-base md:text-lg text-justify leading-relaxed mb-6 sm:mb-8">
                We deeply immerse ourselves in your wellness journey to create a modern, personalized experience that reflects the identity and essence of your health goals. Our comprehensive approach combines cutting-edge wellness technology with time-tested holistic practices, ensuring every individual receives tailored guidance that addresses their unique needs. From personalized nutrition plans and expert fitness coaching to mindfulness training and stress management techniques.
              </p>
           </div>
@@ -380,74 +380,74 @@ function ImpactMetrics({ isDarkMode }) {
           <div className={`flex-1 transition-all duration-1000 ease-out delay-300 ${
             hasAnimated ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
           }`}>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6">
               {/* Top Left - White */}
-                             <div className={`rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-300 ${
+                             <div className={`rounded-2xl p-4 sm:p-6 md:p-8 relative group hover:shadow-xl transition-all duration-300 ${
                                isDarkMode ? 'bg-black' : 'bg-white'
                              }`}>
                  <div className={isDarkMode ? 'text-white' : 'text-gray-900'}>
-                   <div className="text-4xl font-bold mb-2 animate-pulse">
+                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-pulse">
                      <span className={`inline-block transform transition-all duration-500 hover:scale-110 ${
                        isDarkMode ? 'text-white' : 'text-[#26A0A2]'
                      }`}>
                        {counts.sessions}+
                      </span>
                    </div>
-                   <div className={`text-sm leading-relaxed ${
+                   <div className={`text-xs sm:text-sm leading-relaxed ${
                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
                    }`}>wellness sessions completed with personalized care</div>
                  </div>
                </div>
 
               {/* Top Right - White */}
-                             <div className={`rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-300 ${
+                             <div className={`rounded-2xl p-4 sm:p-6 md:p-8 relative group hover:shadow-xl transition-all duration-300 ${
                                isDarkMode ? 'bg-black' : 'bg-white'
                              }`}>
                  <div className={isDarkMode ? 'text-white' : 'text-gray-900'}>
-                   <div className="text-4xl font-bold mb-2 animate-pulse">
+                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-pulse">
                      <span className={`inline-block transform transition-all duration-500 hover:scale-110 ${
                        isDarkMode ? 'text-white' : 'text-[#26A0A2]'
                      }`}>
                        {counts.satisfaction}%
                      </span>
               </div>
-                   <div className={`text-sm leading-relaxed ${
+                   <div className={`text-xs sm:text-sm leading-relaxed ${
                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
                    }`}>client satisfaction rate with proven results</div>
               </div>
             </div>
 
               {/* Bottom Left - White */}
-                             <div className={`rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-300 ${
+                             <div className={`rounded-2xl p-4 sm:p-6 md:p-8 relative group hover:shadow-xl transition-all duration-300 ${
                                isDarkMode ? 'bg-black' : 'bg-white'
                              }`}>
                  <div className={isDarkMode ? 'text-white' : 'text-gray-900'}>
-                   <div className="text-4xl font-bold mb-2 animate-pulse">
+                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-pulse">
                      <span className={`inline-block transform transition-all duration-500 hover:scale-110 ${
                        isDarkMode ? 'text-white' : 'text-[#26A0A2]'
                      }`}>
                        {counts.support}/7
                      </span>
               </div>
-                   <div className={`text-sm leading-relaxed ${
+                   <div className={`text-xs sm:text-sm leading-relaxed ${
                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
                    }`}>expert support available for your wellness journey</div>
               </div>
             </div>
 
               {/* Bottom Right - White */}
-                             <div className={`rounded-2xl p-8 relative group hover:shadow-xl transition-all duration-300 ${
+                             <div className={`rounded-2xl p-4 sm:p-6 md:p-8 relative group hover:shadow-xl transition-all duration-300 ${
                                isDarkMode ? 'bg-black' : 'bg-white'
                              }`}>
                  <div className={isDarkMode ? 'text-white' : 'text-gray-900'}>
-                   <div className="text-4xl font-bold mb-2 animate-pulse">
+                   <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 animate-pulse">
                      <span className={`inline-block transform transition-all duration-500 hover:scale-110 ${
                        isDarkMode ? 'text-white' : 'text-[#26A0A2]'
                      }`}>
                        {counts.experts}+
                      </span>
                    </div>
-                   <div className={`text-sm leading-relaxed ${
+                   <div className={`text-xs sm:text-sm leading-relaxed ${
                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
                    }`}>certified wellness coaches and nutrition experts</div>
               </div>
@@ -495,27 +495,27 @@ function QuickTestimonialsPreview({ isDarkMode }) {
     return () => clearInterval(interval);
   }, [testimonials.length]);
   return (
-    <section className={`w-full py-16 px-4 flex flex-col items-center justify-center transition-colors duration-300 ${
+    <section className={`w-full py-8 sm:py-12 md:py-16 px-4 flex flex-col items-center justify-center transition-colors duration-300 ${
       isDarkMode ? 'bg-black' : 'bg-white'
     }`}>
-      <h2 className="text-2xl md:text-3xl font-bold text-[#26A0A2] mb-8 text-center">What Our Users Say</h2>
-      <div className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center relative">
+      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#26A0A2] mb-6 sm:mb-8 text-center">What Our Users Say</h2>
+      <div className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 flex flex-col items-center relative">
         {/* Arrows */}
-        <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#26A0A2] hover:text-[#0f766e] text-3xl p-2 rounded-full transition-colors" aria-label="Previous testimonial">
+        <button onClick={prev} className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-[#26A0A2] hover:text-[#0f766e] text-2xl sm:text-3xl p-2 rounded-full transition-colors" aria-label="Previous testimonial">
           &#60;
         </button>
-        <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 text-[#26A0A2] hover:text-[#0f766e] text-3xl p-2 rounded-full transition-colors" aria-label="Next testimonial">
+        <button onClick={next} className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-[#26A0A2] hover:text-[#0f766e] text-2xl sm:text-3xl p-2 rounded-full transition-colors" aria-label="Next testimonial">
           &#62;
         </button>
         {/* Quote */}
-        <blockquote className="text-2xl md:text-3xl font-serif text-center text-[#222836] mb-8 leading-relaxed">
+        <blockquote className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif text-center text-[#222836] mb-6 sm:mb-8 leading-relaxed px-2">
           "{t.quote}"
         </blockquote>
         {/* User info */}
-        <div className="flex items-center gap-4 mt-2">
-          <img src={t.photo} alt={t.name} className="w-14 h-14 rounded-full object-cover border-2 border-[#26A0A2]" />
+        <div className="flex items-center gap-3 sm:gap-4 mt-2">
+          <img src={t.photo} alt={t.name} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-[#26A0A2]" />
           <div className="text-left">
-            <div className="text-[#26A0A2] font-bold uppercase text-sm tracking-wide">{t.name}</div>
+            <div className="text-[#26A0A2] font-bold uppercase text-xs sm:text-sm tracking-wide">{t.name}</div>
             <div className="text-gray-500 text-xs italic">{t.role}</div>
           </div>
         </div>
@@ -561,23 +561,23 @@ function CallToActionBanner({ isDarkMode }) {
   };
 
   return (
-    <section ref={sectionRef} className="w-full py-16 px-2 md:px-0 flex justify-center items-center relative overflow-hidden bg-[#2ad2bb]">
-      <div className="max-w-7xl w-full relative flex flex-col lg:flex-row items-center justify-between gap-12 z-10">
+    <section ref={sectionRef} className="w-full py-8 sm:py-12 md:py-16 px-4 sm:px-2 md:px-0 flex justify-center items-center relative overflow-hidden bg-[#2ad2bb]">
+      <div className="max-w-7xl w-full relative flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-10 lg:gap-12 z-10">
                  {/* Left: Content - Slide from left */}
-         <div className={`flex-1 flex flex-col justify-center text-left pl-8 lg:pl-12 transition-all duration-1000 ease-out ${
+         <div className={`flex-1 flex flex-col justify-center text-left pl-4 sm:pl-6 lg:pl-12 transition-all duration-1000 ease-out ${
            isVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
          }`}>
-          <h2 className={`text-3xl md:text-4xl font-extrabold mb-4 ${
+          <h2 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold mb-3 sm:mb-4 ${
             isDarkMode ? 'text-black' : 'text-white'
           }`}>Ready to Transform Your Life?</h2>
-          <p className="text-white/90 text-lg text-justify md:text-xl mb-8 leading-relaxed">
+          <p className="text-white/90 text-sm sm:text-base md:text-lg lg:text-xl text-justify mb-6 sm:mb-8 leading-relaxed">
             Join thousands of people who have already started their wellness journey with us. 
             Get personalized guidance, expert support, and a community that cares about your success.
           </p>
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex gap-3 sm:gap-4 flex-wrap">
             <button 
               onClick={navigateToContact}
-              className={`font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-2xl focus:ring-4 focus:ring-white/40 transform transition-all duration-200 hover:-translate-y-1 hover:scale-105 ${
+              className={`font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg hover:shadow-2xl focus:ring-4 focus:ring-white/40 transform transition-all duration-200 hover:-translate-y-1 hover:scale-105 text-sm sm:text-base ${
                 isDarkMode 
                   ? 'bg-black text-white hover:bg-gray-800' 
                   : 'bg-white text-[#26A0A2] hover:bg-gray-100'
@@ -586,7 +586,7 @@ function CallToActionBanner({ isDarkMode }) {
             </button>
             <button 
               onClick={navigateToServices}
-              className={`font-semibold px-8 py-4 rounded-full border-2 shadow-lg focus:ring-4 focus:ring-white/40 transform transition-all duration-200 hover:-translate-y-1 hover:scale-105 ${
+              className={`font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full border-2 shadow-lg focus:ring-4 focus:ring-white/40 transform transition-all duration-200 hover:-translate-y-1 hover:scale-105 text-sm sm:text-base ${
                 isDarkMode 
                   ? 'bg-black text-white border-black hover:bg-gray-800' 
                   : 'bg-transparent text-white border-white hover:bg-white hover:text-[#26A0A2]'
@@ -600,7 +600,7 @@ function CallToActionBanner({ isDarkMode }) {
          <div className={`flex-1 flex justify-center lg:justify-end transition-all duration-1000 ease-out delay-300 ${
            isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
          }`}>
-           <div className="relative w-full max-w-md lg:max-w-lg">
+           <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg">
                            <img 
                 src={homectaImg} 
                 alt="Wellness Journey" 

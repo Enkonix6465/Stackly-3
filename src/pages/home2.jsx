@@ -17,7 +17,7 @@ import eventImg from '../assets/detailed/Sleep Therapy.jpg';
 import event1Img from '../assets/yoga.jpg';
 import event2Img from '../assets/detailed/Diet & Nutrition.jpg';
 import event3Img from '../assets/detailed/Mental Wellness.jpeg.jpg';
-import why1 from '../assets/why1.jpg';
+import why1 from '../assets/whoweare.jpg';
 import ceoImg from '../assets/ceo.jpg';
 // Trainer images
 import trainer1 from '../assets/trainer 1.jpg';
@@ -109,6 +109,9 @@ const Home2 = () => {
     
     // Run after a small delay to ensure DOM is ready
     setTimeout(animateProgressBars, 100);
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('load', () => AOS.refresh());
+    });
   }, []);
 
   const services = [
@@ -481,13 +484,19 @@ const Home2 = () => {
              <p className={`max-w-2xl mx-auto text-sm sm:text-base ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>Our certified experts, personalized plans, and supportive community help you achieve your health and wellness goals with confidence and care.</p>
            </div>
                      {/* Main content grid: only one image and progress bars */}
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch min-h-[250px] sm:min-h-[300px]">
+           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
              {/* Left: Single Image */}
-             <div className="flex flex-col justify-center h-full" data-aos="fade-right" data-aos-duration="800" data-aos-delay="200">
-               <img src={why1} alt="Wellness" className="rounded-xl w-full h-full min-h-[300px] object-cover" />
+             <div className="flex flex-col justify-center" data-aos="fade-right" data-aos-duration="800" data-aos-delay="200">
+               <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-lg bg-gray-200">
+                 <img 
+                   src={why1} 
+                   alt="Wellness" 
+                   className="w-full h-full object-cover object-center"
+                 />
+               </div>
              </div>
              {/* Right: Progress Bars with heading and intro text */}
-             <div className="flex flex-col gap-4 sm:gap-6 justify-center h-full min-h-[250px] sm:min-h-[300px]" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
+             <div className="flex flex-col gap-4 sm:gap-6 justify-center" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#26A0A2] m-0 p-0">Our Unique Approach</h3>
               <p className={`text-sm sm:text-base md:text-lg m-0 p-0 text-justify ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                 We believe in a holistic approach to wellness, combining expert guidance, innovative programs, and a caring community. Our personalized plans and proven support systems ensure you get the results you deserve.

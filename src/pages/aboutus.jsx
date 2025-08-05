@@ -254,6 +254,16 @@ function AboutHero() {
 
 function OurGrowthThroughYears({ isDarkMode }) {
   const { elementRef, isVisible } = useScrollAnimation(0.3, 200);
+  const [forceVisible, setForceVisible] = useState(false);
+  
+  // Fallback to ensure title is visible after 2 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setForceVisible(true);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   const milestones = [
          {
@@ -288,6 +298,8 @@ function OurGrowthThroughYears({ isDarkMode }) {
     }
   ];
 
+  const shouldShow = isVisible || forceVisible;
+
   return (
     <section ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
       isDarkMode ? 'bg-black' : 'bg-gray-100'
@@ -295,17 +307,23 @@ function OurGrowthThroughYears({ isDarkMode }) {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out delay-300 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            shouldShow ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-          }`}>
+          }`} style={{ 
+            opacity: shouldShow ? 1 : 0,
+            transform: shouldShow ? 'translateY(0)' : 'translateY(20px)'
+          }}>
             Our Growth Through Years
           </h2>
           <p className={`text-xl max-w-3xl mx-auto transition-all duration-1000 ease-out delay-500 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            shouldShow ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-gray-300' : 'text-gray-600'
-          }`}>
+          }`} style={{ 
+            opacity: shouldShow ? 1 : 0,
+            transform: shouldShow ? 'translateY(0)' : 'translateY(20px)'
+          }}>
             A journey of continuous growth, innovation, and commitment to transforming lives through wellness.
           </p>
         </div>
