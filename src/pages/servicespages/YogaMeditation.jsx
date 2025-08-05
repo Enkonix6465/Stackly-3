@@ -7,6 +7,7 @@ import '../../aos-custom.css';
 import yogaHeroVideo from '../../assets/yogahero.mp4';
 import yogaBenefitsBg from '../../assets/yogabenefits.png';
 import yogaSteps from '../../assets/yogasteps.png';
+import yogaServe from '../../assets/yogaserve.jpg';
 
 const YogaMeditation = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -270,7 +271,7 @@ const YogaMeditation = () => {
          {/* Background Image with Overlay */}
          <div className="absolute inset-0 z-0">
            <img 
-             src="/src/assets/yogaserve.jpg" 
+             src={yogaServe} 
              alt="Yoga Programs Background" 
              className="w-full h-full object-cover"
            />

@@ -1,9 +1,10 @@
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../footer';
+import { useScrollToTop } from '../hooks/useScrollToTop';
 import morningWellness from '../assets/morning wellness.jpeg';
 import mindfulMeditation from '../assets/mindfulMeditation.jpeg';
 import nutrition from '../assets/nutrition.jpeg';
@@ -12,6 +13,81 @@ const Article = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const componentRef = useRef(null);
+
+  // Scroll to top when component mounts
+  useScrollToTop();
+
+  // Comprehensive scroll to top solution
+  useEffect(() => {
+    // Scroll to absolute top
+    const scrollToAbsoluteTop = () => {
+      // Force scroll to absolute top first
+      window.scrollTo(0, 0);
+      
+      // Also ensure body and document are at top
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    };
+    
+    // Immediate scroll to top
+    scrollToAbsoluteTop();
+    
+    // Delayed scroll to handle any content loading
+    const timer1 = setTimeout(scrollToAbsoluteTop, 100);
+    const timer2 = setTimeout(scrollToAbsoluteTop, 500);
+    const timer3 = setTimeout(scrollToAbsoluteTop, 1000);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      clearTimeout(timer3);
+    };
+  }, [id]); // Re-run when article ID changes
+
+  // Ensure scroll to top on window load
+  useEffect(() => {
+    const handleLoad = () => {
+      window.scrollTo(0, 0);
+    };
+    
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
+
+  // Additional scroll to top using scrollIntoView
+  useEffect(() => {
+    const scrollToTop = () => {
+      // Force scroll to absolute top
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      
+      // Also try scrollIntoView on body and document
+      document.body.scrollIntoView({ behavior: 'auto', block: 'start' });
+      document.documentElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+    };
+    
+    // Immediate scroll
+    scrollToTop();
+    
+    // Scroll after a short delay
+    const timer = setTimeout(scrollToTop, 50);
+    
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  // Ref-based scroll to top after component mounts
+  useEffect(() => {
+    if (componentRef.current) {
+      window.scrollTo(0, 0);
+      componentRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }, []);
 
   // Dark mode functionality
   useEffect(() => {
@@ -184,6 +260,13 @@ const Article = () => {
 
   const article = articles[id];
 
+  // Scroll to top when article changes
+  useEffect(() => {
+    if (article) {
+      window.scrollTo(0, 0);
+    }
+  }, [article]);
+
   if (!article) {
     return (
       <div className="p-10 text-center">
@@ -201,7 +284,7 @@ const Article = () => {
   const articleImage = article.image;
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+    <div ref={componentRef} className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
       <Header />
       {/* Navigation */}
       <nav className={`py-4 px-6 border-b ${isDarkMode ? 'border-gray-800' : 'border-white'}`}>
@@ -216,9 +299,9 @@ const Article = () => {
       </nav>
 
       {/* Article Layout */}
-      <main className="relative">
+      <main className="relative pt-4">
         {/* Hero Section with Image and Initial Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 py-8 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 py-8 lg:py-16 px-4 lg:px-8">
           
           {/* Left Side: Image */}
           <div className="flex flex-col">
@@ -243,8 +326,8 @@ const Article = () => {
           </div>
 
           {/* Right Side: Article Title and Initial Content */}
-          <div className="lg:pl-4 flex flex-col justify-start">
-            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight text-teal-500">
+          <div className="lg:pl-4 flex flex-col justify-start pt-4 lg:pt-0">
+            <h1 id="article-title" className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight text-teal-500">
               {article.title}
             </h1>
             

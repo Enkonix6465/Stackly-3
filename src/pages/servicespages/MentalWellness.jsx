@@ -255,7 +255,7 @@ const MentalWellness = () => {
          {/* Background Image with Overlay */}
          <div className="absolute inset-0 z-0">
            <img 
-             src="/src/assets/mentalserve.jpg" 
+             src={mentalServe} 
              alt="Mental Wellness Programs Background" 
              className="w-full h-full object-cover"
            />

@@ -7,6 +7,7 @@ import '../../aos-custom.css';
 import dietHeroVideo from '../../assets/Diethero.mp4';
 import dietBenefitsBg from '../../assets/Dietbenefits.jpg';
 import dietSteps from '../../assets/Dietsteps.jpg';
+import dietServe from '../../assets/Dietserve.jpg';
 
 const DietNutrition = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -270,7 +271,7 @@ const DietNutrition = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/src/assets/dietserve.jpg" 
+            src={dietServe} 
             alt="Diet Programs Background" 
             className="w-full h-full object-cover"
           />

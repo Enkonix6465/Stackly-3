@@ -644,11 +644,11 @@ function Blog() {
                    </div>
                    
                    {/* Right Side - Circular Category Wheel */}
-                   <div className="flex justify-center overflow-hidden">
-                     <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px]">
+                   <div className="flex justify-center">
+                     <div className="relative w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] lg:w-[550px] lg:h-[550px] xl:w-[650px] xl:h-[650px]">
                        {/* Center */}
-                       <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl flex items-center justify-center z-20 border-4 border-teal-500`}>
-                         <span className={`text-xs sm:text-sm lg:text-lg font-bold ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>CATEGORIES</span>
+                       <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-22 lg:h-22 xl:w-26 xl:h-26 rounded-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl flex items-center justify-center z-20 border-4 border-teal-500`}>
+                         <span className={`text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>CATEGORIES</span>
                        </div>
                        
                        {/* Connecting Lines - Responsive SVG */}
@@ -657,157 +657,207 @@ function Blog() {
                          <circle cx="250" cy="250" r="120" fill="none" stroke="#26A69A" strokeWidth="1" strokeDasharray="3,3"/>
                        </svg>
                        
-                       {/* Category Segments - Positioned in a perfect circle */}
+                       {/* Category Segments - Responsive positioning */}
                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full" style={{ zIndex: 15 }}>
-                         {/* Fitness - Top */}
+                         {/* Fitness - Top (0 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('fitness')}
-                           className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-22 lg:h-22 xl:w-26 xl:h-26 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'fitness' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-400 to-teal-600'
                            }`}
+                           style={{
+                             top: 'calc(50% - 140px - 8px)',
+                             left: 'calc(50% - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
                            </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[9px] text-white font-bold">FITNESS</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">FITNESS</span>
                          </div>
                          
-                         {/* Healthy Eating - Top Right */}
+                         {/* Healthy Eating - Top Right (45 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('healthyEating')}
-                           className={`absolute top-[8%] right-[8%] w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'healthyEating' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-500 to-teal-700'
                            }`}
+                           style={{
+                             top: 'calc(50% - 99px - 8px)',
+                             left: 'calc(50% + 99px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
                            </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[8px] text-white font-bold text-center">HEALTHY<br/>EATING</span>
+                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">HEALTHY<br/>EATING</span>
                          </div>
                          
-                         {/* Weight Loss - Right */}
+                         {/* Weight Loss - Right (90 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('weightLoss')}
-                           className={`absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'weightLoss' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-600 to-teal-800'
                            }`}
+                           style={{
+                             top: 'calc(50% - 8px)',
+                             left: 'calc(50% + 140px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                            </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[8px] text-white font-bold text-center">WEIGHT<br/>LOSS</span>
+                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">WEIGHT<br/>LOSS</span>
                          </div>
                          
-                         {/* Wellness - Bottom Right */}
+                         {/* Wellness - Bottom Right (135 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('wellness')}
-                           className={`absolute bottom-[8%] right-[8%] w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'wellness' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-700 to-teal-900'
                            }`}
+                           style={{
+                             top: 'calc(50% + 99px - 8px)',
+                             left: 'calc(50% + 99px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                            </svg>
-                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-bold">WELLNESS</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">WELLNESS</span>
                          </div>
                          
-                         {/* Healthy Mind - Bottom */}
-                         <div 
-                           onClick={() => setSelectedCategory('healthyMind')}
-                           className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
-                             selectedCategory === 'healthyMind' 
-                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
-                               : 'bg-gradient-to-br from-teal-800 to-teal-900'
-                           }`}
-                         >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
-                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                           </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[8px] text-white font-bold text-center">HEALTHY<br/>MIND</span>
-                         </div>
-                         
-                         {/* Sleep - Bottom Left */}
+                         {/* Sleep - Bottom (180 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('sleep')}
-                           className={`absolute bottom-[8%] left-[8%] w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'sleep' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-300 to-teal-500'
                            }`}
+                           style={{
+                             top: 'calc(50% + 140px - 8px)',
+                             left: 'calc(50% - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/>
                              <path d="M9 11h3.63L9 15.2V17h6v-2h-3.63L15 10.8V9H9z"/>
                            </svg>
-                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-bold">SLEEP</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">SLEEP</span>
                          </div>
                          
-                         {/* Stress Management - Left */}
+                         {/* Stress Management - Bottom Left (225 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('stressManagement')}
-                           className={`absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'stressManagement' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-400 to-teal-600'
                            }`}
+                           style={{
+                             top: 'calc(50% + 99px - 8px)',
+                             left: 'calc(50% - 99px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                            </svg>
-                           <span className="text-[5px] sm:text-[6px] lg:text-[7px] text-white font-bold text-center leading-tight">STRESS<br/>MANAGEMENT</span>
+                           <span className="text-[5px] sm:text-[6px] lg:text-[8px] xl:text-[10px] text-white font-bold text-center leading-tight">STRESS<br/>MANAGEMENT</span>
                          </div>
                          
-                         {/* Meditation - Top Left */}
+                         {/* Meditation - Left (270 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('meditation')}
-                           className={`absolute top-[8%] left-[8%] w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'meditation' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-500 to-teal-700'
                            }`}
+                           style={{
+                             top: 'calc(50% - 8px)',
+                             left: 'calc(50% - 140px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                            </svg>
-                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-bold">MEDITATION</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">MEDITATION</span>
                          </div>
                          
-                         {/* Nutrition - Bottom Center */}
+                         {/* Healthy Mind - Top Left (315 degrees) */}
+                         <div 
+                           onClick={() => setSelectedCategory('healthyMind')}
+                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                             selectedCategory === 'healthyMind' 
+                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
+                               : 'bg-gradient-to-br from-teal-800 to-teal-900'
+                           }`}
+                           style={{
+                             top: 'calc(50% - 99px - 8px)',
+                             left: 'calc(50% - 99px - 8px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
+                         >
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                           </svg>
+                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">HEALTHY<br/>MIND</span>
+                         </div>
+                         
+                         {/* Nutrition - Inner circle bottom (180 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('nutrition')}
-                           className={`absolute bottom-[25%] left-1/2 transform -translate-x-1/2 translate-y-1/2 w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-18 h-18 sm:w-20 sm:h-20 lg:w-26 lg:h-26 xl:w-30 xl:h-30 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'nutrition' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-600 to-teal-800'
                            }`}
+                           style={{
+                             top: 'calc(50% + 84px - 9px)',
+                             left: 'calc(50% - 9px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
                            </svg>
-                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-bold">NUTRITION</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">NUTRITION</span>
                          </div>
                          
-                         {/* Self Care - Top Center */}
+                         {/* Self Care - Inner circle top (0 degrees) */}
                          <div 
                            onClick={() => setSelectedCategory('selfCare')}
-                           className={`absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-22 sm:h-22 lg:w-24 lg:h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute w-18 h-18 sm:w-20 sm:h-20 lg:w-26 lg:h-26 xl:w-30 xl:h-30 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'selfCare' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-700 to-teal-900'
                            }`}
+                           style={{
+                             top: 'calc(50% - 84px - 9px)',
+                             left: 'calc(50% - 9px)',
+                             transform: 'translate(-50%, -50%)'
+                           }}
                          >
-                           <svg className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                            </svg>
-                           <span className="text-[8px] sm:text-[9px] lg:text-[10px] text-white font-bold">SELF CARE</span>
+                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">SELF CARE</span>
                          </div>
                        </div>
                      </div>

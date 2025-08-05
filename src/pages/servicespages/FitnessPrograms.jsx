@@ -7,6 +7,7 @@ import '../../aos-custom.css';
 import fitnessHeroVideo from '../../assets/fithero.mp4';
 import fitnessBenefitsBg from '../../assets/fitsbenefits.jpg';
 import fitnessSteps from '../../assets/fitsteps.jpg';
+import fitnessServe from '../../assets/fitserve.jpg';
 
 const FitnessPrograms = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -254,7 +255,7 @@ const FitnessPrograms = () => {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/src/assets/fitserve.jpg" 
+            src={fitnessServe} 
             alt="Fitness Programs Background" 
             className="w-full h-full object-cover"
           />
