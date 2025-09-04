@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line, LabelList } from 'recharts';
 import mapImg from './assets/world.png';
 import Header from './Header.jsx';
+import { useContext } from 'react';
+import { LanguageContext } from './LanguageContext';
 import { 
   getRegisteredUsers, 
   getTotalUsersCount, 
@@ -12,9 +14,351 @@ import {
 } from './utils/userRegistration.js';
 
 // Section1 (KPI Cards Example)
-function Section1() {
+// Dashboard translations
+const dashboardTranslations = {
+  country: {
+    English: {
+      SA: 'SA',
+      Brazil: 'Brazil',
+      UK: 'UK',
+      USA: 'USA',
+      Australia: 'Australia',
+      India: 'India',
+    },
+    Arabic: {
+      SA: 'السعودية',
+      Brazil: 'البرازيل',
+      UK: 'المملكة المتحدة',
+      USA: 'الولايات المتحدة',
+      Australia: 'أستراليا',
+      India: 'الهند',
+    },
+    Hebrew: {
+      SA: 'ערב הסעודית',
+      Brazil: 'ברזיל',
+      UK: 'בריטניה',
+      USA: 'ארה"ב',
+      Australia: 'אוסטרליה',
+      India: 'הודו',
+    },
+  },
+  yearOverview: {
+    English: 'Year Overview',
+    Arabic: 'نظرة عامة على السنة',
+    Hebrew: 'סקירת שנה',
+  },
+  English: {
+    dashboardTitle: 'Health & Wellness Dashboard',
+    totalUsers: 'Total Users',
+    activeUsers: 'Active Users',
+    thisMonth: 'This Month',
+    growthRate: 'Growth Rate',
+    registeredUsers: 'Registered Users',
+    realRegistrations: 'Real user registrations from the welcome page',
+    noUsers: 'No users registered yet. Users will appear here when they sign up on the welcome page.',
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone',
+    source: 'Source',
+    registrationDate: 'Registration Date & Time',
+    actions: 'Actions',
+    delete: 'Delete',
+    patientOverview: 'Patient Overview',
+    byAge: 'by Age Stages',
+    revenue: 'Revenue',
+    mostClients: 'Most clients',
+    clientLocation: 'Our client number based on their primary location',
+    trainers: 'TRAINERS',
+    recentActivity: 'RECENT ACTIVITY',
+    socialSource: 'SOCIAL SOURCE',
+    signedIn: 'Signed in',
+    learnMore: 'Learn more →',
+  today: 'Today',
+  thisWeek: 'This Week',
+  yearOverview: 'Year Overview',
+  last8Days: 'Last 8 Days',
+  thisYear: 'This Year',
+  week: 'Week',
+  month: 'Month',
+  year: 'Year',
+  lastMonth: 'Last month',
+  last3Months: 'Last 3 months',
+  lastYear: 'Last year',
+  totalAppointments: 'Total Appointments',
+  January: 'January',
+  February: 'February',
+  March: 'March',
+  April: 'April',
+  May: 'May',
+  June: 'June',
+  July: 'July',
+  August: 'August',
+  September: 'September',
+  October: 'October',
+  November: 'November',
+    today: 'Today',
+    Sun: 'Sun',
+    Mon: 'Mon',
+    Tue: 'Tue',
+    Wed: 'Wed',
+    Thu: 'Thu',
+    Fri: 'Fri',
+    Sat: 'Sat',
+  },
+  Arabic: {
+  yearOverview: 'نظرة عامة على السنة',
+  dashboardTitle: 'لوحة الصحة والعافية',
+  totalUsers: 'المستخدمون الإجماليون',
+  yearOverview: 'نظرة عامة على السنة', // Added for English
+    activeUsers: 'المستخدمون النشطون',
+    thisMonth: 'هذا الشهر',
+    growthRate: 'معدل النمو',
+    registeredUsers: 'المستخدمون المسجلون',
+    realRegistrations: 'تسجيلات المستخدمين الحقيقية من صفحة الترحيب',
+    noUsers: 'لم يتم تسجيل أي مستخدمين بعد. سيظهر المستخدمون هنا عند التسجيل في صفحة الترحيب.',
+    name: 'الاسم',
+    email: 'البريد الإلكتروني',
+    phone: 'الهاتف',
+    source: 'المصدر',
+    registrationDate: 'تاريخ ووقت التسجيل',
+    actions: 'الإجراءات',
+    delete: 'حذف',
+    patientOverview: 'نظرة عامة على المرضى',
+    byAge: 'حسب الفئة العمرية',
+    revenue: 'الإيرادات',
+    mostClients: 'أكثر العملاء',
+    // Section5 Trainers
+    trainerAmit: 'Amit Sharma',
+    trainerPriya: 'Priya Singh',
+    trainerRahul: 'Rahul Verma',
+    trainerSneha: 'Sneha Patel',
+    today: 'اليوم',
+    Sun: 'الأحد',
+    Mon: 'الاثنين',
+    Tue: 'الثلاثاء',
+    Wed: 'الأربعاء',
+    Thu: 'الخميس',
+    Fri: 'الجمعة',
+    Sat: 'السبت',
+    yogaInstructor: 'Yoga Instructor',
+    nutritionist: 'Nutritionist',
+    personalTrainer: 'Personal Trainer',
+    wellnessCoach: 'Wellness Coach',
+    cardioSpecialist: 'Cardio Specialist',
+    available: 'Available',
+    busy: 'Busy',
+    onLeave: 'On Leave',
+    // Section5 Activity
+    jun12: 'JUN 12',
+    jun11: 'JUN 11',
+    jun10: 'JUN 10',
+    jun9: 'JUN 09',
+    jun8: 'JUN 08',
+    completedYogaSession: 'Completed Yoga Session',
+    loggedWaterIntake: 'Logged Water Intake',
+    reachedStepGoal: 'Reached Step Goal',
+    completedCardioWorkout: 'Completed Cardio Workout',
+    loggedSleepHours: 'Logged Sleep Hours',
+    // Section5 Social Stats
+    facebook: 'Facebook',
+    twitter: 'Twitter',
+    instagram: 'Instagram',
+    communityShares: 'Community Shares',
+    wellnessTweets: 'Wellness Tweets',
+    healthPosts: 'Health Posts',
+    today: 'היום',
+    Sun: 'א׳',
+    Mon: 'ב׳',
+    Tue: 'ג׳',
+    Wed: 'ד׳',
+    Thu: 'ה׳',
+    Fri: 'ו׳',
+    Sat: 'ש׳',
+    facebookDescription: 'Our community is growing! Join us on Facebook for wellness tips, support, and shared success stories.',
+     Germany: {
+       dashboardTitle: 'Gesundheits- und Wellness-Dashboard',
+       totalUsers: 'Gesamtbenutzer',
+       activeUsers: 'Aktive Benutzer',
+       thisMonth: 'Diesen Monat',
+       growthRate: 'Wachstumsrate',
+       registeredUsers: 'Registrierte Benutzer',
+       realRegistrations: 'Echte Benutzerregistrierungen von der Willkommensseite',
+       noUsers: 'Noch keine Benutzer registriert. Benutzer erscheinen hier, wenn sie sich auf der Willkommensseite anmelden.',
+       name: 'Name',
+       email: 'E-Mail',
+       phone: 'Telefon',
+       source: 'Quelle',
+       registrationDate: 'Registrierungsdatum und -zeit',
+       actions: 'Aktionen',
+       delete: 'Löschen',
+       patientOverview: 'Patientenübersicht',
+       byAge: 'nach Altersgruppen',
+       revenue: 'Einnahmen',
+       mostClients: 'Die meisten Kunden',
+       clientLocation: 'Anzahl der Kunden basierend auf ihrem Hauptstandort',
+       trainers: 'TRAINER',
+       recentActivity: 'AKTUELLE AKTIVITÄT',
+       socialSource: 'SOZIALE QUELLE',
+       signedIn: 'Angemeldet',
+       learnMore: 'Mehr erfahren →',
+     },
+    clientLocation: 'عدد العملاء حسب الموقع الرئيسي',
+    trainers: 'المدربون',
+    recentActivity: 'النشاط الأخير',
+    // Section5 Trainers
+    trainerAmit: 'أميت شارما',
+    trainerPriya: 'بريا سينغ',
+    trainerRahul: 'راهول فيرما',
+    trainerSneha: 'سنيها باتيل',
+    trainerArjun: 'أرجون ميهتا',
+    yogaInstructor: 'مدرب يوغا',
+    nutritionist: 'خبير تغذية',
+    personalTrainer: 'مدرب شخصي',
+    wellnessCoach: 'مدرب صحة',
+    cardioSpecialist: 'أخصائي تمارين قلبية',
+    available: 'متاح',
+    busy: 'مشغول',
+    onLeave: 'في إجازة',
+    // Section5 Activity
+    jun12: '١٢ يونيو',
+    jun11: '١١ يونيو',
+    jun10: '١٠ يونيو',
+    jun9: '٩ يونيو',
+    jun8: '٨ يونيو',
+    completedYogaSession: 'تمت جلسة اليوغا',
+    loggedWaterIntake: 'تم تسجيل كمية الماء',
+    reachedStepGoal: 'تم تحقيق هدف الخطوات',
+    completedCardioWorkout: 'تمت تمارين القلب',
+    loggedSleepHours: 'تم تسجيل ساعات النوم',
+    // Section5 Social Stats
+    facebook: 'فيسبوك',
+    twitter: 'تويتر',
+    instagram: 'انستغرام',
+    communityShares: 'مشاركات المجتمع',
+    wellnessTweets: 'تغريدات الصحة',
+    healthPosts: 'منشورات صحية',
+    facebookMainStat: 'فيسبوك - ١٢٥ مشاركة مجتمع',
+    facebookDescription: 'مجتمعنا ينمو! انضم إلينا على فيسبوك للحصول على نصائح صحية ودعم وقصص نجاح.',
+    socialSource: 'المصدر الاجتماعي',
+    signedIn: 'تم تسجيل الدخول',
+    learnMore: 'اعرف المزيد →',
+    // Section5 Trainers
+    trainerAmit: 'אמית שארמה',
+    trainerPriya: 'פריה סינג',
+    trainerRahul: 'רהול ורמה',
+    trainerSneha: 'סנהה פאטל',
+    trainerArjun: 'ארג׳ון מהטה',
+    yogaInstructor: 'מדריך יוגה',
+    nutritionist: 'תזונאית',
+    personalTrainer: 'מאמן אישי',
+    wellnessCoach: 'מאמן בריאות',
+    cardioSpecialist: 'מומחה קרדיו',
+    available: 'זמין',
+    busy: 'עסוק',
+    onLeave: 'בחופשה',
+    // Section5 Activity
+    jun12: '12 יוני',
+    jun11: '11 יוני',
+    jun10: '10 יוני',
+    jun9: '9 יוני',
+    jun8: '8 יוני',
+    completedYogaSession: 'הושלמה פעילות יוגה',
+    loggedWaterIntake: 'נרשמה שתיית מים',
+    reachedStepGoal: 'הושג יעד צעדים',
+    completedCardioWorkout: 'הושלמה פעילות קרדיו',
+    loggedSleepHours: 'נרשמו שעות שינה',
+    // Section5 Social Stats
+    facebook: 'פייסבוק',
+    twitter: 'טוויטר',
+    instagram: 'אינסטגרם',
+    communityShares: 'שיתופי קהילה',
+    wellnessTweets: 'ציוצי בריאות',
+    healthPosts: 'פוסטים בריאותיים',
+    facebookMainStat: 'פייסבוק - 125 שיתופי קהילה',
+    facebookDescription: 'הקהילה שלנו גדלה! הצטרפו אלינו בפייסבוק לטיפים, תמיכה וסיפורי הצלחה.',
+  today: 'اليوم',
+  thisWeek: 'هذا الأسبوع',
+  yearOverview: 'نظرة عامة على السنة',
+  last8Days: 'آخر 8 أيام',
+  thisYear: 'هذا العام',
+  week: 'أسبوع',
+  month: 'شهر',
+  year: 'سنة',
+  lastMonth: 'الشهر الماضي',
+  last3Months: 'آخر 3 أشهر',
+  lastYear: 'السنة الماضية',
+  totalAppointments: 'إجمالي المواعيد',
+  January: 'يناير',
+  February: 'فبراير',
+  March: 'مارس',
+  April: 'إبريل',
+  May: 'مايو',
+  June: 'يونيو',
+  July: 'يوليو',
+  August: 'أغسطس',
+  September: 'سبتمبر',
+  October: 'أكتوبر',
+  November: 'نوفمبر',
+  December: 'ديسمبر',
+  },
+  Hebrew: {
+  yearOverview: 'סקירת שנה',
+  dashboardTitle: 'לוח בריאות ורווחה',
+  totalUsers: 'משתמשים כוללים',
+  yearOverview: 'نظرة عامة على السنة', // Added for Arabic
+    activeUsers: 'משתמשים פעילים',
+    thisMonth: 'החודש',
+    growthRate: 'שיעור צמיחה',
+    registeredUsers: 'משתמשים רשומים',
+    realRegistrations: 'רישומי משתמשים אמיתיים מדף קבלת הפנים',
+    noUsers: 'אין משתמשים רשומים עדיין. משתמשים יופיעו כאן לאחר ההרשמה בדף קבלת הפנים.',
+    name: 'שם',
+    email: 'אימייל',
+    phone: 'טלפון',
+    source: 'מקור',
+    registrationDate: 'תאריך ושעת הרשמה',
+    actions: 'פעולות',
+    delete: 'מחק',
+    patientOverview: 'סקירת מטופלים',
+    byAge: 'לפי גילאים',
+    revenue: 'הכנסה',
+    mostClients: 'הכי הרבה לקוחות',
+    clientLocation: 'מספר לקוחות לפי מיקום ראשי',
+    trainers: 'מאמנים',
+    recentActivity: 'פעילות אחרונה',
+    socialSource: 'מקור חברתי',
+    signedIn: 'התחברת',
+    learnMore: 'למידע נוסף →',
+  today: 'היום',
+  thisWeek: 'השבוע',
+  yearOverview: 'סקירת שנה',
+  last8Days: '8 הימים האחרונים',
+  thisYear: 'השנה',
+  week: 'שבוע',
+  month: 'חודש',
+  year: 'שנה',
+  lastMonth: 'חודש שעבר',
+  last3Months: '3 החודשים האחרונים',
+  lastYear: 'שנה שעברה',
+  totalAppointments: 'סך כל התורים',
+  January: 'ינואר',
+  February: 'פברואר',
+  March: 'מרץ',
+  April: 'אפריל',
+  May: 'מאי',
+  June: 'יוני',
+  July: 'יולי',
+  August: 'אוגוסט',
+  September: 'ספטמבר',
+  October: 'אוקטובר',
+  November: 'נובמבר',
+  December: 'דצמבר',
+  },
+};
+function Section1({ t }) {
   const [users, setUsers] = useState([]);
   const [userStats, setUserStats] = useState({});
+
   const [showRecent, setShowRecent] = useState(false);
 
   // Load users and stats on component mount and when data changes
@@ -79,12 +423,13 @@ function Section1() {
   // Get real-time data
   const totalUsers = userStats.total || 0;
 
-  const kpis = [
-    { label: 'Total Users', value: totalUsers.toString(), color: '#ffe5d0' },
-    { label: 'Active Users', value: (userStats.active || 0).toString(), color: '#d0f4ff' },
-    { label: 'This Month', value: (userStats.thisMonth || 0).toString(), color: '#fff9d0' },
-    { label: 'Growth Rate', value: totalUsers > 0 ? '+12.5%' : '0%', color: '#f0e0ff' },
-  ];
+  // Use t from props
+    const kpis = [
+    { label: t.totalUsers || 'Total Users', value: totalUsers.toString(), color: '#20c997' },
+      { label: t.activeUsers || 'Active Users', value: (userStats.active || 0).toString(), color: '#d0f4ff' },
+      { label: t.thisMonth || 'This Month', value: (userStats.thisMonth || 0).toString(), color: '#fff9d0' },
+      { label: t.growthRate || 'Growth Rate', value: totalUsers > 0 ? '+12.5%' : '0%', color: '#f0e0ff' },
+    ];
   const cardStyle = (color, clickable) => ({
     background: '#fff',
     borderRadius: 18,
@@ -112,27 +457,27 @@ function Section1() {
       }} onClick={onClose}>
         <div style={{ background: '#fff', borderRadius: 18, boxShadow: '0 4px 32px rgba(0,0,0,0.13)', padding: '40px 32px', minWidth: 340, maxWidth: 520, width: '90%', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={e => e.stopPropagation()}>
           <button onClick={onClose} style={{ position: 'absolute', top: 18, right: 18, background: 'none', border: 'none', fontSize: 22, color: '#8ca1a6', cursor: 'pointer' }}>&times;</button>
-          <div style={{ fontWeight: 700, color: '#111', fontSize: 22, marginBottom: 18, textAlign: 'center' }}>Registered Users ({users.length})</div>
+          <div style={{ fontWeight: 700, color: '#111', fontSize: 22, marginBottom: 18, textAlign: 'center' }}>{t.registeredUsers} ({users.length})</div>
           <div style={{ marginBottom: 16, textAlign: 'center' }}>
             <p style={{ color: '#666', fontSize: 14, marginBottom: 8 }}>
-              Real user registrations from the welcome page
+              {t.realRegistrations}
             </p>
           </div>
           {users.length === 0 ? (
             <div style={{ textAlign: 'center', color: '#8ca1a6', fontSize: 16, padding: '20px' }}>
-              No users registered yet. Users will appear here when they sign up on the welcome page.
+              {t.noUsers}
             </div>
           ) : (
             <div style={{ maxHeight: '400px', overflowY: 'auto', width: '100%' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', background: '#f6f8fa', borderRadius: 10, overflow: 'hidden', fontSize: 14, color: '#111' }}>
                 <thead>
                   <tr style={{ background: '#e0f7f4', color: '#111', fontWeight: 700 }}>
-                    <th style={{ padding: 12, textAlign: 'left' }}>Name</th>
-                    <th style={{ padding: 12, textAlign: 'left' }}>Email</th>
-                    <th style={{ padding: 12, textAlign: 'left' }}>Phone</th>
-                    <th style={{ padding: 12, textAlign: 'left' }}>Source</th>
-                    <th style={{ padding: 12, textAlign: 'left' }}>Registration Date & Time</th>
-                    <th style={{ padding: 12, textAlign: 'center' }}>Actions</th>
+                    <th style={{ padding: 12, textAlign: 'left' }}>{t.name}</th>
+                    <th style={{ padding: 12, textAlign: 'left' }}>{t.email}</th>
+                    <th style={{ padding: 12, textAlign: 'left' }}>{t.phone}</th>
+                    <th style={{ padding: 12, textAlign: 'left' }}>{t.source}</th>
+                    <th style={{ padding: 12, textAlign: 'left' }}>{t.registrationDate}</th>
+                    <th style={{ padding: 12, textAlign: 'center' }}>{t.actions}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,7 +501,7 @@ function Section1() {
                       <td style={{ padding: 12, textAlign: 'center' }}>
                         <button
                           onClick={() => {
-                            if (window.confirm(`Are you sure you want to delete ${user.name}?`)) {
+                            if (window.confirm(`${t.delete} ${user.name}?`)) {
                               handleDeleteUser(user.id);
                             }
                           }}
@@ -171,7 +516,7 @@ function Section1() {
                             fontWeight: '600'
                           }}
                         >
-                          Delete
+                          {t.delete}
                         </button>
                       </td>
                     </tr>
@@ -201,9 +546,9 @@ function Section1() {
   }, []);
   return (
     <>
-      <h1 style={{ color: '#000', fontSize: 48, fontWeight: 800, margin: '32px 0 24px 0', textAlign: 'center', letterSpacing: '-1px' }}>
-         Health & Wellness Dashboard
-      </h1>
+    <h1 style={{ color: '#000', fontSize: 48, fontWeight: 800, margin: '32px 0 24px 0', textAlign: 'center', letterSpacing: '-1px' }}>
+      {t.dashboardTitle}
+    </h1>
       <section style={{ background: 'transparent', borderRadius: 12, marginBottom: 32, padding: 0 }}>
         <div
           className="kpi-grid"
@@ -219,8 +564,8 @@ function Section1() {
             <div
               key={kpi.label}
               className="kpi-card"
-              style={cardStyle(kpi.color, kpi.label === 'Total Users')}
-              onClick={kpi.label === 'Total Users' ? () => setShowRecent(true) : undefined}
+              style={cardStyle(kpi.color, kpis.indexOf(kpi) === 0)}
+              onClick={kpis.indexOf(kpi) === 0 ? () => setShowRecent(true) : undefined}
             >
               <span style={{ fontSize: 20, color: '#2e5d50', fontWeight: 700 }}>{kpi.label}</span>
               <span style={{ fontSize: 20, fontWeight: 700, color: '#1a3c34', marginBottom: 2 }}>{kpi.value}</span>
@@ -234,8 +579,12 @@ function Section1() {
 }
 
 // Section2 (Appointments Chart)
-function Section2() {
-  const filters = ['Today', 'This Week', 'This Month', 'Year Overview'];
+function Section2({ t }) {
+  // Use t from props
+  const { language } = useContext(LanguageContext);
+  const yearOverviewLabel = dashboardTranslations.yearOverview?.[language] || dashboardTranslations.yearOverview.English;
+  const filters = [t.today || 'Today', t.thisWeek || 'This Week', t.thisMonth || 'This Month', yearOverviewLabel];
+  // Use t from props
   const chartData = {
     'Today': [
       { hour: '8am', value: 2 },
@@ -246,13 +595,13 @@ function Section2() {
       { hour: '6pm', value: 7 },
     ],
     'This Week': [
-      { day: 'Mon', value: 12 },
-      { day: 'Tue', value: 9 },
-      { day: 'Wed', value: 15 },
-      { day: 'Thu', value: 8 },
-      { day: 'Fri', value: 13 },
-      { day: 'Sat', value: 10 },
-      { day: 'Sun', value: 11 },
+      { day: t.Mon || 'Mon', value: 12 },
+      { day: t.Tue || 'Tue', value: 9 },
+      { day: t.Wed || 'Wed', value: 15 },
+      { day: t.Thu || 'Thu', value: 8 },
+      { day: t.Fri || 'Fri', value: 13 },
+      { day: t.Sat || 'Sat', value: 10 },
+      { day: t.Sun || 'Sun', value: 11 },
     ],
     'This Month': [
       { date: '1', value: 5 },
@@ -264,18 +613,18 @@ function Section2() {
       { date: '30', value: 13 },
     ],
     'Year Overview': [
-      { month: 'Jan', value: 20 },
-      { month: 'Feb', value: 20 },
-      { month: 'Mar', value: 45 },
-      { month: 'Apr', value: 30 },
-      { month: 'May', value: 65 },
-      { month: 'Jun', value: 30 },
-      { month: 'Jul', value: 75 },
-      { month: 'Aug', value: 50 },
-      { month: 'Sep', value: 70 },
-      { month: 'Oct', value: 40 },
-      { month: 'Nov', value: 30 },
-      { month: 'Dec', value: 50 },
+      { month: t.January || 'Jan', value: 20 },
+      { month: t.February || 'Feb', value: 20 },
+      { month: t.March || 'Mar', value: 45 },
+      { month: t.April || 'Apr', value: 30 },
+      { month: t.May || 'May', value: 65 },
+      { month: t.June || 'Jun', value: 30 },
+      { month: t.July || 'Jul', value: 75 },
+      { month: t.August || 'Aug', value: 50 },
+      { month: t.September || 'Sep', value: 70 },
+      { month: t.October || 'Oct', value: 40 },
+      { month: t.November || 'Nov', value: 30 },
+      { month: t.December || 'Dec', value: 50 },
     ],
   };
   const counts = {
@@ -290,10 +639,12 @@ function Section2() {
     'This Month': 'date',
     'Year Overview': 'month',
   };
-  const [selected, setSelected] = useState('Year Overview');
-  const data = chartData[selected];
-  const count = counts[selected];
-  const xDataKey = xKey[selected];
+  const [selected, setSelected] = useState(yearOverviewLabel);
+  // Map translated 'Year Overview' back to the key for chartData/counts/xKey
+  const selectedKey = selected === yearOverviewLabel ? 'Year Overview' : selected;
+  const data = chartData[selectedKey];
+  const count = counts[selectedKey];
+  const xDataKey = xKey[selectedKey];
   const maxValue = Math.max(...data.map(d => d.value));
   const yMax = maxValue <= 10 ? Math.ceil(maxValue / 5) * 5 : Math.ceil(maxValue / 10) * 10;
   return (
@@ -311,7 +662,7 @@ function Section2() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 18 }}>
         <div style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '18px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 0 }}>
           <div style={{ fontSize: 22, fontWeight: 700, color: '#1a3c34', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span role="img" aria-label="calendar">🗓</span> Total Appointments {selected === 'Today' ? 'Today' : selected === 'This Week' ? 'This Week' : selected === 'This Month' ? 'This Month' : 'This Year'}: <span style={{ color: '#2ec4b6', fontSize: 26, fontWeight: 800 }}>{count}</span>
+            <span role="img" aria-label="calendar">🗓</span> {t.totalAppointments || 'Total Appointments'} {selected}: <span style={{ color: '#2ec4b6', fontSize: 26, fontWeight: 800 }}>{count}</span>
           </div>
           <div className="section2-filters" style={{ display: 'flex', gap: 8 }}>
             {filters.map((f) => (
@@ -337,7 +688,7 @@ function Section2() {
           </div>
         </div>
         <div className="section2-chart-outer" style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '24px 20px', minHeight: 220, overflowX: 'auto' }}>
-          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 18, marginBottom: 8 }}>{selected === 'Year Overview' ? 'Year Overview' : selected}</div>
+          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 18, marginBottom: 8 }}>{selected === 'Year Overview' ? t.yearOverview : selected}</div>
           <div className="section2-chart-inner" style={{ width: '100%', height: 180, minWidth: 0 }}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
@@ -382,48 +733,48 @@ function Section2() {
 }
 
 // Section3 (Patient Overview & Revenue)
-function Section3() {
+function Section3({ t }) {
   const patientDataSets = {
     'Last 8 Days': [
-      { date: '4 Jul', Child: 60, Adult: 80, Elderly: 40 },
-      { date: '5 Jul', Child: 90, Adult: 120, Elderly: 70 },
-      { date: '6 Jul', Child: 80, Adult: 100, Elderly: 60 },
-      { date: '7 Jul', Child: 105, Adult: 132, Elderly: 38 },
-      { date: '8 Jul', Child: 70, Adult: 90, Elderly: 50 },
-      { date: '9 Jul', Child: 60, Adult: 80, Elderly: 40 },
-      { date: '10 Jul', Child: 120, Adult: 140, Elderly: 60 },
-      { date: '11 Jul', Child: 100, Adult: 130, Elderly: 80 },
+      { date: '4 ' + (t.July || 'Jul'), Child: 60, Adult: 80, Elderly: 40 },
+      { date: '5 ' + (t.July || 'Jul'), Child: 90, Adult: 120, Elderly: 70 },
+      { date: '6 ' + (t.July || 'Jul'), Child: 80, Adult: 100, Elderly: 60 },
+      { date: '7 ' + (t.July || 'Jul'), Child: 105, Adult: 132, Elderly: 38 },
+      { date: '8 ' + (t.July || 'Jul'), Child: 70, Adult: 90, Elderly: 50 },
+      { date: '9 ' + (t.July || 'Jul'), Child: 60, Adult: 80, Elderly: 40 },
+      { date: '10 ' + (t.July || 'Jul'), Child: 120, Adult: 140, Elderly: 60 },
+      { date: '11 ' + (t.July || 'Jul'), Child: 100, Adult: 130, Elderly: 80 },
     ],
     'This Month': [
-      { date: 'Week 1', Child: 200, Adult: 300, Elderly: 120 },
-      { date: 'Week 2', Child: 250, Adult: 320, Elderly: 140 },
-      { date: 'Week 3', Child: 220, Adult: 310, Elderly: 130 },
-      { date: 'Week 4', Child: 270, Adult: 350, Elderly: 150 },
+      { date: t.Week1 || 'Week 1', Child: 200, Adult: 300, Elderly: 120 },
+      { date: t.Week2 || 'Week 2', Child: 250, Adult: 320, Elderly: 140 },
+      { date: t.Week3 || 'Week 3', Child: 220, Adult: 310, Elderly: 130 },
+      { date: t.Week4 || 'Week 4', Child: 270, Adult: 350, Elderly: 150 },
     ],
     'This Year': [
-      { date: 'Jan', Child: 600, Adult: 800, Elderly: 400 },
-      { date: 'Feb', Child: 700, Adult: 900, Elderly: 450 },
-      { date: 'Mar', Child: 800, Adult: 950, Elderly: 500 },
-      { date: 'Apr', Child: 900, Adult: 1000, Elderly: 550 },
-      { date: 'May', Child: 950, Adult: 1100, Elderly: 600 },
-      { date: 'Jun', Child: 1000, Adult: 1200, Elderly: 650 },
-      { date: 'Jul', Child: 1100, Adult: 1300, Elderly: 700 },
-      { date: 'Aug', Child: 1200, Adult: 1400, Elderly: 750 },
-      { date: 'Sep', Child: 1300, Adult: 1500, Elderly: 800 },
-      { date: 'Oct', Child: 1400, Adult: 1600, Elderly: 850 },
-      { date: 'Nov', Child: 1500, Adult: 1700, Elderly: 900 },
-      { date: 'Dec', Child: 1600, Adult: 1800, Elderly: 950 },
+      { date: t.January || 'Jan', Child: 600, Adult: 800, Elderly: 400 },
+      { date: t.February || 'Feb', Child: 700, Adult: 900, Elderly: 450 },
+      { date: t.March || 'Mar', Child: 800, Adult: 950, Elderly: 500 },
+      { date: t.April || 'Apr', Child: 900, Adult: 1000, Elderly: 550 },
+      { date: t.May || 'May', Child: 950, Adult: 1100, Elderly: 600 },
+      { date: t.June || 'Jun', Child: 1000, Adult: 1200, Elderly: 650 },
+      { date: t.July || 'Jul', Child: 1100, Adult: 1300, Elderly: 700 },
+      { date: t.August || 'Aug', Child: 1200, Adult: 1400, Elderly: 750 },
+      { date: t.September || 'Sep', Child: 1300, Adult: 1500, Elderly: 800 },
+      { date: t.October || 'Oct', Child: 1400, Adult: 1600, Elderly: 850 },
+      { date: t.November || 'Nov', Child: 1500, Adult: 1700, Elderly: 900 },
+      { date: t.December || 'Dec', Child: 1600, Adult: 1800, Elderly: 950 },
     ],
   };
   const revenueDataSets = {
     Week: [
-      { day: 'Sun', Income: 800, Expense: 600 },
-      { day: 'Mon', Income: 900, Expense: 650 },
-      { day: 'Tue', Income: 1200, Expense: 700 },
-      { day: 'Wed', Income: 1495, Expense: 750 },
-      { day: 'Thu', Income: 1100, Expense: 800 },
-      { day: 'Fri', Income: 1300, Expense: 900 },
-      { day: 'Sat', Income: 1200, Expense: 950 },
+      { day: t.Sun || 'Sun', Income: 800, Expense: 600 },
+      { day: t.Mon || 'Mon', Income: 900, Expense: 650 },
+      { day: t.Tue || 'Tue', Income: 1200, Expense: 700 },
+      { day: t.Wed || 'Wed', Income: 1495, Expense: 750 },
+      { day: t.Thu || 'Thu', Income: 1100, Expense: 800 },
+      { day: t.Fri || 'Fri', Income: 1300, Expense: 900 },
+      { day: t.Sat || 'Sat', Income: 1200, Expense: 950 },
     ],
     Month: [
       { day: 'W1', Income: 4000, Expense: 3000 },
@@ -432,18 +783,18 @@ function Section3() {
       { day: 'W4', Income: 4700, Expense: 3600 },
     ],
     Year: [
-      { day: 'Jan', Income: 12000, Expense: 9000 },
-      { day: 'Feb', Income: 13000, Expense: 9500 },
-      { day: 'Mar', Income: 14000, Expense: 10000 },
-      { day: 'Apr', Income: 15000, Expense: 11000 },
-      { day: 'May', Income: 16000, Expense: 12000 },
-      { day: 'Jun', Income: 17000, Expense: 13000 },
-      { day: 'Jul', Income: 18000, Expense: 14000 },
-      { day: 'Aug', Income: 19000, Expense: 15000 },
-      { day: 'Sep', Income: 20000, Expense: 16000 },
-      { day: 'Oct', Income: 21000, Expense: 17000 },
-      { day: 'Nov', Income: 22000, Expense: 18000 },
-      { day: 'Dec', Income: 23000, Expense: 19000 },
+      { day: t.January || 'Jan', Income: 12000, Expense: 9000 },
+      { day: t.February || 'Feb', Income: 13000, Expense: 9500 },
+      { day: t.March || 'Mar', Income: 14000, Expense: 10000 },
+      { day: t.April || 'Apr', Income: 15000, Expense: 11000 },
+      { day: t.May || 'May', Income: 16000, Expense: 12000 },
+      { day: t.June || 'Jun', Income: 17000, Expense: 13000 },
+      { day: t.July || 'Jul', Income: 18000, Expense: 14000 },
+      { day: t.August || 'Aug', Income: 19000, Expense: 15000 },
+      { day: t.September || 'Sep', Income: 20000, Expense: 16000 },
+      { day: t.October || 'Oct', Income: 21000, Expense: 17000 },
+      { day: t.November || 'Nov', Income: 22000, Expense: 18000 },
+      { day: t.December || 'Dec', Income: 23000, Expense: 19000 },
     ],
   };
   const [patientFilter, setPatientFilter] = useState('Last 8 Days');
@@ -496,13 +847,13 @@ function Section3() {
         <div style={{ flex: 1, minWidth: 340, maxWidth: 540, background: '#fff', borderRadius: 20, boxShadow: '0 4px 24px rgba(46,196,182,0.10)', padding: '32px 28px', margin: '0 0 16px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
             <div>
-              <h2 style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, margin: 0 }}>Patient Overview</h2>
-              <div style={{ color: '#8ca1a6', fontSize: 14, fontWeight: 500 }}>by Age Stages</div>
+              <h2 style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, margin: 0 }}>{t.patientOverview}</h2>
+              <div style={{ color: '#8ca1a6', fontSize: 14, fontWeight: 500 }}>{t.byAge}</div>
             </div>
             <select value={patientFilter} onChange={e => setPatientFilter(e.target.value)} style={{ background: '#1a3c34', color: '#fff', border: 'none', borderRadius: 10, padding: '8px 20px', fontWeight: 600, fontSize: 15, outline: 'none', cursor: 'pointer', minWidth: 120 }}>
-              <option>Last 8 Days</option>
-              <option>This Month</option>
-              <option>This Year</option>
+              <option>{t.last8Days || 'Last 8 Days'}</option>
+              <option>{t.thisMonth}</option>
+              <option>{t.thisYear || 'This Year'}</option>
             </select>
           </div>
           <ResponsiveContainer width="100%" height={260}>
@@ -544,10 +895,10 @@ function Section3() {
         <div style={{ flex: 1, minWidth: 340, maxWidth: 480, background: '#fff', borderRadius: 20, boxShadow: '0 4px 24px rgba(46,196,182,0.10)', padding: '32px 28px', margin: '0 0 16px 0', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
             <div>
-              <h2 style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, margin: 0 }}>Revenue</h2>
+              <h2 style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, margin: 0 }}>{t.revenue}</h2>
             </div>
             <div className="button-group" style={{ display: 'flex', gap: 10 }}>
-              {['Week', 'Month', 'Year'].map(tab => (
+              {[t.week || 'Week', t.month || 'Month', t.year || 'Year'].map(tab => (
                 <button
                   key={tab}
                   onClick={() => setRevenueTab(tab)}
@@ -594,7 +945,7 @@ function Section3() {
 }
 
 // Section5 (Trainers, Recent Activity, Social Source)
-function Section5() {
+function Section5({ t }) {
   const messages = [
     { name: 'Dr. Meera Rao', avatar: 'M', message: 'Your blood test results are ready.', time: 'Just Now', color: '#2ec4b6' },
     { name: 'Coach Arjun', avatar: 'A', message: 'Great job on your workout today!', time: '5 min ago', color: '#1a3c34' },
@@ -603,17 +954,17 @@ function Section5() {
     { name: 'Wellness Bot', avatar: '🤖', message: 'Time for your daily meditation.', time: '2 hr ago', color: '#8ca1a6' },
   ];
   const activity = [
-    { date: 'JUN 12', text: 'Completed Yoga Session', time: '09:00 AM' },
-    { date: 'JUN 11', text: 'Logged Water Intake', time: '10:30 AM' },
-    { date: 'JUN 10', text: 'Reached Step Goal', time: '12:00 PM' },
-    { date: 'JUN 09', text: 'Completed Cardio Workout', time: '06:30 PM' },
-    { date: 'JUN 08', text: 'Logged Sleep Hours', time: '07:00 AM' },
+    { date: t.jun12, text: t.completedYogaSession, time: '09:00 AM' },
+    { date: t.jun11, text: t.loggedWaterIntake, time: '10:30 AM' },
+    { date: t.jun10, text: t.reachedStepGoal, time: '12:00 PM' },
+    { date: t.jun9, text: t.completedCardioWorkout, time: '06:30 PM' },
+    { date: t.jun8, text: t.loggedSleepHours, time: '07:00 AM' },
   ];
   const socialStats = [
     {
-      name: 'Facebook',
+      name: t.facebook,
       value: 125,
-      label: 'Community Shares',
+      label: t.communityShares,
       color: '#3b5998',
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -623,9 +974,9 @@ function Section5() {
       ),
     },
     {
-      name: 'Twitter',
+      name: t.twitter,
       value: 112,
-      label: 'Wellness Tweets',
+      label: t.wellnessTweets,
       color: '#1da1f2',
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -635,9 +986,9 @@ function Section5() {
       ),
     },
     {
-      name: 'Instagram',
+      name: t.instagram,
       value: 104,
-      label: 'Health Posts',
+      label: t.healthPosts,
       color: '#e1306c',
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -648,11 +999,11 @@ function Section5() {
     },
   ];
   const trainers = [
-    { name: 'Amit Sharma', avatar: 'A', specialty: 'Yoga Instructor', status: 'Available', color: '#20c997' },
-    { name: 'Priya Singh', avatar: 'P', specialty: 'Nutritionist', status: 'Busy', color: '#2563eb' },
-    { name: 'Rahul Verma', avatar: 'R', specialty: 'Personal Trainer', status: 'Available', color: '#ffb4a2' },
-    { name: 'Sneha Patel', avatar: 'S', specialty: 'Wellness Coach', status: 'On Leave', color: '#b2f7ef' },
-    { name: 'Arjun Mehta', avatar: 'A', specialty: 'Cardio Specialist', status: 'Available', color: '#8ca1a6' },
+    { name: t.trainerAmit, avatar: 'A', specialty: t.yogaInstructor, status: t.available, color: '#20c997' },
+    { name: t.trainerPriya, avatar: 'P', specialty: t.nutritionist, status: t.busy, color: '#2563eb' },
+    { name: t.trainerRahul, avatar: 'R', specialty: t.personalTrainer, status: t.available, color: '#ffb4a2' },
+    { name: t.trainerSneha, avatar: 'S', specialty: t.wellnessCoach, status: t.onLeave, color: '#b2f7ef' },
+    { name: t.trainerArjun, avatar: 'A', specialty: t.cardioSpecialist, status: t.available, color: '#8ca1a6' },
   ];
   return (
     <section style={{ background: 'transparent', borderRadius: 12, marginBottom: 32, padding: 0 }}>
@@ -684,12 +1035,12 @@ function Section5() {
       <div className="section5-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.2fr 1fr', gap: 24, overflowX: 'auto' }}>
         {/* Trainers Section */}
         <div className="section5-col" style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '24px 20px', minWidth: 260, marginBottom: 32 }}>
-          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 22, marginBottom: 18, letterSpacing: 1 }}>TRAINERS</div>
+          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 22, marginBottom: 18, letterSpacing: 1 }}>{t.trainers}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {trainers.map((trainer, i) => {
               let badgeColor = '#20c997';
-              if (trainer.status === 'Busy') badgeColor = '#ffb84d';
-              if (trainer.status === 'On Leave') badgeColor = '#8ca1a6';
+              if (trainer.status === t.busy) badgeColor = '#ffb84d';
+              if (trainer.status === t.onLeave) badgeColor = '#8ca1a6';
               return (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', background: '#f6f8fa', borderRadius: 16, boxShadow: '0 1px 4px #2ec4b610', padding: '10px 16px', gap: 16, position: 'relative', minHeight: 48, height: 72, width: 320, boxSizing: 'border-box', overflow: 'hidden'
@@ -713,7 +1064,7 @@ function Section5() {
         </div>
         {/* Recent Activity */}
         <div className="section5-col" style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '24px 20px', minWidth: 100, marginBottom: 32 ,}}>
-          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 22, marginBottom: 18, letterSpacing: 1 }}>RECENT ACTIVITY</div>
+          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 22, marginBottom: 18, letterSpacing: 1 }}>{t.recentActivity}</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {activity.map((a, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
@@ -752,16 +1103,16 @@ function Section5() {
         </div>
         {/* Social Source */}
         <div className="section5-col" style={{ background: '#fff', borderRadius: 16, boxShadow: '0 2px 12px rgba(0,0,0,0.06)', padding: '32px 24px', minWidth: 220, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start',marginBottom:32, }}>
-          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, marginBottom: 24, letterSpacing: 1, textAlign: 'center' }}>SOCIAL SOURCE</div>
+          <div style={{ fontWeight: 700, color: '#1a3c34', fontSize: 24, marginBottom: 24, letterSpacing: 1, textAlign: 'center' }}>{t.socialSource}</div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
             {/* Main Facebook Icon and Info */}
             <div style={{ marginBottom: 20, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               {socialStats[0].icon}
-              <div style={{ fontWeight: 700, fontSize: 22, color: '#222', margin: '18px 0 8px 0', textAlign: 'center', lineHeight: 1.2 }}>Facebook - 125 community shares</div>
+              <div style={{ fontWeight: 700, fontSize: 22, color: '#222', margin: '18px 0 8px 0', textAlign: 'center', lineHeight: 1.2 }}>{t.facebookMainStat || `${t.facebook} - 125 ${t.communityShares}`}</div>
               <div style={{ color: '#8ca1a6', fontSize: 16, textAlign: 'center', marginBottom: 12, maxWidth: 320 }}>
-                Our community is growing! Join us on Facebook for wellness tips, support, and shared success stories.
+                {t.facebookDescription || 'Our community is growing! Join us on Facebook for wellness tips, support, and shared success stories.'}
               </div>
-              <a href="#" style={{ color: '#3d7bfd', fontWeight: 600, fontSize: 16, textDecoration: 'none', textAlign: 'center', display: 'block' }}>Learn more &rarr;</a>
+              <a href="#" style={{ color: '#3d7bfd', fontWeight: 600, fontSize: 16, textDecoration: 'none', textAlign: 'center', display: 'block' }}>{t.learnMore || 'Learn more'} &rarr;</a>
             </div>
             {/* Row of Social Icons */}
             <div style={{ display: 'flex', gap: 32, marginTop: 18, width: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
@@ -781,35 +1132,35 @@ function Section5() {
 }
 
 // Section6 (Map and Bar Chart)
-function Section6() {
+function Section6({ t }) {
   const periods = ['Last month', 'Last 3 months', 'Last year'];
   const periodData = {
     'Last month': [
-      { country: 'Germany', clients: 12000 },
-      { country: 'SA', clients: 13000 },
-      { country: 'Brazil', clients: 27000 },
-      { country: 'UK', clients: 10000 },
-      { country: 'USA', clients: 38000 },
-      { country: 'Australia', clients: 7000 },
-      { country: 'India', clients: 41000 },
+  { country: t.country?.Germany || 'Germany', clients: 12000 },
+  { country: t.country?.SA || 'SA', clients: 13000 },
+  { country: t.country?.Brazil || 'Brazil', clients: 27000 },
+  { country: t.country?.UK || 'UK', clients: 10000 },
+  { country: t.country?.USA || 'USA', clients: 38000 },
+  { country: t.country?.Australia || 'Australia', clients: 7000 },
+  { country: t.country?.India || 'India', clients: 41000 },
     ],
     'Last 3 months': [
-      { country: 'Germany', clients: 18000 },
-      { country: 'SA', clients: 21000 },
-      { country: 'Brazil', clients: 35000 },
-      { country: 'UK', clients: 17000 },
-      { country: 'USA', clients: 52000 },
-      { country: 'Australia', clients: 12000 },
-      { country: 'India', clients: 60000 },
+  { country: t.country?.Germany || 'Germany', clients: 18000 },
+      { country: t.country?.SA || 'SA', clients: 21000 },
+      { country: t.country?.Brazil || 'Brazil', clients: 35000 },
+      { country: t.country?.UK || 'UK', clients: 17000 },
+      { country: t.country?.USA || 'USA', clients: 52000 },
+      { country: t.country?.Australia || 'Australia', clients: 12000 },
+      { country: t.country?.India || 'India', clients: 60000 },
     ],
     'Last year': [
-      { country: 'Germany', clients: 42000 },
-      { country: 'SA', clients: 39000 },
-      { country: 'Brazil', clients: 67000 },
-      { country: 'UK', clients: 32000 },
-      { country: 'USA', clients: 98000 },
-      { country: 'Australia', clients: 25000 },
-      { country: 'India', clients: 120000 },
+  { country: t.country?.Germany || 'Germany', clients: 42000 },
+  { country: t.country?.SA || 'SA', clients: 39000 },
+  { country: t.country?.Brazil || 'Brazil', clients: 67000 },
+  { country: t.country?.UK || 'UK', clients: 32000 },
+  { country: t.country?.USA || 'USA', clients: 98000 },
+  { country: t.country?.Australia || 'Australia', clients: 25000 },
+  { country: t.country?.India || 'India', clients: 120000 },
     ],
   };
   const [period, setPeriod] = useState(periods[0]);
@@ -861,12 +1212,12 @@ function Section6() {
               color: '#1a3c34',
               fontSize: 18,
               margin: 0
-            }}>Most clients</h2>
+            }}>{t.mostClients}</h2>
             <p style={{
               color: '#7b8a8b',
               fontSize: 14,
               marginTop: 2
-            }}>Our client number based on their primary location</p>
+            }}>{t.clientLocation}</p>
           </div>
           <select
             value={period}
@@ -881,7 +1232,9 @@ function Section6() {
               color: '#1a3c34'
             }}
           >
-            {periods.map(p => <option key={p}>{p}</option>)}
+            <option>{t.lastMonth || 'Last month'}</option>
+            <option>{t.last3Months || 'Last 3 months'}</option>
+            <option>{t.lastYear || 'Last year'}</option>
           </select>
         </div>
         <div className="section6-flex" style={{
@@ -969,8 +1322,11 @@ function Section6() {
 
 // Main Dashboard Page
 export default function FullDashboard() {
+  const { language } = useContext(LanguageContext);
+  const t = dashboardTranslations[language] || dashboardTranslations.English;
+  const isRTL = language === 'Arabic' || language === 'Hebrew';
   return (
-    <div style={{ minHeight: '100vh', width: '100%', fontFamily: 'Inter, Arial, sans-serif', overflowX: 'hidden', background: '#f0f2f5' }}>
+    <div style={{ minHeight: '100vh', width: '100%', fontFamily: 'Inter, Arial, sans-serif', overflowX: 'hidden', background: '#f0f2f5' }} dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       <div className="dashboard-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 16px' }}>
         <style>{`
@@ -1032,11 +1388,12 @@ export default function FullDashboard() {
             }
           }
         `}</style>
-        <div className="dashboard-section"><Section1 /></div>
-        <div className="dashboard-section"><Section2 /></div>
-        <div className="dashboard-section"><Section3 /></div>
-        <div className="dashboard-section"><Section5 /></div>
-        <div className="dashboard-section"><Section6 /></div>
+        {/* Pass translations to sections as props if needed */}
+  <div className="dashboard-section"><Section1 t={t} /></div>
+  <div className="dashboard-section"><Section2 t={t} /></div>
+  <div className="dashboard-section"><Section3 t={t} /></div>
+  <div className="dashboard-section"><Section5 t={t} /></div>
+  <div className="dashboard-section"><Section6 t={t} /></div>
       </div>
     </div>
   );

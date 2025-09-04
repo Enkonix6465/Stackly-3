@@ -12,6 +12,71 @@ const ADMIN = {
 };
 
 export default function Welcome() {
+  const [language, setLanguage] = useState("English");
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  // Translations for all text
+  const translations = {
+    English: {
+      welcome: "Welcome back",
+      pleaseEnter: "Please enter your details.",
+  signup: "",
+      signupDesc: "Create your account.",
+      firstName: "First Name",
+      lastName: "Last Name",
+      email: "E-mail",
+      phone: "Phone Number",
+      password: "Password",
+      signupBtn: "Sign up",
+      alreadyAccount: "Already have an account?",
+      login: "Log in",
+      loginBtn: "Log in",
+      dontHaveAccount: "Don't have an account?",
+      registerHere: "Register here",
+      thanks: "Thanks for registering!",
+      close: "Close",
+      invalid: "Invalid credentials"
+    },
+    Arabic: {
+      welcome: "مرحبًا بعودتك",
+  signupDesc: "",
+      firstName: "الاسم الأول",
+      lastName: "اسم العائلة",
+      email: "البريد الإلكتروني",
+      phone: "رقم الهاتف",
+      password: "كلمة المرور",
+      signupBtn: "إنشاء حساب",
+      alreadyAccount: "لديك حساب بالفعل؟",
+      login: "تسجيل الدخول",
+      loginBtn: "تسجيل الدخول",
+      dontHaveAccount: "ليس لديك حساب؟",
+      registerHere: "سجل هنا",
+      thanks: "شكرًا لتسجيلك!",
+      close: "إغلاق",
+      invalid: "بيانات اعتماد غير صالحة"
+    },
+    Hebrew: {
+      welcome: "ברוך שובך",
+      pleaseEnter: "אנא הזן את פרטיך.",
+  signup: "",
+      signupDesc: "צור את החשבון שלך.",
+      firstName: "שם פרטי",
+      lastName: "שם משפחה",
+      email: "אימייל",
+      phone: "מספר טלפון",
+      password: "סיסמה",
+      signupBtn: "הרשמה",
+      alreadyAccount: "כבר יש לך חשבון?",
+      login: "התחבר",
+      loginBtn: "התחבר",
+      dontHaveAccount: "אין לך חשבון?",
+      registerHere: "הירשם כאן",
+      thanks: "תודה שנרשמת!",
+      close: "סגור",
+      invalid: "פרטי התחברות שגויים"
+    }
+  };
+  const t = translations[language];
+  const isRTL = language === "Arabic" || language === "Hebrew";
   // Set a default user for testing if not already set
   useEffect(() => {
     if (!localStorage.getItem("currentUser")) {
@@ -88,6 +153,7 @@ export default function Welcome() {
     <div
       className="min-h-screen flex items-center justify-center bg-cover bg-center"
       style={{ backgroundImage: `url(${background})` }}
+      dir={isRTL ? "rtl" : "ltr"}
     >
       <div className={`w-full max-w-md mx-auto rounded-xl p-10 shadow-2xl relative ${theme === "dark" ? "bg-black" : "bg-white/10 backdrop-blur"}`}>
         {/* Toggle Button */}
@@ -110,12 +176,42 @@ export default function Welcome() {
         </button>
         {showSignup ? (
           <>
-            <h2 className={`text-3xl font-bold mb-2 text-center ${theme === "dark" ? "text-white" : "text-white"}`}>Sign Up</h2>
-            <p className={`mb-8 text-center ${theme === "dark" ? "text-gray-300" : "text-gray-200"}`}>Create your account.</p>
+            <h2 className={`text-3xl font-bold mb-2 text-center ${theme === "dark" ? "text-white" : "text-white"}`}>{t.signup}</h2>
+            <p className={`mb-8 text-center ${theme === "dark" ? "text-gray-300" : "text-gray-200"}`}>{t.signupDesc}</p>
             <form className="space-y-5" onSubmit={handleSignup}>
+              {/* Toggle and Language Button Row */}
+              <div className="mb-4 flex items-center gap-4">
+                {/* Only show toggle button if translation exists */}
+                {translations[language].login && (
+                  <button
+                    type="button"
+                    className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors duration-200 border ${theme === "dark" ? "bg-gray-800 text-white border-cyan-400" : "bg-white text-gray-700 border-gray-300"}`}
+                    onClick={() => setShowSignup(false)}
+                  >
+                    {translations[language].login}
+                  </button>
+                )}
+                {/* Languages Button & Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setLanguageDropdown(!languageDropdown)}
+                    className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors duration-200 border ${theme === "dark" ? "bg-gray-800 text-white border-cyan-400" : "bg-white text-gray-700 border-gray-300"}`}
+                  >
+                    {language} ▼
+                  </button>
+                  {languageDropdown && (
+                    <div className={`absolute left-0 mt-2 rounded-lg shadow-lg border z-20 ${theme === "dark" ? "bg-gray-900 border-cyan-400" : "bg-white border-gray-300"}`}>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("English"); setLanguageDropdown(false); }}>English</button>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("Arabic"); setLanguageDropdown(false); }}>Arabic</button>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("Hebrew"); setLanguageDropdown(false); }}>Hebrew</button>
+                    </div>
+                  )}
+                </div>
+              </div>
               {/* First Name */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>First Name</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.firstName}</label>
                 <input
                   type="text"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -127,7 +223,7 @@ export default function Welcome() {
               </div>
               {/* Last Name */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>Last Name</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.lastName}</label>
                 <input
                   type="text"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -139,7 +235,7 @@ export default function Welcome() {
               </div>
               {/* Email */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>E-mail</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.email}</label>
                 <input
                   type="email"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -151,7 +247,7 @@ export default function Welcome() {
               </div>
               {/* Phone Number */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>Phone Number</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.phone}</label>
                 <input
                   type="tel"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -162,7 +258,7 @@ export default function Welcome() {
               </div>
               {/* Password */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>Password</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.password}</label>
                 <input
                   type="password"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -177,24 +273,52 @@ export default function Welcome() {
                 type="submit"
                 className={`w-full py-3 rounded-lg font-semibold text-lg transition ${theme === "dark" ? "bg-teal-500 text-white hover:bg-teal-600" : "bg-black text-white hover:bg-gray-900"}`}
               >
-                Sign up
+                {t.signupBtn}
               </button>
             </form>
             <p className={`text-center text-sm mt-8 ${theme === "dark" ? "text-gray-300" : "text-white/80"}`}>
-              Already have an account?{" "}
+              {t.alreadyAccount}{" "}
               <a href="#" className="text-green-400 font-medium hover:underline" onClick={e => { e.preventDefault(); setShowSignup(false); }}>
-                Log in
+                {t.login}
               </a>
             </p>
           </>
         ) : (
           <>
-            <h2 className={`text-3xl font-bold mb-2 text-center ${theme === "dark" ? "text-white" : "text-white"}`}>Welcome back</h2>
-            <p className={`mb-8 text-center ${theme === "dark" ? "text-gray-300" : "text-gray-200"}`}>Please enter your details.</p>
+            <h2 className={`text-3xl font-bold mb-2 text-center ${theme === "dark" ? "text-white" : "text-white"}`}>{t.welcome}</h2>
+            <p className={`mb-8 text-center ${theme === "dark" ? "text-gray-300" : "text-gray-200"}`}>{t.pleaseEnter}</p>
             <form className="space-y-5" onSubmit={handleLogin}>
+              {/* Toggle and Language Button Row */}
+              <div className="mb-4 flex items-center gap-4">
+                {/* Toggle Button */}
+                <button
+                  type="button"
+                  className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors duration-200 border ${theme === "dark" ? "bg-gray-800 text-white border-cyan-400" : "bg-white text-gray-700 border-gray-300"}`}
+                  onClick={() => setShowSignup(true)}
+                >
+                  {translations[language].signup}
+                </button>
+                {/* Languages Button & Dropdown */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => setLanguageDropdown(!languageDropdown)}
+                    className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors duration-200 border ${theme === "dark" ? "bg-gray-800 text-white border-cyan-400" : "bg-white text-gray-700 border-gray-300"}`}
+                  >
+                    {language} ▼
+                  </button>
+                  {languageDropdown && (
+                    <div className={`absolute left-0 mt-2 rounded-lg shadow-lg border z-20 ${theme === "dark" ? "bg-gray-900 border-cyan-400" : "bg-white border-gray-300"}`}>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("English"); setLanguageDropdown(false); }}>English</button>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("Arabic"); setLanguageDropdown(false); }}>Arabic</button>
+                      <button className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${theme === "dark" ? "text-white hover:bg-gray-700" : "text-gray-700 hover:bg-gray-100"}`} onClick={() => { setLanguage("Hebrew"); setLanguageDropdown(false); }}>Hebrew</button>
+                    </div>
+                  )}
+                </div>
+              </div>
               {/* Email */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>E-mail</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.email}</label>
                 <input
                   type="email"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -206,7 +330,7 @@ export default function Welcome() {
               </div>
               {/* Password */}
               <div>
-                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>Password</label>
+                <label className={`block mb-1 font-medium ${theme === "dark" ? "text-white" : "text-white"}`}>{t.password}</label>
                 <input
                   type="password"
                   className={`w-full border rounded-lg px-4 py-3 placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-green-400 ${theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white/20 text-white border-white/30"}`}
@@ -221,14 +345,14 @@ export default function Welcome() {
                 type="submit"
                 className={`w-full py-3 rounded-lg font-semibold text-lg transition ${theme === "dark" ? "bg-teal-500 text-white hover:bg-teal-600" : "bg-black text-white hover:bg-gray-900"}`}
               >
-                Log in
+                {t.loginBtn}
               </button>
             </form>
-            {loginError && <p className="text-red-400 text-center mt-2">{loginError}</p>}
+            {loginError && <p className="text-red-400 text-center mt-2">{t.invalid}</p>}
             <p className={`text-center text-sm mt-8 ${theme === "dark" ? "text-gray-300" : "text-white/80"}`}>
-              Don't have an account?{" "}
+              {t.dontHaveAccount}{" "}
               <a href="#" className="text-green-400 font-medium hover:underline" onClick={e => { e.preventDefault(); setShowSignup(true); }}>
-                Register here
+                {t.registerHere}
               </a>
             </p>
           </>
@@ -236,12 +360,12 @@ export default function Welcome() {
         {showThanks && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-              <h3 className="text-2xl font-bold mb-4 text-green-600">Thanks for registering!</h3>
+              <h3 className="text-2xl font-bold mb-4 text-green-600">{t.thanks}</h3>
               <button
                 className="mt-4 px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
                 onClick={() => setShowThanks(false)}
               >
-                Close
+                {t.close}
               </button>
             </div>
           </div>

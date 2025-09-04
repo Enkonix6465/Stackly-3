@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { LanguageContext } from "../LanguageContext";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../footer";
@@ -13,24 +14,80 @@ import fitnessImg from "../assets/fitness.jpeg";
 import nutritionImg from "../assets/nutrition.jpeg";
 import yogaImg from "../assets/yoga.jpeg";
 import wellnessTipsImg from "../assets/tips.jpg";
+// import ServicesHero from './ServicesHero'; // Adjust the path as needed
 
-function ServicesHero() {
-  const { elementRef, isVisible } = useScrollAnimation(0.1, 0);
-  const navigate = useNavigate();
-
-  const scrollToServices = () => {
-    const servicesSection = document.getElementById('our-services');
-    if (servicesSection) {
-      servicesSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const navigateToContact = () => {
-    navigate('/contact');
-  };
-
+// Move translations object to top-level so all components can access it
+export const translations = {
+  English: {
+    heroTitle: "Explore Our Services",
+    heroDesc: "Comprehensive wellness solutions designed to transform your life. From personalized fitness programs to holistic health guidance, we provide everything you need for your wellness journey.",
+    exploreBtn: "Explore Services",
+    getStartedBtn: "Get Started",
+    ourServices: "Our Services",
+    ourServicesDesc: "Discover our comprehensive range of wellness services designed to support your health and fitness journey.",
+    symptomsTitle: "What are your current symptoms?",
+    symptomsDesc: "Tell us about your symptoms and we'll guide you to the most suitable wellness services.",
+    findServicesBtn: "Find Services for My Symptoms",
+    recommendedTitle: "Recommended Services for Your Symptoms",
+    recommendedDesc: "Based on your symptoms, these services are specifically designed to help you find relief and improve your health.",
+    backToSymptoms: "← Back to Symptoms",
+    achieveTitle: "What You Can Achieve",
+    achieveDesc: "Discover realistic, inspiring outcomes from using our wellness services. Transform your life with proven results and sustainable improvements.",
+    tipsTitle: "Health & Wellness Tips",
+    tipsDesc: "Simple, effective strategies to enhance your daily wellness routine and improve your overall health.",
+    readyTitle: "Ready to Transform Your Life?",
+    readyDesc: "Join thousands of people who have already improved their health and wellness with our expert guidance and proven programs.",
+    getStartedToday: "Get Started Today",
+    learnMore: "Learn More"
+  },
+  Arabic: {
+    heroTitle: "استكشف خدماتنا",
+    heroDesc: "حلول الصحة الشاملة المصممة لتحويل حياتك. من برامج اللياقة الشخصية إلى الإرشاد الصحي الشامل، نقدم كل ما تحتاجه لرحلة العافية الخاصة بك.",
+    exploreBtn: "استكشاف الخدمات",
+    getStartedBtn: "ابدأ الآن",
+    ourServices: "خدماتنا",
+    ourServicesDesc: "اكتشف مجموعتنا الشاملة من خدمات العافية المصممة لدعم رحلتك الصحية واللياقية.",
+    symptomsTitle: "ما هي الأعراض الحالية لديك؟",
+    symptomsDesc: "أخبرنا بأعراضك وسنرشدك إلى أنسب خدمات العافية.",
+    findServicesBtn: "ابحث عن الخدمات لأعراضي",
+    recommendedTitle: "الخدمات الموصى بها لأعراضك",
+    recommendedDesc: "استنادًا إلى الأعراض الخاصة بك، تم تصميم هذه الخدمات خصيصًا لمساعدتك في إيجاد الراحة وتحسين صحتك.",
+    backToSymptoms: "← العودة إلى الأعراض",
+    achieveTitle: "ما الذي يمكنك تحقيقه",
+    achieveDesc: "اكتشف النتائج الواقعية والملهمة من استخدام خدمات العافية لدينا. حول حياتك بنتائج مثبتة وتحسينات مستدامة.",
+    tipsTitle: "نصائح الصحة والعافية",
+    tipsDesc: "استراتيجيات بسيطة وفعالة لتعزيز روتين العافية اليومي وتحسين صحتك العامة.",
+    readyTitle: "هل أنت مستعد لتحويل حياتك؟",
+    readyDesc: "انضم إلى آلاف الأشخاص الذين حسّنوا صحتهم وعافيتهم بإرشادنا وخبراتنا المثبتة.",
+    getStartedToday: "ابدأ اليوم",
+    learnMore: "تعرف أكثر"
+  },
+  Hebrew: {
+    heroTitle: "גלה את השירותים שלנו",
+    heroDesc: "פתרונות בריאות מקיפים שנועדו לשנות את חייך. מתוכניות כושר אישיות ועד להכוונה הוליסטית, אנו מספקים את כל מה שאתה צריך למסע הבריאות שלך.",
+    exploreBtn: "גלה שירותים",
+    getStartedBtn: "התחל עכשיו",
+    ourServices: "השירותים שלנו",
+    ourServicesDesc: "גלה את מגוון השירותים המקיפים שלנו שנועדו לתמוך במסע הבריאות והכושר שלך.",
+    symptomsTitle: "מהם הסימפטומים הנוכחיים שלך?",
+    symptomsDesc: "ספר לנו על הסימפטומים שלך ונכוון אותך לשירותי הבריאות המתאימים ביותר.",
+    findServicesBtn: "מצא שירותים לסימפטומים שלי",
+    recommendedTitle: "שירותים מומלצים לסימפטומים שלך",
+    recommendedDesc: "בהתבסס על הסימפטומים שלך, שירותים אלו נועדו במיוחד לעזור לך למצוא הקלה ולשפר את בריאותך.",
+    backToSymptoms: "← חזרה לסימפטומים",
+    achieveTitle: "מה תוכל להשיג",
+    achieveDesc: "גלה תוצאות מציאותיות ומעוררות השראה משימוש בשירותי הבריאות שלנו. שנה את חייך עם תוצאות מוכחות ושיפורים ברי קיימא.",
+    tipsTitle: "טיפים לבריאות ורווחה",
+    tipsDesc: "אסטרטגיות פשוטות ויעילות לשיפור שגרת הבריאות היומית שלך ושיפור הבריאות הכללית.",
+    readyTitle: "מוכן לשנות את חייך?",
+    readyDesc: "הצטרף לאלפי אנשים שכבר שיפרו את בריאותם ורווחתם בעזרת ההכוונה והמומחיות שלנו.",
+    getStartedToday: "התחל היום",
+    learnMore: "למידע נוסף"
+  },
+};
+const ServicesHero = ({ elementRef, isRTL, isVisible, language, translations, scrollToServices, navigateToContact }) => {
   return (
-    <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden pt-20 sm:pt-24 md:pt-16">
+        <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden" dir={isRTL ? "rtl" : "ltr"}>
       {/* Background Video */}
       <video 
         autoPlay 
@@ -43,20 +100,18 @@ function ServicesHero() {
       </video>
       
       {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/40"></div>
+      <div className="absolute inset-0 bg-black/40" />
       
-      <div className="max-w-7xl mx-auto text-center relative z-10 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-white transition-all duration-1000 ease-out ${
+      <div className="max-w-7xl mx-auto text-center relative z-10">
+        <h1 className={`text-5xl md:text-7xl font-bold mb-6 leading-tight text-white transition-all duration-1000 ease-out ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
-          Explore Our Services
+          {translations[language].heroTitle}
         </h1>
-        <p className={`text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8 sm:mb-10 px-4 transition-all duration-1000 ease-out delay-300 ${
+        <p className={`text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8 transition-all duration-1000 ease-out delay-300 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
         }`}>
-          Comprehensive wellness solutions designed to transform your life. 
-          From personalized fitness programs to holistic health guidance, 
-          we provide everything you need for your wellness journey.
+          {translations[language].heroDesc}
         </p>
         <div className={`flex flex-col sm:flex-row gap-4 justify-center transition-all duration-1000 ease-out delay-500 ${
           isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
@@ -64,12 +119,12 @@ function ServicesHero() {
           <button 
             onClick={scrollToServices}
             className="bg-white text-[#26A0A2] font-semibold px-8 py-4 rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Explore Services
+            {translations[language].exploreBtn}
           </button>
           <button 
             onClick={navigateToContact}
             className="bg-transparent text-white font-semibold px-8 py-4 rounded-xl border-2 border-white hover:bg-white hover:text-[#26A0A2] transition-all duration-300">
-            Get Started
+            {translations[language].getStartedBtn}
           </button>
         </div>
       </div>
@@ -78,6 +133,8 @@ function ServicesHero() {
 }
 
 function OurServices({ isDarkMode }) {
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
   const [currentSection, setCurrentSection] = React.useState(0);
   const { elementRef, isVisible } = useScrollAnimation(0.3, 200);
 
@@ -85,7 +142,6 @@ function OurServices({ isDarkMode }) {
     const interval = setInterval(() => {
       setCurrentSection(prev => prev === 0 ? 1 : 0);
     }, 5000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -176,24 +232,24 @@ function OurServices({ isDarkMode }) {
   const currentServices = currentSection === 0 ? section1 : section2;
 
   return (
-    <section id="our-services" ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
+    <section id="our-services" ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 ${
       isDarkMode ? 'bg-black' : 'bg-white'
-    }`}>
+    }`} dir={isRTL ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 transition-all duration-1000 ease-out delay-300 ${
+          <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out delay-300 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-white' : 'text-gray-900'
           }`}>
-            Our Services
+            {translations[language].ourServices}
           </h2>
-          <p className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-4 transition-all duration-1000 ease-out delay-500 ${
+          <p className={`text-xl max-w-3xl mx-auto transition-all duration-1000 ease-out delay-500 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-gray-300' : 'text-gray-600'
           }`}>
-            Discover our comprehensive range of wellness services designed to support your health and fitness journey.
+            {translations[language].ourServicesDesc}
           </p>
         </div>
         
@@ -219,11 +275,11 @@ function OurServices({ isDarkMode }) {
             </svg>
           </button>
 
-          <div className={`grid grid-cols-1 md:grid-cols-3 text-justify gap-0 transition-opacity duration-1000 ${currentSection === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
+          <div className={`grid grid-cols-3 text-justify gap-0 transition-opacity duration-1000 ${currentSection === 0 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
             {section1.map((service, index) => (
               <div key={index} className="relative">
                 {service.type === "image" ? (
-                  <div className="w-full h-48 md:h-64 bg-gray-200 overflow-hidden">
+                  <div className="w-full h-64 bg-gray-200 overflow-hidden">
                     <img 
                       src={service.image} 
                       alt={service.title}
@@ -231,11 +287,11 @@ function OurServices({ isDarkMode }) {
                     />
                   </div>
                 ) : (
-                  <div className="bg-[#26A0A2] p-6 md:p-8 h-48 md:h-64 flex flex-col justify-center">
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
+                  <div className="bg-[#26A0A2] p-8 h-64 flex flex-col justify-center">
+                    <h3 className="text-xl font-bold text-white mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-white/90 text-xs md:text-sm leading-relaxed">
+                    <p className="text-white/90 text-sm leading-relaxed">
                       {service.description}
                     </p>
                   </div>
@@ -244,11 +300,11 @@ function OurServices({ isDarkMode }) {
             ))}
           </div>
           
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-0 text-justify transition-opacity duration-1000 ${currentSection === 1 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
+          <div className={`grid grid-cols-3 gap-0 text-justify transition-opacity duration-1000 ${currentSection === 1 ? 'opacity-100' : 'opacity-0 absolute inset-0'}`}>
             {section2.map((service, index) => (
               <div key={index} className="relative">
                 {service.type === "image" ? (
-                  <div className="w-full h-48 md:h-64 bg-gray-200 overflow-hidden">
+                  <div className="w-full h-64 bg-gray-200 overflow-hidden">
                     <img 
                       src={service.image} 
                       alt={service.title}
@@ -256,11 +312,11 @@ function OurServices({ isDarkMode }) {
                     />
                   </div>
                 ) : (
-                  <div className="bg-[#26A0A2] p-6 md:p-8 h-48 md:h-64 flex flex-col justify-center">
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">
+                  <div className="bg-[#26A0A2] p-8 h-64 flex flex-col justify-center">
+                    <h3 className="text-xl font-bold text-white mb-4">
                       {service.title}
                     </h3>
-                    <p className="text-white/90 text-xs md:text-sm leading-relaxed">
+                    <p className="text-white/90 text-sm leading-relaxed">
                       {service.description}
                     </p>
                   </div>
@@ -281,52 +337,66 @@ function OurServices({ isDarkMode }) {
 }
 
 function SymptomGoalChecker({ isDarkMode }) {
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
   const navigate = useNavigate();
   const [selectedSymptoms, setSelectedSymptoms] = React.useState([]);
   const [showResults, setShowResults] = React.useState(false);
   const { elementRef, isVisible } = useScrollAnimation(0.3, 200);
 
-  const clientSymptoms = [
-    {
-      id: "insomnia",
-      title: "Insomnia",
-      description: "Difficulty falling or staying asleep"
+  // Translated symptom titles and descriptions
+  const symptomTranslations = {
+    insomnia: {
+      English: { title: "Insomnia", description: "Difficulty falling or staying asleep" },
+      Arabic: { title: "الأرق", description: "صعوبة في النوم أو البقاء نائمًا" },
+      Hebrew: { title: "נדודי שינה", description: "קושי להירדם או להישאר ישן" }
     },
-    {
-      id: "stress",
-      title: "Chronic Stress",
-      description: "Constant worry and anxiety"
+    stress: {
+      English: { title: "Chronic Stress", description: "Constant worry and anxiety" },
+      Arabic: { title: "إجهاد مزمن", description: "قلق وتوتر مستمر" },
+      Hebrew: { title: "לחץ כרוני", description: "דאגה וחרדה מתמשכת" }
     },
-    {
-      id: "fatigue",
-      title: "Low Energy",
-      description: "Feeling tired and unmotivated"
+    fatigue: {
+      English: { title: "Low Energy", description: "Feeling tired and unmotivated" },
+      Arabic: { title: "انخفاض الطاقة", description: "الشعور بالتعب وقلة الحافز" },
+      Hebrew: { title: "אנרגיה נמוכה", description: "תחושת עייפות וחוסר מוטיבציה" }
     },
-    {
-      id: "weight_gain",
-      title: "Weight Issues",
-      description: "Struggling with weight management"
+    weight_gain: {
+      English: { title: "Weight Issues", description: "Struggling with weight management" },
+      Arabic: { title: "مشاكل الوزن", description: "صعوبة في إدارة الوزن" },
+      Hebrew: { title: "בעיות משקל", description: "קושי בניהול משקל" }
     },
-    {
-      id: "back_pain",
-      title: "Back Pain",
-      description: "Chronic back and neck pain"
+    back_pain: {
+      English: { title: "Back Pain", description: "Chronic back and neck pain" },
+      Arabic: { title: "آلام الظهر", description: "آلام مزمنة في الظهر والرقبة" },
+      Hebrew: { title: "כאבי גב", description: "כאבים כרוניים בגב ובצוואר" }
     },
-    {
-      id: "digestive",
-      title: "Digestive Issues",
-      description: "Bloating, indigestion, gut problems"
+    digestive: {
+      English: { title: "Digestive Issues", description: "Bloating, indigestion, gut problems" },
+      Arabic: { title: "مشاكل الهضم", description: "انتفاخ، عسر هضم، مشاكل في الأمعاء" },
+      Hebrew: { title: "בעיות עיכול", description: "נפיחות, עיכול לקוי, בעיות במערכת העיכול" }
     },
-    {
-      id: "mood_swings",
-      title: "Mood Swings",
-      description: "Irregular mood and emotional instability"
+    mood_swings: {
+      English: { title: "Mood Swings", description: "Irregular mood and emotional instability" },
+      Arabic: { title: "تغيرات المزاج", description: "مزاج غير منتظم وعدم استقرار عاطفي" },
+      Hebrew: { title: "שינויים במצב הרוח", description: "מצב רוח לא יציב וחוסר יציבות רגשית" }
     },
-    {
-      id: "headaches",
-      title: "Frequent Headaches",
-      description: "Regular tension or migraine headaches"
+    headaches: {
+      English: { title: "Frequent Headaches", description: "Regular tension or migraine headaches" },
+      Arabic: { title: "صداع متكرر", description: "صداع توتري أو نصفي منتظم" },
+      Hebrew: { title: "כאבי ראש תכופים", description: "כאבי ראש מתוחים או מיגרנות באופן קבוע" }
     }
+  };
+
+  const clientSymptoms = [
+    { id: "insomnia" },
+    { id: "stress" },
+    { id: "fatigue" },
+    { id: "weight_gain" },
+    { id: "back_pain" },
+    { id: "digestive" },
+    { id: "mood_swings" },
+    { id: "headaches" }
   ];
 
   const serviceRecommendations = {
@@ -524,18 +594,18 @@ function SymptomGoalChecker({ isDarkMode }) {
   };
 
   return (
-    <section ref={elementRef} className="w-full py-20 px-4 bg-[#26A0A2]">
+    <section ref={elementRef} className="w-full py-20 px-4 bg-[#26A0A2]" dir={isRTL ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className={`text-4xl md:text-5xl font-bold text-white mb-6 transition-all duration-1000 ease-out delay-300 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           }`}>
-            What are your current symptoms?
+            {translations[language].symptomsTitle}
           </h2>
           <p className={`text-xl text-white/90 max-w-3xl mx-auto transition-all duration-1000 ease-out delay-500 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           }`}>
-            Tell us about your symptoms and we'll guide you to the most suitable wellness services.
+            {translations[language].symptomsDesc}
           </p>
         </div>
 
@@ -564,12 +634,12 @@ function SymptomGoalChecker({ isDarkMode }) {
                          <div className={`font-semibold text-lg ${
                            selectedSymptoms.includes(symptom.id) ? 'text-[#26A0A2]' : (isDarkMode ? 'text-white' : 'text-gray-900')
                          }`}>
-                           {symptom.title}
+                           {symptomTranslations[symptom.id][language].title}
                          </div>
                          <div className={`text-sm mt-1 ${
                            selectedSymptoms.includes(symptom.id) ? 'text-[#26A0A2]/80' : (isDarkMode ? 'text-gray-300' : 'text-gray-600')
                          }`}>
-                           {symptom.description}
+                           {symptomTranslations[symptom.id][language].description}
                          </div>
                        </div>
                      </label>
@@ -597,12 +667,12 @@ function SymptomGoalChecker({ isDarkMode }) {
                          <div className={`font-semibold text-lg ${
                            selectedSymptoms.includes(symptom.id) ? 'text-[#26A0A2]' : (isDarkMode ? 'text-white' : 'text-gray-900')
                          }`}>
-                           {symptom.title}
+                           {symptomTranslations[symptom.id][language].title}
                          </div>
                          <div className={`text-sm mt-1 ${
                            selectedSymptoms.includes(symptom.id) ? 'text-[#26A0A2]/80' : (isDarkMode ? 'text-gray-300' : 'text-gray-600')
                          }`}>
-                           {symptom.description}
+                           {symptomTranslations[symptom.id][language].description}
                          </div>
                        </div>
                      </label>
@@ -612,17 +682,17 @@ function SymptomGoalChecker({ isDarkMode }) {
              </div>
 
                          <div className="text-center">
-                                <button
-                   onClick={handleFindServices}
-                   disabled={selectedSymptoms.length === 0}
-                   className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
-                     selectedSymptoms.length > 0
-                       ? 'bg-[#26A0A2] text-white hover:bg-[#1f8a8c] shadow-lg hover:shadow-xl transform hover:-translate-y-1'
-                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                   }`}
-                 >
-                   Find Services for My Symptoms
-                 </button>
+                                 <button
+                                 onClick={handleFindServices}
+                                 disabled={selectedSymptoms.length === 0}
+                                 className={`px-8 py-4 rounded-xl font-semibold transition-all duration-300 ${
+                                   selectedSymptoms.length > 0
+                                     ? 'bg-[#26A0A2] text-white hover:bg-[#1f8a8c] shadow-lg hover:shadow-xl transform hover:-translate-y-1'
+                                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                 }`}
+                               >
+                                 {translations[language].findServicesBtn}
+                               </button>
              </div>
           </>
         ) : (
@@ -631,12 +701,12 @@ function SymptomGoalChecker({ isDarkMode }) {
               <h3 className={`text-2xl font-bold mb-4 ${
                 isDarkMode ? 'text-white' : 'text-gray-900'
               }`}>
-                Recommended Services for Your Symptoms
+                {translations[language].recommendedTitle}
               </h3>
               <p className={`mb-6 ${
                 isDarkMode ? 'text-gray-300' : 'text-gray-600'
               }`}>
-                Based on your symptoms, these services are specifically designed to help you find relief and improve your health.
+                {translations[language].recommendedDesc}
               </p>
               <button
                 onClick={() => {
@@ -651,7 +721,7 @@ function SymptomGoalChecker({ isDarkMode }) {
                 }}
                 className="bg-white text-[#26A0A2] px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                ← Back to Symptoms
+                {translations[language].backToSymptoms}
               </button>
             </div>
 
@@ -698,28 +768,71 @@ function SymptomGoalChecker({ isDarkMode }) {
 }
 
 function WhatYouCanAchieve({ isDarkMode }) {
-  const goals = [
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
+  // Translated goal titles and descriptions
+  const goalTranslations = [
     {
-      title: "Improved Flexibility",
-      description: "Enhance your range of motion and joint mobility through our specialized yoga and stretching programs designed for all fitness levels.",
+      English: {
+        title: "Improved Flexibility",
+        description: "Enhance your range of motion and joint mobility through our specialized yoga and stretching programs designed for all fitness levels."
+      },
+      Arabic: {
+        title: "مرونة محسّنة",
+        description: "عزز نطاق حركتك ومرونة المفاصل من خلال برامج اليوغا والتمدد المصممة لجميع مستويات اللياقة."
+      },
+      Hebrew: {
+        title: "גמישות משופרת",
+        description: "שפר את טווח התנועה וגמישות המפרקים שלך באמצעות תוכניות יוגה ומתיחות מותאמות לכל רמות הכושר."
+      },
       color: "bg-[#26A0A2]",
       number: "01"
     },
     {
-      title: "Reduced Anxiety",
-      description: "Lower stress levels and improve mental clarity with our mindfulness practices, meditation sessions, and stress management techniques.",
+      English: {
+        title: "Reduced Anxiety",
+        description: "Lower stress levels and improve mental clarity with our mindfulness practices, meditation sessions, and stress management techniques."
+      },
+      Arabic: {
+        title: "تقليل القلق",
+        description: "قلل مستويات التوتر وحسّن صفاء الذهن من خلال ممارسات اليقظة الذهنية وجلسات التأمل وتقنيات إدارة التوتر."
+      },
+      Hebrew: {
+        title: "חרדה מופחתת",
+        description: "הפחת את רמות הלחץ ושפר את הבהירות המנטלית שלך עם תרגולי מיינדפולנס, מדיטציה וטכניקות ניהול לחץ."
+      },
       color: "bg-[#26A0A2]",
       number: "02"
     },
     {
-      title: "Better Posture",
-      description: "Strengthen your core and achieve proper spine alignment through our posture correction programs and specialized training sessions.",
+      English: {
+        title: "Better Posture",
+        description: "Strengthen your core and achieve proper spine alignment through our posture correction programs and specialized training sessions."
+      },
+      Arabic: {
+        title: "وضعية أفضل",
+        description: "قوّي عضلاتك الأساسية وحقق محاذاة صحيحة للعمود الفقري من خلال برامج تصحيح الوضعية وجلسات التدريب المتخصصة."
+      },
+      Hebrew: {
+        title: "יציבה טובה יותר",
+        description: "חזק את שרירי הליבה שלך והשג יישור נכון של עמוד השדרה באמצעות תוכניות תיקון יציבה ואימונים מיוחדים."
+      },
       color: "bg-[#26A0A2]",
       number: "03"
     },
     {
-      title: "Inner Calm",
-      description: "Achieve deep sense of peace and emotional balance through our holistic wellness practices and expert-guided meditation programs.",
+      English: {
+        title: "Inner Calm",
+        description: "Achieve deep sense of peace and emotional balance through our holistic wellness practices and expert-guided meditation programs."
+      },
+      Arabic: {
+        title: "هدوء داخلي",
+        description: "حقق شعورًا عميقًا بالسلام والتوازن العاطفي من خلال ممارسات العافية الشاملة وبرامج التأمل الموجهة من الخبراء."
+      },
+      Hebrew: {
+        title: "רוגע פנימי",
+        description: "השג תחושת שלווה עמוקה ואיזון רגשי באמצעות תרגולי בריאות הוליסטיים ותוכניות מדיטציה בהנחיית מומחים."
+      },
       color: "bg-[#26A0A2]",
       number: "04"
     }
@@ -728,24 +841,22 @@ function WhatYouCanAchieve({ isDarkMode }) {
   return (
     <section className={`w-full py-20 px-4 transition-colors duration-300 ${
       isDarkMode ? 'bg-black' : 'bg-white'
-    }`}>
+    }`} dir={isRTL ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
             isDarkMode ? 'text-white' : 'text-gray-900'
           }`}>
-            What You Can Achieve
+            {translations[language].achieveTitle}
           </h2>
           <p className={`text-xl max-w-3xl mx-auto ${
             isDarkMode ? 'text-gray-300' : 'text-gray-600'
           }`}>
-            Discover realistic, inspiring outcomes from using our wellness services. 
-            Transform your life with proven results and sustainable improvements.
+            {translations[language].achieveDesc}
           </p>
         </div>
-        
         <div className="grid grid-cols-1 text-justify md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {goals.map((goal, index) => (
+          {goalTranslations.map((goal, index) => (
             <div 
               key={index} 
               className={`rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden ${
@@ -756,57 +867,106 @@ function WhatYouCanAchieve({ isDarkMode }) {
               <div className={`${goal.color} text-white p-4 rounded-tl-xl`}>
                 <div className="text-3xl font-bold">{goal.number}</div>
               </div>
-              
               {/* Card Content */}
               <div className="p-6">
-                {/* Title and Description */}
                 <div>
                   <h3 className={`text-lg font-bold mb-3 ${goal.color.replace('bg-', 'text-')}`}>
-                    {goal.title}
+                    {goal[language].title}
                   </h3>
                   <p className={`text-sm leading-relaxed ${
                     isDarkMode ? 'text-gray-300' : 'text-gray-600'
                   }`}>
-                    {goal.description}
+                    {goal[language].description}
                   </p>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        
-
       </div>
     </section>
   );
 }
 
 function HealthWellnessTips({ isDarkMode }) {
-  const tips = [
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
+  // Translated tips
+  const tipsTranslations = [
     {
-      title: "Stay Hydrated",
-      description: "Drink at least 8 glasses of water daily to maintain optimal body function and energy levels."
+      English: {
+        title: "Stay Hydrated",
+        description: "Drink at least 8 glasses of water daily to maintain optimal body function and energy levels."
+      },
+      Arabic: {
+        title: "حافظ على الترطيب",
+        description: "اشرب ما لا يقل عن 8 أكواب من الماء يوميًا للحفاظ على وظائف الجسم ومستويات الطاقة المثلى."
+      },
+      Hebrew: {
+        title: "הישארו רוויים",
+        description: "שתו לפחות 8 כוסות מים ביום לשמירה על תפקוד גוף מיטבי ורמות אנרגיה."
+      }
     },
     {
-      title: "Get Quality Sleep",
-      description: "Aim for 7-9 hours of sleep per night to support recovery and mental clarity."
+      English: {
+        title: "Get Quality Sleep",
+        description: "Aim for 7-9 hours of sleep per night to support recovery and mental clarity."
+      },
+      Arabic: {
+        title: "احصل على نوم جيد",
+        description: "اسعَ للحصول على 7-9 ساعات من النوم كل ليلة لدعم التعافي وصفاء الذهن."
+      },
+      Hebrew: {
+        title: "שינה איכותית",
+        description: "שאפו ל-7-9 שעות שינה בלילה לתמיכה בהתאוששות ובהירות מנטלית."
+      }
     },
     {
-      title: "Move Daily",
-      description: "Incorporate at least 30 minutes of physical activity into your daily routine."
+      English: {
+        title: "Move Daily",
+        description: "Incorporate at least 30 minutes of physical activity into your daily routine."
+      },
+      Arabic: {
+        title: "تحرك يوميًا",
+        description: "أدرج ما لا يقل عن 30 دقيقة من النشاط البدني في روتينك اليومي."
+      },
+      Hebrew: {
+        title: "היו פעילים כל יום",
+        description: "שלבו לפחות 30 דקות של פעילות גופנית בשגרה היומית שלכם."
+      }
     },
     {
-      title: "Practice Mindfulness",
-      description: "Take 10-15 minutes daily for meditation or deep breathing exercises."
+      English: {
+        title: "Practice Mindfulness",
+        description: "Take 10-15 minutes daily for meditation or deep breathing exercises."
+      },
+      Arabic: {
+        title: "مارس اليقظة الذهنية",
+        description: "خصص 10-15 دقيقة يوميًا للتأمل أو تمارين التنفس العميق."
+      },
+      Hebrew: {
+        title: "תרגלו מיינדפולנס",
+        description: "הקדישו 10-15 דקות ביום למדיטציה או לתרגילי נשימה עמוקה."
+      }
     },
     {
-      title: "Eat Balanced Meals",
-      description: "Focus on whole foods, lean proteins, and plenty of fruits and vegetables."
+      English: {
+        title: "Eat Balanced Meals",
+        description: "Focus on whole foods, lean proteins, and plenty of fruits and vegetables."
+      },
+      Arabic: {
+        title: "تناول وجبات متوازنة",
+        description: "ركز على الأطعمة الكاملة، البروتينات الخالية من الدهون، والكثير من الفواكه والخضروات."
+      },
+      Hebrew: {
+        title: "אכלו ארוחות מאוזנות",
+        description: "התמקדו במזון מלא, חלבונים רזים והרבה פירות וירקות."
+      }
     }
   ];
 
   return (
-    <section className="w-full py-20 px-4 bg-[#26A0A2]">
+    <section className="w-full py-20 px-4 bg-[#26A0A2]" dir={isRTL ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
           {/* Left Side - Image */}
@@ -817,28 +977,26 @@ function HealthWellnessTips({ isDarkMode }) {
               className="w-full h-[600px] object-cover rounded-2xl shadow-2xl"
             />
           </div>
-          
           {/* Right Side - Tips */}
           <div className="order-1 lg:order-2 flex flex-col justify-center">
             <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
               isDarkMode ? 'text-black' : 'text-white'
             }`}>
-              Health & Wellness Tips
+              {translations[language].tipsTitle}
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Simple, effective strategies to enhance your daily wellness routine and improve your overall health.
+              {translations[language].tipsDesc}
             </p>
-            
             <div className="space-y-6">
-              {tips.map((tip, index) => (
+              {tipsTranslations.map((tip, index) => (
                 <div key={index} className="border-l-4 border-white pl-6 py-2">
                   <h3 className={`text-lg font-semibold mb-2 ${
                     isDarkMode ? 'text-black' : 'text-white'
                   }`}>
-                    {tip.title}
+                    {tip[language].title}
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    {tip.description}
+                    {tip[language].description}
                   </p>
                 </div>
               ))}
@@ -851,6 +1009,8 @@ function HealthWellnessTips({ isDarkMode }) {
 }
 
 function CTASection({ isDarkMode }) {
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
   const navigate = useNavigate();
 
   const navigateToContact = () => {
@@ -867,29 +1027,29 @@ function CTASection({ isDarkMode }) {
   return (
     <section className={`w-full py-20 px-4 transition-colors duration-300 ${
       isDarkMode ? 'bg-black' : 'bg-white'
-    }`}>
+    }`} dir={isRTL ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto text-center">
         <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${
           isDarkMode ? 'text-white' : 'text-[#26A0A2]'
         }`}>
-          Ready to Transform Your Life?
+          {translations[language].readyTitle}
         </h2>
         <p className={`text-xl max-w-3xl mx-auto mb-8 ${
           isDarkMode ? 'text-gray-300' : 'text-gray-600'
         }`}>
-          Join thousands of people who have already improved their health and wellness with our expert guidance and proven programs.
+          {translations[language].readyDesc}
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button 
             onClick={navigateToContact}
             className="bg-[#26A0A2] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#1f8a8c] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Get Started Today
+            {translations[language].getStartedToday}
           </button>
           <button 
             onClick={scrollToServices}
             className="bg-transparent text-[#26A0A2] font-semibold px-8 py-4 rounded-xl border-2 border-[#26A0A2] hover:bg-[#26A0A2] hover:text-white transition-all duration-300">
-            Learn More
+            {translations[language].learnMore}
           </button>
         </div>
       </div>
@@ -899,6 +1059,8 @@ function CTASection({ isDarkMode }) {
 
 export default function Services() {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === "Arabic" || language === "Hebrew";
 
   // Scroll to top when component mounts
   useScrollToTop();
@@ -913,19 +1075,26 @@ export default function Services() {
     const handleDarkModeChange = (event) => {
       setIsDarkMode(event.detail);
     };
-    
     window.addEventListener('darkModeChanged', handleDarkModeChange);
-    
     return () => {
       window.removeEventListener('darkModeChanged', handleDarkModeChange);
     };
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`} dir={isRTL ? "rtl" : "ltr"}>
       <Header />
-      <ServicesHero />
-      <OurServices isDarkMode={isDarkMode} />
+      {/* <ServicesHero /> */}
+      {/* Use useScrollAnimation for elementRef and isVisible */}
+      <ServicesHero 
+        elementRef={React.createRef()} 
+        isRTL={isRTL} 
+        isVisible={true} 
+        language={language} 
+        translations={translations} 
+        scrollToServices={() => {}} 
+        navigateToContact={() => {}} 
+      />
       <SymptomGoalChecker isDarkMode={isDarkMode} />
       <WhatYouCanAchieve isDarkMode={isDarkMode} />
       <HealthWellnessTips isDarkMode={isDarkMode} />
@@ -933,4 +1102,4 @@ export default function Services() {
       <Footer />
     </div>
   );
-} 
+}

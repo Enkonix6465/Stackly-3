@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useContext } from "react";
+import { LanguageContext } from "../LanguageContext";
 import Header from "../Header";
 import Footer from "../footer";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
@@ -13,6 +15,174 @@ import user2 from "../assets/user2.jpeg";
 import user3 from "../assets/user3.jpeg";
 
 // Add custom CSS animations
+// Translations for About Us page
+const translations = {
+  English: {
+    aboutTitle: "About Us",
+    aboutDesc: "Dedicated to transforming lives through comprehensive health and wellness solutions. We believe everyone deserves access to personalized care that nurtures mind, body, and spirit.",
+    growthTitle: "Our Growth Through Years",
+    growthDesc: "A journey of continuous growth, innovation, and commitment to transforming lives through wellness.",
+    milestones: [
+      {
+        year: "2018",
+        title: "Founded",
+        description: "Our journey began with a vision to make wellness accessible to all."
+      },
+      {
+        year: "2020",
+        title: "Expanded Services",
+        description: "We introduced new programs and expert-led sessions to meet growing needs."
+      },
+      {
+        year: "2023",
+        title: "AI Personalization",
+        description: "Launched AI-powered personalized wellness plans for better results."
+      },
+      {
+        year: "2025",
+        title: "Global Community",
+        description: "Built a thriving global wellness community supporting thousands."
+      }
+    ],
+    missionVisionTitle: "Our Mission & Vision",
+    missionVisionDesc: "We are committed to empowering individuals to achieve their optimal well-being through evidence-based practices, personalized care, and a supportive community.",
+    missionTitle: "Our Mission",
+    missionDesc: "To provide accessible, comprehensive wellness solutions that transform lives and create lasting positive change in our community.",
+    visionTitle: "Our Vision",
+    visionDesc: "To be the leading wellness destination where individuals discover their path to holistic health and sustainable lifestyle transformation.",
+    valuesTitle: "Our Values",
+    values: [
+      { title: "Innovation", description: "We embrace cutting-edge wellness technology and evidence-based practices, always seeking better ways to deliver personalized health solutions." },
+      { title: "Integrity", description: "We act with honesty, transparency, and the highest ethical standards in all our wellness practices and client relationships." },
+      { title: "Flexibility", description: "We adapt quickly to individual needs and changing health goals, staying agile to meet evolving wellness requirements and lifestyle preferences." },
+      { title: "Excellence", description: "We strive for the highest quality in everything we do, delivering outstanding wellness results and transformative experiences for our clients." }
+    ],
+    whatWeThinkTitle: "What We Think",
+    whatWeThinkDesc: "Our philosophy is rooted in the belief that true wellness encompasses mind, body, and spirit. We think that everyone deserves access to personalized, evidence-based wellness solutions that transform lives and create lasting positive change.",
+    holisticTitle: "Holistic Approach",
+    holisticDesc: "We believe in addressing the complete person - not just symptoms, but the root causes of wellness challenges through comprehensive, integrated care.",
+    personalizedTitle: "Personalized Care",
+    personalizedDesc: "Every individual is unique, and we think wellness solutions should be tailored to personal needs, goals, and lifestyle preferences.",
+    evidenceTitle: "Evidence-Based Practice",
+    evidenceDesc: "We think the best wellness outcomes come from combining cutting-edge research with time-tested holistic practices for optimal results.",
+    uniqueTitle: "What Makes Us Unique",
+    uniqueFeatures: [
+      { title: "Holistic Wellness Integration", description: "We seamlessly integrate physical, mental, and spiritual wellness practices, creating a comprehensive approach that addresses the complete person rather than isolated symptoms." },
+      { title: "AI-Powered Personalization", description: "Our advanced AI technology creates truly personalized wellness plans that adapt to your progress, preferences, and lifestyle changes in real-time for optimal results." },
+      { title: "Expert-Led Community", description: "Access to certified wellness experts, nutritionists, and fitness professionals who provide ongoing support and guidance throughout your wellness transformation journey." }
+    ]
+  },
+  Arabic: {
+    aboutTitle: "من نحن",
+    aboutDesc: "ملتزمون بتحويل الحياة من خلال حلول الصحة والعافية الشاملة. نؤمن أن الجميع يستحق رعاية شخصية تغذي العقل والجسم والروح.",
+    growthTitle: "نموّنا عبر السنوات",
+    growthDesc: "رحلة من النمو المستمر والابتكار والالتزام بتحويل الحياة من خلال العافية.",
+    milestones: [
+      {
+        year: "2018",
+        title: "تأسيس الشركة",
+        description: "بدأت رحلتنا برؤية لجعل العافية متاحة للجميع."
+      },
+      {
+        year: "2020",
+        title: "توسيع الخدمات",
+        description: "قدمنا برامج جديدة وجلسات يقودها خبراء لتلبية الاحتياجات المتزايدة."
+      },
+      {
+        year: "2023",
+        title: "التخصيص بالذكاء الاصطناعي",
+        description: "أطلقنا خطط عافية شخصية مدعومة بالذكاء الاصطناعي لتحقيق نتائج أفضل."
+      },
+      {
+        year: "2025",
+        title: "مجتمع عالمي",
+        description: "أنشأنا مجتمع عافية عالمي مزدهر يدعم الآلاف."
+      }
+    ],
+    missionVisionTitle: "مهمتنا ورؤيتنا",
+    missionVisionDesc: "نلتزم بتمكين الأفراد لتحقيق رفاهيتهم المثلى من خلال ممارسات قائمة على الأدلة ورعاية شخصية ومجتمع داعم.",
+    missionTitle: "مهمتنا",
+    missionDesc: "تقديم حلول عافية شاملة يمكن الوصول إليها وتغيير الحياة وإحداث تغيير إيجابي دائم في مجتمعنا.",
+    visionTitle: "رؤيتنا",
+    visionDesc: "أن نكون الوجهة الرائدة للعافية حيث يكتشف الأفراد طريقهم نحو الصحة الشاملة والتحول المستدام في نمط الحياة.",
+    valuesTitle: "قيمنا",
+    values: [
+      { title: "الابتكار", description: "نعتمد أحدث تقنيات العافية والممارسات القائمة على الأدلة، ونبحث دائمًا عن طرق أفضل لتقديم حلول صحية شخصية." },
+      { title: "النزاهة", description: "نتصرف بأمانة وشفافية وأعلى المعايير الأخلاقية في جميع ممارساتنا وعلاقاتنا مع العملاء." },
+      { title: "المرونة", description: "نتكيف بسرعة مع الاحتياجات الفردية والأهداف الصحية المتغيرة، ونبقى مرنين لتلبية متطلبات العافية المتطورة وتفضيلات نمط الحياة." },
+      { title: "التميز", description: "نسعى لتحقيق أعلى جودة في كل ما نقوم به، ونقدم نتائج عافية رائعة وتجارب تحويلية لعملائنا." }
+    ],
+    whatWeThinkTitle: "ماذا نعتقد",
+    whatWeThinkDesc: "فلسفتنا قائمة على الاعتقاد بأن العافية الحقيقية تشمل العقل والجسم والروح. نعتقد أن الجميع يستحق حلول عافية شخصية قائمة على الأدلة تغير الحياة وتحدث تغييرًا إيجابيًا دائمًا.",
+    holisticTitle: "نهج شامل",
+    holisticDesc: "نؤمن بمعالجة الشخص بالكامل - ليس فقط الأعراض، بل الأسباب الجذرية لتحديات العافية من خلال رعاية شاملة ومتكاملة.",
+    personalizedTitle: "رعاية شخصية",
+    personalizedDesc: "كل فرد فريد، ونعتقد أن حلول العافية يجب أن تكون مصممة حسب الاحتياجات والأهداف وتفضيلات نمط الحياة الشخصية.",
+    evidenceTitle: "ممارسة قائمة على الأدلة",
+    evidenceDesc: "نعتقد أن أفضل نتائج العافية تأتي من الجمع بين أحدث الأبحاث والممارسات الشاملة المجربة لتحقيق أفضل النتائج.",
+    uniqueTitle: "ما الذي يجعلنا مميزين",
+    uniqueFeatures: [
+      { title: "دمج العافية الشاملة", description: "نقوم بدمج ممارسات العافية الجسدية والعقلية والروحية بسلاسة، مما يخلق نهجًا شاملاً يعالج الشخص بالكامل بدلاً من الأعراض المنعزلة." },
+      { title: "التخصيص المدعوم بالذكاء الاصطناعي", description: "تُنشئ تقنيتنا المتقدمة خطط عافية شخصية تتكيف مع تقدمك وتفضيلاتك وتغيرات نمط حياتك في الوقت الفعلي لتحقيق أفضل النتائج." },
+      { title: "مجتمع يقوده الخبراء", description: "الوصول إلى خبراء العافية المعتمدين وأخصائيي التغذية والمدربين الذين يقدمون الدعم والإرشاد المستمر طوال رحلة التحول الخاصة بك." }
+    ]
+  },
+  Hebrew: {
+    aboutTitle: "עלינו",
+    aboutDesc: "מחויבים לשינוי חיים באמצעות פתרונות בריאות ורווחה מקיפים. אנו מאמינים שלכל אחד מגיע טיפול אישי שמזין את הנפש, הגוף והרוח.",
+    growthTitle: "הצמיחה שלנו לאורך השנים",
+    growthDesc: "מסע של צמיחה מתמשכת, חדשנות ומחויבות לשינוי חיים באמצעות רווחה.",
+    milestones: [
+      {
+        year: "2018",
+        title: "הקמה",
+        description: "המסע שלנו התחיל עם חזון להנגיש רווחה לכולם."
+      },
+      {
+        year: "2020",
+        title: "הרחבת שירותים",
+        description: "הצגנו תוכניות חדשות ומפגשים בהובלת מומחים כדי לענות על צרכים גדלים."
+      },
+      {
+        year: "2023",
+        title: "התאמה אישית בינה מלאכותית",
+        description: "השקנו תוכניות רווחה מותאמות אישית בעזרת בינה מלאכותית לתוצאות טובות יותר."
+      },
+      {
+        year: "2025",
+        title: "קהילה גלובלית",
+        description: "בנינו קהילת רווחה גלובלית משגשגת התומכת באלפים."
+      }
+    ],
+    missionVisionTitle: "המשימה והחזון שלנו",
+    missionVisionDesc: "אנו מחויבים להעצמת אנשים להשגת רווחה מיטבית באמצעות פרקטיקות מבוססות ראיות, טיפול אישי וקהילה תומכת.",
+    missionTitle: "המשימה שלנו",
+    missionDesc: "להעניק פתרונות רווחה מקיפים ונגישים שמשנים חיים ויוצרים שינוי חיובי מתמשך בקהילה שלנו.",
+    visionTitle: "החזון שלנו",
+    visionDesc: "להיות יעד הרווחה המוביל שבו אנשים מגלים את דרכם לבריאות הוליסטית ושינוי אורח חיים בר-קיימא.",
+    valuesTitle: "הערכים שלנו",
+    values: [
+      { title: "חדשנות", description: "אנו מאמצים טכנולוגיות רווחה מתקדמות ופרקטיקות מבוססות ראיות, תמיד מחפשים דרכים טובות יותר להעניק פתרונות בריאות אישיים." },
+      { title: "יושרה", description: "אנו פועלים ביושר, בשקיפות ובסטנדרטים אתיים גבוהים בכל הפרקטיקות והקשרים שלנו עם לקוחות." },
+      { title: "גמישות", description: "אנו מסתגלים במהירות לצרכים אישיים ולמטרות בריאות משתנות, נשארים גמישים כדי לעמוד בדרישות רווחה משתנות והעדפות אורח חיים." },
+      { title: "מצוינות", description: "אנו שואפים לאיכות הגבוהה ביותר בכל מה שאנו עושים, מעניקים תוצאות רווחה יוצאות דופן וחוויות טרנספורמטיביות ללקוחותינו." }
+    ],
+    whatWeThinkTitle: "מה אנחנו חושבים",
+    whatWeThinkDesc: "הפילוסופיה שלנו מושרשת באמונה שרווחה אמיתית כוללת נפש, גוף ורוח. אנו חושבים שלכל אחד מגיע פתרונות רווחה אישיים מבוססי ראיות שמשנים חיים ויוצרים שינוי חיובי מתמשך.",
+    holisticTitle: "גישה הוליסטית",
+    holisticDesc: "אנו מאמינים בטיפול באדם השלם - לא רק בתסמינים, אלא בשורש הבעיות באמצעות טיפול מקיף ומשולב.",
+    personalizedTitle: "טיפול אישי",
+    personalizedDesc: "כל אדם הוא ייחודי, ואנו חושבים שפתרונות רווחה צריכים להיות מותאמים לצרכים, מטרות והעדפות אישיות.",
+    evidenceTitle: "פרקטיקה מבוססת ראיות",
+    evidenceDesc: "אנו חושבים שהתוצאות הטובות ביותר מגיעות משילוב מחקר מתקדם עם פרקטיקות הוליסטיות מוכחות לתוצאות מיטביות.",
+    uniqueTitle: "מה מייחד אותנו",
+    uniqueFeatures: [
+      { title: "אינטגרציה הוליסטית של רווחה", description: "אנו משלבים בצורה חלקה פרקטיקות רווחה פיזיות, נפשיות ורוחניות, יוצרים גישה מקיפה שמטפלת באדם השלם ולא רק בתסמינים מבודדים." },
+      { title: "התאמה אישית מבוססת בינה מלאכותית", description: "הטכנולוגיה המתקדמת שלנו יוצרת תוכניות רווחה אישיות שמסתגלות להתקדמות, להעדפות ולשינויים באורח החיים שלך בזמן אמת לתוצאות מיטביות." },
+      { title: "קהילה בהובלת מומחים", description: "גישה למומחי רווחה מוסמכים, תזונאים ומאמני כושר שמספקים תמיכה והכוונה מתמשכת לאורך כל מסע השינוי שלך." }
+    ]
+  }
+};
 const customStyles = `
   @keyframes fadeInUp {
     from {
@@ -214,8 +384,10 @@ if (typeof document !== 'undefined') {
 function AboutHero() {
   const { elementRef, isVisible } = useScrollAnimation(0.1, 0);
 
+  const { language, isRTL } = arguments[0] || {};
+  const lang = language || 'English';
   return (
-    <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden">
+    <section ref={elementRef} className="w-full h-screen flex items-center justify-center px-4 relative overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Background Video */}
       <video 
         autoPlay 
@@ -226,166 +398,93 @@ function AboutHero() {
         <source src={aboutusVideo} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40"></div>
-      
       <div className="max-w-7xl mx-auto text-center relative z-10">
-        <h1 className={`text-5xl md:text-7xl font-bold mb-6 leading-tight transition-all duration-1000 ease-out ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-        }`}>
-          <span className={`text-white transition-all duration-1000 ease-out delay-200 ${
-            isVisible ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0'
-          }`}>About </span>
-          <span className={`text-[#26A0A2] transition-all duration-1000 ease-out delay-400 ${
-            isVisible ? 'translate-x-0 opacity-100' : 'translate-x-20 opacity-0'
-          }`}>Us</span>
-        </h1>
-        <p className={`text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 ease-out delay-600 ${
-          isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-        }`}>
-          Dedicated to transforming lives through comprehensive health and wellness solutions. 
-          We believe everyone deserves access to personalized care that nurtures mind, body, and spirit.
-        </p>
+  <h1 className={`text-5xl md:text-7xl font-bold mb-6 leading-tight text-white transition-all duration-1000 ease-out ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>{translations[lang].aboutTitle}</h1>
+        <p className={`text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed transition-all duration-1000 ease-out delay-600 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>{translations[lang].aboutDesc}</p>
       </div>
     </section>
   );
 }
 
-function OurGrowthThroughYears({ isDarkMode }) {
+function OurGrowthThroughYears({ isDarkMode, language, isRTL }) {
   const { elementRef, isVisible } = useScrollAnimation(0.3, 200);
-  const [forceVisible, setForceVisible] = useState(false);
   
-  // Fallback to ensure title is visible after 2 seconds
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setForceVisible(true);
-    }, 2000);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  const milestones = [
-         {
-       step: "01",
-       title: "Foundation (2016)",
-       description: "Started with a vision to transform wellness through personalized care and evidence-based practices. Established our first wellness center with a team of certified professionals.",
-       color: "bg-[#26A0A2]"
-     },
-         {
-       step: "02", 
-       title: "First 1000 Clients (2018)",
-       description: "Reached our first milestone of 1000 satisfied clients, proving the effectiveness of our holistic approach. Expanded our services to include nutrition, fitness, and mental wellness.",
-       color: "bg-gray-600"
-     },
-     {
-       step: "03",
-       title: "Digital Transformation (2020)", 
-       description: "Launched comprehensive online wellness platforms to reach more people globally. Introduced virtual consultations, digital wellness tracking, and mobile app for personalized care.",
-       color: "bg-[#26A0A2]"
-     },
-     {
-       step: "04",
-       title: "10,000+ Lives Transformed (2022)",
-       description: "Celebrated transforming over 10,000 lives with our holistic wellness programs. Recognized as a leading wellness destination with multiple awards and certifications.",
-       color: "bg-gray-600"
-     },
-    {
-      step: "05",
-      title: "Industry Leader (2024)",
-      description: "Established as a leading wellness destination with cutting-edge technology, expert team, and comprehensive programs. Continuing to innovate and expand our impact globally.",
-      color: "bg-[#26A0A2]"
-    }
-  ];
-
-  const shouldShow = isVisible || forceVisible;
+  const milestones = translations[language].milestones.map(m => ({
+    ...m,
+    color: "bg-[#26A0A2]"
+  }));
 
   return (
-    <section ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
-      isDarkMode ? 'bg-black' : 'bg-gray-100'
-    }`}>
+    <section ref={elementRef} className={`w-full py-20 px-4 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-gray-100'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 transition-all duration-1000 ease-out delay-300 ${
-            shouldShow ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-          }`} style={{ 
-            opacity: shouldShow ? 1 : 0,
-            transform: shouldShow ? 'translateY(0)' : 'translateY(20px)'
-          }}>
-            Our Growth Through Years
+          }`}>
+            {translations[language].growthTitle}
           </h2>
           <p className={`text-xl max-w-3xl mx-auto transition-all duration-1000 ease-out delay-500 ${
-            shouldShow ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
           } ${
             isDarkMode ? 'text-gray-300' : 'text-gray-600'
-          }`} style={{ 
-            opacity: shouldShow ? 1 : 0,
-            transform: shouldShow ? 'translateY(0)' : 'translateY(20px)'
-          }}>
-            A journey of continuous growth, innovation, and commitment to transforming lives through wellness.
+          }`}>
+            {translations[language].growthDesc}
           </p>
         </div>
-        
-                 <div className="relative">
-           <div className="space-y-16">
-             {milestones.map((milestone, index) => {
-                               const year = milestone.title.split('(')[1].replace(')', '');
-                const isBlackCircle = year === '2016' || year === '2020' || year === '2024' || year === '2026';
-               
-                               return (
-                  <div key={index} className={`flex flex-col lg:flex-row items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
-                    {/* Content Banner */}
-                    <div className={`w-full lg:flex-1 ${index % 2 === 0 ? 'lg:pr-16' : 'lg:pl-16'} ${index % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right'}`}>
-                      <div className={`p-6 sm:p-8 rounded-2xl shadow-lg relative ${
-                        isDarkMode 
-                          ? (milestone.color === 'bg-[#26A0A2]' ? 'bg-[#26A0A2] text-white' : 'bg-black text-white')
-                          : milestone.color
-                      }`}>
-                        <div className="flex items-center mb-4">
-                          <h3 className={`text-xl sm:text-2xl font-bold ${
-                            isDarkMode ? 'text-white' : 'text-white'
-                          }`}>{milestone.title.split('(')[0].trim()}</h3>
-                        </div>
-                        <p className={`leading-relaxed text-base sm:text-lg ${
-                          isDarkMode ? 'text-gray-300' : 'text-white/90'
-                        }`}>
-                          {milestone.description}
-                        </p>
+        <div className="relative">
+          <div className="space-y-16">
+            {milestones.map((milestone, index) => {
+              const year = milestone.year;
+              const isBlackCircle = year === '2016' || year === '2020' || year === '2024' || year === '2026';
+              return (
+                <div key={index} className={`flex items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+                  {/* Content Banner */}
+                  <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-16' : 'lg:pl-16'} ${index % 2 === 0 ? 'scroll-animate-left' : 'scroll-animate-right'}`}>
+                    <div className={`p-8 rounded-2xl shadow-lg relative ${
+                      isDarkMode 
+                        ? (milestone.color === 'bg-[#26A0A2]' ? 'bg-[#26A0A2] text-white' : 'bg-black text-white')
+                        : milestone.color
+                    }`}>
+                      <div className="flex items-center mb-4">
+                        <h3 className={`text-2xl font-bold ${
+                          isDarkMode ? 'text-white' : 'text-white'
+                        }`}>{milestone.title}</h3>
                       </div>
+                      <p className={`leading-relaxed text-lg ${
+                        isDarkMode ? 'text-gray-300' : 'text-white/90'
+                      }`}>
+                        {milestone.description}
+                      </p>
                     </div>
-                    
-                    {/* Timeline Circle with Number */}
-                     <div className={`hidden lg:flex items-center justify-center w-20 h-20 rounded-full shadow-lg z-10 relative scroll-animate-scale ${
-                       isDarkMode 
-                         ? (isBlackCircle ? 'bg-black' : 'bg-[#26A0A2]')
-                         : (isBlackCircle ? 'bg-gray-600' : 'bg-[#26A0A2]')
-                     }`}>
-                       <div className="text-xl font-bold text-white">{year}</div>
-                     </div>
-                    
-                    {/* Mobile Timeline Circle */}
-                    <div className={`lg:hidden flex items-center justify-center w-16 h-16 rounded-full shadow-lg z-10 relative scroll-animate-scale mt-4 ${
-                       isDarkMode 
-                         ? (isBlackCircle ? 'bg-black' : 'bg-[#26A0A2]')
-                         : (isBlackCircle ? 'bg-gray-600' : 'bg-[#26A0A2]')
-                     }`}>
-                       <div className="text-lg font-bold text-white">{year}</div>
-                     </div>
                   </div>
-                );
-             })}
-           </div>
-         </div>
+                  {/* Timeline Circle with Number */}
+                  <div className={`hidden lg:flex items-center justify-center w-20 h-20 rounded-full shadow-lg z-10 relative scroll-animate-scale ${
+                    isDarkMode 
+                      ? (isBlackCircle ? 'bg-black' : 'bg-[#26A0A2]')
+                      : (isBlackCircle ? 'bg-gray-600' : 'bg-[#26A0A2]')
+                  }`}>
+                    <div className="text-xl font-bold text-white">{year}</div>
+                  </div>
+                  {/* Spacer for mobile */}
+                  <div className="lg:hidden flex-1"></div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-function MissionVision({ isDarkMode }) {
+function MissionVision({ isDarkMode, language, isRTL }) {
+  const lang = language || 'English';
   return (
-    <section className="w-full py-20 px-4 bg-[#26A0A2] overflow-hidden">
+    <section className="w-full py-20 px-4 bg-[#26A0A2]" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           {/* Left: Image */}
@@ -401,32 +500,19 @@ function MissionVision({ isDarkMode }) {
           {/* Right: Content */}
           <div className="space-y-8 scroll-animate-right">
             <div>
-              <h2 className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${
-                isDarkMode ? 'text-black' : 'text-white'
-              }`}>
-                Our Mission & Vision
-              </h2>
-              <p className="text-lg text-justify text-white/90 leading-relaxed">
-                We are committed to empowering individuals to achieve their optimal well-being through 
-                evidence-based practices, personalized care, and a supportive community.
-              </p>
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${isDarkMode ? 'text-black' : 'text-white'}`}>{translations[lang].missionVisionTitle}</h2>
+              <p className="text-lg text-justify text-white/90 leading-relaxed">{translations[lang].missionVisionDesc}</p>
             </div>
             
             <div className="space-y-6">
               <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border-l-4 border-white">
-                <h3 className="text-xl font-bold text-white mb-2">Our Mission</h3>
-                <p className="text-white/90">
-                  To provide accessible, comprehensive wellness solutions that transform lives 
-                  and create lasting positive change in our community.
-                </p>
+                <h3 className="text-xl font-bold text-white mb-2">{translations[lang].missionTitle}</h3>
+                <p className="text-white/90">{translations[lang].missionDesc}</p>
               </div>
               
               <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border-l-4 border-white">
-                <h3 className="text-xl font-bold text-white mb-2">Our Vision</h3>
-                <p className="text-white/90">
-                  To be the leading wellness destination where individuals discover their path 
-                  to holistic health and sustainable lifestyle transformation.
-                </p>
+                <h3 className="text-xl font-bold text-white mb-2">{translations[lang].visionTitle}</h3>
+                <p className="text-white/90">{translations[lang].visionDesc}</p>
               </div>
             </div>
           </div>
@@ -436,41 +522,15 @@ function MissionVision({ isDarkMode }) {
   );
 }
 
-function OurValues({ isDarkMode }) {
-  const values = [
-    {
-      title: "Innovation",
-      description: "We embrace cutting-edge wellness technology and evidence-based practices, always seeking better ways to deliver personalized health solutions.",
-      teal: false
-    },
-    {
-      title: "Integrity",
-      description: "We act with honesty, transparency, and the highest ethical standards in all our wellness practices and client relationships.",
-      teal: true
-    },
-    {
-      title: "Flexibility",
-      description: "We adapt quickly to individual needs and changing health goals, staying agile to meet evolving wellness requirements and lifestyle preferences.",
-      teal: true
-    },
-    {
-      title: "Excellence",
-      description: "We strive for the highest quality in everything we do, delivering outstanding wellness results and transformative experiences for our clients.",
-      teal: false
-    }
-  ];
+function OurValues({ isDarkMode, language, isRTL }) {
+  const lang = language || 'English';
+  const values = translations[lang].values;
 
   return (
-    <section className={`w-full py-20 px-4 transition-colors duration-300 overflow-hidden ${
-      isDarkMode ? 'bg-black' : 'bg-white'
-    }`}>
+    <section className={`w-full py-20 px-4 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className={`text-4xl md:text-5xl font-bold mb-6 scroll-animate-left ${
-            isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-          }`}>
-            Our Values
-          </h2>
+          <h2 className={`text-4xl md:text-5xl font-bold mb-6 scroll-animate-left ${isDarkMode ? 'text-white' : 'text-[#26A0A2]'}`}>{translations[lang].valuesTitle}</h2>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
@@ -519,71 +579,39 @@ function OurValues({ isDarkMode }) {
   );
 }
 
-function WhatWeThink({ isDarkMode }) {
+function WhatWeThink({ isDarkMode, language, isRTL }) {
+  const lang = language || 'English';
   return (
-    <section className={`w-full py-12 px-4 transition-colors duration-300 overflow-hidden ${
-      isDarkMode ? 'bg-black' : 'bg-white'
-    }`}>
+    <section className={`w-full py-12 px-4 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl text-justify mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           {/* Left: Content */}
           <div className="flex flex-col justify-center space-y-4 scroll-animate-left">
             <div>
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 leading-tight ${
-                isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-              }`}>
-                What We Think
-              </h2>
-              <p className={`text-base leading-relaxed ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                Our philosophy is rooted in the belief that true wellness encompasses mind, body, and spirit. 
-                We think that everyone deserves access to personalized, evidence-based wellness solutions that 
-                transform lives and create lasting positive change.
-              </p>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 leading-tight ${isDarkMode ? 'text-white' : 'text-[#26A0A2]'}`}>{translations[lang].whatWeThinkTitle}</h2>
+              <p className={`text-base leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[lang].whatWeThinkDesc}</p>
             </div>
             
             <div className="space-y-3">
               <div className={`p-4 rounded-xl border-l-4 border-[#26A0A2] hover:scale-105 transition-all duration-300 ${
                 isDarkMode ? 'bg-gray-800' : 'bg-[#26A0A2]/5'
               }`}>
-                <h3 className={`text-lg font-bold mb-1 ${
-                  isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-                }`}>Holistic Approach</h3>
-                <p className={`text-sm ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  We believe in addressing the complete person - not just symptoms, but the root causes 
-                  of wellness challenges through comprehensive, integrated care.
-                </p>
+                <h3 className={`text-lg font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-[#26A0A2]'}`}>{translations[lang].holisticTitle}</h3>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[lang].holisticDesc}</p>
               </div>
               
               <div className={`p-4 rounded-xl border-l-4 border-[#26A0A2] animate-fade-in-left-delay-3 hover:scale-105 transition-all duration-300 ${
                 isDarkMode ? 'bg-gray-800' : 'bg-[#26A0A2]/5'
               }`}>
-                <h3 className={`text-lg font-bold mb-1 ${
-                  isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-                }`}>Personalized Care</h3>
-                <p className={`text-sm ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  Every individual is unique, and we think wellness solutions should be tailored to 
-                  personal needs, goals, and lifestyle preferences.
-                </p>
+                <h3 className={`text-lg font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-[#26A0A2]'}`}>{translations[lang].personalizedTitle}</h3>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[lang].personalizedDesc}</p>
               </div>
               
               <div className={`p-4 rounded-xl border-l-4 border-[#26A0A2] animate-fade-in-left-delay-4 hover:scale-105 transition-all duration-300 ${
                 isDarkMode ? 'bg-gray-800' : 'bg-[#26A0A2]/5'
               }`}>
-                <h3 className={`text-lg font-bold mb-1 ${
-                  isDarkMode ? 'text-white' : 'text-[#26A0A2]'
-                }`}>Evidence-Based Practice</h3>
-                <p className={`text-sm ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  We think the best wellness outcomes come from combining cutting-edge research with 
-                  time-tested holistic practices for optimal results.
-                </p>
+                <h3 className={`text-lg font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-[#26A0A2]'}`}>{translations[lang].evidenceTitle}</h3>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[lang].evidenceDesc}</p>
               </div>
             </div>
           </div>
@@ -603,36 +631,9 @@ function WhatWeThink({ isDarkMode }) {
   );
 }
 
-function WhatMakesUsUnique({ isDarkMode }) {
-  const uniqueFeatures = [
-    {
-      title: "Holistic Wellness Integration",
-      description: "We seamlessly integrate physical, mental, and spiritual wellness practices, creating a comprehensive approach that addresses the complete person rather than isolated symptoms.",
-      icon: (
-        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-      )
-    },
-    {
-      title: "AI-Powered Personalization",
-      description: "Our advanced AI technology creates truly personalized wellness plans that adapt to your progress, preferences, and lifestyle changes in real-time for optimal results.",
-      icon: (
-        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      )
-    },
-    {
-      title: "Expert-Led Community",
-      description: "Access to certified wellness experts, nutritionists, and fitness professionals who provide ongoing support and guidance throughout your wellness transformation journey.",
-      icon: (
-        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
-        </svg>
-      )
-    }
-  ];
+function WhatMakesUsUnique({ isDarkMode, language, isRTL }) {
+  const uniqueFeatures = translations[language].uniqueFeatures;
+  const uniqueTitle = translations[language].uniqueTitle;
 
   return (
     <section className="w-full py-20 px-4 bg-[#26A0A2]">
@@ -640,11 +641,11 @@ function WhatMakesUsUnique({ isDarkMode }) {
         {/* Main Heading */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 scroll-animate">
-            What Makes Us Unique
+            {uniqueTitle}
           </h2>
         </div>
 
-        {/* Three Cards Layout */}
+        {/* Cards Layout */}
         <div className="grid grid-cols-1 text-justify md:grid-cols-3 gap-8">
           {uniqueFeatures.map((feature, index) => (
             <div 
@@ -661,20 +662,20 @@ function WhatMakesUsUnique({ isDarkMode }) {
                 borderRight: `3px solid ${isDarkMode ? 'white' : 'white'}`
               }}
             >
-              {/* Icon */}
-              <div className="w-16 h-16 bg-[#26A0A2] rounded-lg flex items-center justify-center mb-6">
-                <div className="text-white">
-                  {feature.icon}
+              {/* Icon (optional, only if present) */}
+              {feature.icon && (
+                <div className="w-16 h-16 bg-[#26A0A2] rounded-lg flex items-center justify-center mb-6">
+                  <div className="text-white">
+                    {feature.icon}
+                  </div>
                 </div>
-              </div>
-              
+              )}
               {/* Title */}
               <h3 className={`text-xl font-bold mb-4 ${
                 isDarkMode ? 'text-white' : 'text-gray-900'
               }`}>
                 {feature.title}
               </h3>
-              
               {/* Description */}
               <p className={`leading-relaxed ${
                 isDarkMode ? 'text-gray-300' : 'text-gray-600'
@@ -690,63 +691,23 @@ function WhatMakesUsUnique({ isDarkMode }) {
 }
 
 function TestimonialsSection() {
-  const testimonials = [
-    {
-      quote: "The wellness programs here have completely transformed my life. I've never felt more energized and balanced. The personalized approach made all the difference!",
-      name: "Jennifer Martinez",
-      role: "Wellness Enthusiast",
-      image: user1,
-      rating: 5
-    },
-    {
-      quote: "After struggling with stress and poor sleep for years, the mindfulness training and sleep therapy sessions have given me back my quality of life. I'm so grateful!",
-      name: "David Thompson",
-      role: "Corporate Executive",
-      image: user2,
-      rating: 5
-    },
-    {
-      quote: "The nutrition guidance and fitness programs are exceptional. I've achieved my health goals and learned sustainable habits that I'll carry with me forever.",
-      name: "Sarah Williams",
-      role: "Fitness Enthusiast",
-      image: user3,
-      rating: 5
-    },
-    {
-      quote: "The holistic approach to wellness here is truly remarkable. They address mind, body, and spirit in a way that feels natural and effective. Highly recommended!",
-      name: "Michael Rodriguez",
-      role: "Yoga Practitioner",
-      image: user1,
-      rating: 5
-    },
-    {
-      quote: "I was skeptical at first, but the results speak for themselves. My energy levels have improved dramatically, and I feel more confident than ever before.",
-      name: "Lisa Chen",
-      role: "Health Coach",
-      image: user2,
-      rating: 5
-    },
-    {
-      quote: "The community here is incredible. Everyone is supportive and the expert guidance has helped me overcome challenges I thought were impossible.",
-      name: "Robert Johnson",
-      role: "Wellness Seeker",
-      image: user3,
-      rating: 5
-    }
-  ];
+  const { language } = useContext(LanguageContext);
+  const testimonials = translations[language].testimonials;
+  const testimonialsTitle = translations[language].testimonialsTitle;
+  const testimonialsDesc = translations[language].testimonialsDesc;
+  const images = [user1, user2, user3, user1, user2, user3];
 
   return (
     <section className="w-full py-20 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            What Our Users Say
+            {testimonialsTitle}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Real stories from real people who have transformed their lives through our wellness programs.
+            {testimonialsDesc}
           </p>
         </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <div 
@@ -755,22 +716,20 @@ function TestimonialsSection() {
             >
               {/* Rating Stars */}
               <div className="flex mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
+                {[...Array(5)].map((_, i) => (
                   <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                   </svg>
                 ))}
               </div>
-              
               {/* Quote */}
               <blockquote className="text-gray-700 mb-6 leading-relaxed italic">
                 "{testimonial.quote}"
               </blockquote>
-              
               {/* Author */}
               <div className="flex items-center">
                 <img 
-                  src={testimonial.image} 
+                  src={images[index % images.length]} 
                   alt={testimonial.name} 
                   className="w-12 h-12 rounded-full object-cover mr-4"
                 />
@@ -852,30 +811,34 @@ function StatsSection() {
     };
   }, [hasAnimated]);
 
+  const { language } = useContext(LanguageContext);
+  const statsTitle = translations[language].statsTitle;
+  const statsDesc = translations[language].statsDesc;
+  const statsLabels = translations[language].stats;
   const stats = [
     {
       number: counts.clients,
-      suffix: "+",
-      label: "Happy Clients",
-      description: "Individuals who have transformed their lives with us"
+      suffix: statsLabels[0].suffix,
+      label: statsLabels[0].label,
+      description: statsLabels[0].description
     },
     {
       number: counts.sessions,
-      suffix: "+",
-      label: "Wellness Sessions",
-      description: "Personalized sessions delivered by our experts"
+      suffix: statsLabels[1].suffix,
+      label: statsLabels[1].label,
+      description: statsLabels[1].description
     },
     {
       number: counts.satisfaction,
-      suffix: "%",
-      label: "Client Satisfaction",
-      description: "Rated excellent by our community members"
+      suffix: statsLabels[2].suffix,
+      label: statsLabels[2].label,
+      description: statsLabels[2].description
     },
     {
       number: counts.years,
-      suffix: "+",
-      label: "Years of Excellence",
-      description: "Dedicated to wellness and community health"
+      suffix: statsLabels[3].suffix,
+      label: statsLabels[3].label,
+      description: statsLabels[3].description
     }
   ];
 
@@ -884,13 +847,12 @@ function StatsSection() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 scroll-animate">
-            Our Impact in Numbers
+            {statsTitle}
           </h2>
           <p className="text-xl text-white/90 max-w-3xl mx-auto scroll-animate">
-            Real results from real people who have transformed their lives with our wellness programs.
+            {statsDesc}
           </p>
         </div>
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div 
@@ -911,22 +873,26 @@ function StatsSection() {
 }
 
 function CallToAction() {
+  const { language } = useContext(LanguageContext);
+  const ctaTitle = translations[language].ctaTitle;
+  const ctaDesc = translations[language].ctaDesc;
+  const ctaStart = translations[language].ctaStart;
+  const ctaContact = translations[language].ctaContact;
   return (
     <section className="w-full py-20 px-4 bg-gray-50">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 scroll-animate">
-          Ready to Start Your Wellness Journey?
+          {ctaTitle}
         </h2>
         <p className="text-xl text-gray-600 mb-8 leading-relaxed scroll-animate">
-          Join thousands of people who have already transformed their lives with our comprehensive wellness programs. 
-          Take the first step towards a healthier, happier you today.
+          {ctaDesc}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center scroll-animate">
           <button className="bg-[#26A0A2] text-white font-semibold px-8 py-4 rounded-xl hover:bg-[#0f766e] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-            Start Your Journey
+            {ctaStart}
           </button>
           <button className="bg-transparent text-[#26A0A2] font-semibold px-8 py-4 rounded-xl border-2 border-[#26A0A2] hover:bg-[#26A0A2] hover:text-white transition-all duration-300">
-            Contact Us
+            {ctaContact}
           </button>
         </div>
       </div>
@@ -936,6 +902,8 @@ function CallToAction() {
 
 export default function About() {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === 'Arabic' || language === 'Hebrew';
 
   // Scroll to top when component mounts
   useScrollToTop();
@@ -989,14 +957,14 @@ export default function About() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 overflow-x-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
-      <AboutHero />
-      <OurGrowthThroughYears isDarkMode={isDarkMode} />
-      <MissionVision isDarkMode={isDarkMode} />
-      <WhatWeThink isDarkMode={isDarkMode} />
-      <WhatMakesUsUnique isDarkMode={isDarkMode} />
-      <OurValues isDarkMode={isDarkMode} />
+      <AboutHero language={language} isRTL={isRTL} />
+      <OurGrowthThroughYears isDarkMode={isDarkMode} language={language} isRTL={isRTL} />
+      <MissionVision isDarkMode={isDarkMode} language={language} isRTL={isRTL} />
+      <WhatWeThink isDarkMode={isDarkMode} language={language} isRTL={isRTL} />
+      <WhatMakesUsUnique isDarkMode={isDarkMode} language={language} isRTL={isRTL} />
+      <OurValues isDarkMode={isDarkMode} language={language} isRTL={isRTL} />
       <Footer />
     </div>
   );

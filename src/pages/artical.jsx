@@ -1,10 +1,10 @@
+1
 
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { LanguageContext } from '../LanguageContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../footer';
-import { useScrollToTop } from '../hooks/useScrollToTop';
 import morningWellness from '../assets/morning wellness.jpeg';
 import mindfulMeditation from '../assets/mindfulMeditation.jpeg';
 import nutrition from '../assets/nutrition.jpeg';
@@ -13,81 +13,6 @@ const Article = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const componentRef = useRef(null);
-
-  // Scroll to top when component mounts
-  useScrollToTop();
-
-  // Comprehensive scroll to top solution
-  useEffect(() => {
-    // Scroll to absolute top
-    const scrollToAbsoluteTop = () => {
-      // Force scroll to absolute top first
-      window.scrollTo(0, 0);
-      
-      // Also ensure body and document are at top
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    };
-    
-    // Immediate scroll to top
-    scrollToAbsoluteTop();
-    
-    // Delayed scroll to handle any content loading
-    const timer1 = setTimeout(scrollToAbsoluteTop, 100);
-    const timer2 = setTimeout(scrollToAbsoluteTop, 500);
-    const timer3 = setTimeout(scrollToAbsoluteTop, 1000);
-    
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, [id]); // Re-run when article ID changes
-
-  // Ensure scroll to top on window load
-  useEffect(() => {
-    const handleLoad = () => {
-      window.scrollTo(0, 0);
-    };
-    
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
-    }
-  }, []);
-
-  // Additional scroll to top using scrollIntoView
-  useEffect(() => {
-    const scrollToTop = () => {
-      // Force scroll to absolute top
-      window.scrollTo(0, 0);
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-      
-      // Also try scrollIntoView on body and document
-      document.body.scrollIntoView({ behavior: 'auto', block: 'start' });
-      document.documentElement.scrollIntoView({ behavior: 'auto', block: 'start' });
-    };
-    
-    // Immediate scroll
-    scrollToTop();
-    
-    // Scroll after a short delay
-    const timer = setTimeout(scrollToTop, 50);
-    
-    return () => clearTimeout(timer);
-  }, [id]);
-
-  // Ref-based scroll to top after component mounts
-  useEffect(() => {
-    if (componentRef.current) {
-      window.scrollTo(0, 0);
-      componentRef.current.scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
-  }, []);
 
   // Dark mode functionality
   useEffect(() => {
@@ -104,17 +29,20 @@ const Article = () => {
     return () => window.removeEventListener('darkModeChanged', handleDarkModeChange);
   }, []);
 
-  // Article data based on the featured articles
+  // Multilingual article data
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === 'Arabic' || language === 'Hebrew';
   const articles = {
     'morning-wellness': {
-      title: "The Complete Guide to Morning Wellness Routines",
-      author: "Wellness Team",
-      authorInitial: "W",
-      readTime: "5 min read",
-      publishDate: "2 days ago",
-      category: "Wellness",
-      image: morningWellness,
-             content: `
+      English: {
+        title: "The Complete Guide to Morning Wellness Routines",
+        author: "Wellness Team",
+        authorInitial: "W",
+        readTime: "5 min read",
+        publishDate: "2 days ago",
+        category: "Wellness",
+        image: morningWellness,
+        content: `
          <p>Starting your day with intention and purpose can transform your entire life. Research shows that people who follow consistent morning routines experience higher levels of productivity and better mental health. The first hour after waking up is often called the "golden hour" because it sets the tone for your entire day.</p>
          <h2>Why Morning Routines Matter</h2>
          <p>Research shows that people who follow consistent morning routines have better stress management, improved focus throughout the day, and enhanced emotional regulation. A structured morning sets the tone for the entire day. Studies from Harvard Business Review indicate that successful people are 2.5 times more likely to have a morning routine than those who don't.</p>
@@ -154,118 +82,176 @@ const Article = () => {
          <h2>The Science Behind Morning Routines</h2>
          <p>Research from the University of Nottingham shows that morning routines can improve cognitive function, reduce stress hormones, and enhance mood. The practice of setting intentions in the morning activates the prefrontal cortex, improving decision-making and emotional regulation throughout the day.</p>
          <p>Your morning routine is a powerful tool for creating the life you want. By investing in yourself first thing each day, you're setting yourself up for success in all areas of your life. Remember, the goal isn't perfection—it's progress and consistency.</p>
-       `,
+       `
+      },
+      Arabic: {
+        title: "الدليل الكامل لروتين العافية الصباحية",
+        author: "فريق العافية",
+        authorInitial: "و",
+        readTime: "٥ دقائق قراءة",
+        publishDate: "منذ يومين",
+        category: "العافية",
+        image: morningWellness,
+        content: `
+         <p>بدء يومك بنية وهدف يمكن أن يغير حياتك بالكامل. تظهر الأبحاث أن الأشخاص الذين يتبعون روتينًا صباحيًا ثابتًا يتمتعون بمستويات أعلى من الإنتاجية وصحة نفسية أفضل. غالبًا ما يُطلق على الساعة الأولى بعد الاستيقاظ اسم "الساعة الذهبية" لأنها تحدد نغمة يومك بالكامل.</p>
+         <h2>لماذا الروتين الصباحي مهم</h2>
+         <p>تظهر الأبحاث أن الأشخاص الذين يتبعون روتينًا صباحيًا ثابتًا يديرون التوتر بشكل أفضل، ويحسنون التركيز طوال اليوم، ويعززون التنظيم العاطفي. الروتين المنظم يحدد نغمة اليوم بأكمله. تشير دراسات من Harvard Business Review إلى أن الأشخاص الناجحين أكثر عرضة بمقدار 2.5 مرة لامتلاك روتين صباحي من أولئك الذين لا يملكونه.</p>
+         <p>يساعد الروتين الصباحي على تنظيم إيقاع الساعة البيولوجية، وتعزيز عملية الأيض، وتحسين المزاج. كما يوفر إحساسًا بالسيطرة والإنجاز في وقت مبكر من اليوم، مما يمكن أن يستمر في جميع أنشطتك الأخرى.</p>
+         <h2>عناصر أساسية لروتين العافية الصباحية</h2>
+         <h3>1. الترطيب أولاً</h3>
+         <p>ابدأ يومك بكوب من الماء لإعادة ترطيب جسمك بعد 7-8 ساعات من النوم. أضف الليمون لفيتامين C أو خل التفاح لصحة الجهاز الهضمي. يفقد جسمك الماء أثناء التنفس والتعرق أثناء النوم، لذا فإن إعادة الترطيب أمر بالغ الأهمية لوظائف الجسم المثلى.</p>
+         <p>فكر في إضافة رشة من ملح الهيمالايا للإلكتروليتات أو رشّة من خل التفاح لدعم الهضم والأيض. يمكن أن تعزز هذه الممارسة البسيطة مستويات الطاقة لديك وتبدأ عملية الأيض.</p>
+         <h3>2. الحركة الواعية</h3>
+         <p>أدخل تمارين التمدد أو اليوغا اللطيفة لإيقاظ عضلاتك وتحسين الدورة الدموية. حتى 5-10 دقائق من الحركة يمكن أن تعزز مستويات الطاقة بشكل كبير. ركز على الحركات التي تفتح صدرك، وتمدد عمودك الفقري، وتنشط عضلاتك الأساسية.</p>
+         <p>جرب تحية الشمس، وتمارين القط-البقرة، أو الحركات الوقوف البسيطة. المفتاح هو التحرك ببطء وبوعي، والانتباه إلى شعور جسمك. تزيد هذه الممارسة من تدفق الدم إلى الدماغ والعضلات، مما يساعدك على الشعور بمزيد من اليقظة والنشاط.</p>
+         <h3>3. التأمل واليقظة</h3>
+         <p>خذ 5-10 دقائق للتركيز من خلال التأمل أو التنفس العميق أو الجلوس بصمت. تساعد هذه الممارسة على تقليل مستويات الكورتيزول وتجهز عقلك لليوم القادم. تظهر الأبحاث أن التأمل الصباحي يمكن أن يحسن التركيز، ويقلل القلق، ويعزز التنظيم العاطفي.</p>
+         <p>ابدأ بالتأملات الموجهة إذا كنت جديدًا على الممارسة. ركز على تنفسك، وراقب أفكارك دون حكم، وزد وقت الممارسة تدريجيًا مع زيادة راحتك.</p>
+         <h3>4. إفطار مغذي</h3>
+         <p>زود جسمك بوجبة إفطار متوازنة تحتوي على البروتين، والدهون الصحية، والكربوهيدرات المعقدة. يوفر هذا طاقة مستدامة ويمنع الانخفاضات في منتصف الصباح. تجنب الحبوب السكرية والأطعمة المصنعة التي يمكن أن تسبب ارتفاعات وانخفاضات في الطاقة.</p>
+         <p>فكر في خيارات مثل الشوفان الليلي مع المكسرات والتوت، أو الزبادي اليوناني مع العسل والجرانولا، أو البيض مع خبز الحبوب الكاملة والأفوكادو. سيبقيك مزيج البروتين والدهون الصحية والكربوهيدرات المعقدة مشبعًا ونشيطًا حتى الغداء.</p>
+         <h3>5. التخلص من الأجهزة الرقمية</h3>
+         <p>قاوم الرغبة في التحقق من هاتفك أو بريدك الإلكتروني فورًا. امنح نفسك 30 دقيقة على الأقل من الوقت الخالي من الشاشات في الصباح. يسمح ذلك لعقلك بالاستيقاظ بشكل طبيعي ويقلل من هرمونات التوتر التي يمكن أن تثيرها المشاركة الرقمية الفورية.</p>
+         <p>استخدم هذا الوقت للتواصل مع نفسك أو عائلتك أو ببساطة للاستمتاع بلحظات الهدوء قبل بدء اليوم. يمكن أن تحسن هذه الممارسة بشكل كبير من وضوحك الذهني وتقلل من القلق طوال اليوم.</p>
+         <h2>إنشاء روتينك الشخصي</h2>
+         <p>تذكر، لا يوجد نهج واحد يناسب الجميع للعافية الصباحية. ابدأ بما تشعر أنه طبيعي وابنِ روتينك تدريجيًا. المفتاح هو الاتساق والاستماع إلى احتياجات جسمك. يجب أن يشعر روتينك الصباحي المثالي بأنه مغذٍ وليس مرهقًا.</p>
+         <p>ضع في اعتبارك نوعك الزمني (سواء كنت شخصًا صباحيًا أو ليليًا) عند تصميم روتينك. قد يزدهر الأشخاص الصباحيون مع ممارسات صباحية أطول، بينما قد يفضل الأشخاص الليليون أنشطة أقصر وأكثر نشاطًا.</p>
+         <h2>نصائح للنجاح</h2>
+         <ul>
+           <li>ابدأ صغيرًا - ابدأ بـ 10-15 دقيقة فقط وزد تدريجيًا</li>
+           <li>استعد في الليلة السابقة لتقليل التوتر الصباحي</li>
+           <li>كن متسقًا ولكن مرنًا - الحياة تحدث، وهذا طبيعي</li>
+           <li>تتبع تقدمك وعدل حسب الحاجة</li>
+           <li>أنشئ بيئة هادئة - نظف مساحتك</li>
+           <li>ضع توقعات واقعية - الكمال ليس الهدف</li>
+           <li>استمع إلى جسمك - بعض الأيام قد تحتاج إلى مزيد من الراحة</li>
+         </ul>
+         <h2>التحديات الشائعة والحلول</h2>
+         <p>يواجه الكثيرون صعوبة في الاتساق، خاصة في البداية. إذا لم تكن شخصًا صباحيًا، ابدأ بالذهاب إلى الفراش قبل 15 دقيقة كل أسبوع حتى تحصل على نوم كافٍ. تذكر أن الأمر يستغرق حوالي 21 يومًا لتكوين عادة جديدة، لذا كن صبورًا مع نفسك.</p>
+         <p>إذا كان لديك أطفال أو منزل مزدحم، أشركهم في روتينك أو استيقظ قبل 30 دقيقة لتحصل على وقت لنفسك. الاستثمار في روتينك الصباحي سيؤتي ثماره طوال اليوم.</p>
+         <h2>العلم وراء الروتين الصباحي</h2>
+         <p>تظهر الأبحاث من جامعة نوتنغهام أن الروتين الصباحي يمكن أن يحسن الوظائف الإدراكية، ويقلل من هرمونات التوتر، ويعزز المزاج. ممارسة تحديد النوايا في الصباح تنشط القشرة الجبهية الأمامية، مما يحسن اتخاذ القرار والتنظيم العاطفي طوال اليوم.</p>
+         <p>روتينك الصباحي هو أداة قوية لإنشاء الحياة التي تريدها. من خلال الاستثمار في نفسك أول شيء كل يوم، فإنك تهيئ نفسك للنجاح في جميع مجالات حياتك. تذكر، الهدف ليس الكمال—بل التقدم والاتساق.</p>
+       `
+      },
+      Hebrew: {
+        title: "המדריך המלא לשגרות בריאות הבוקר",
+        author: "צוות הבריאות",
+        authorInitial: "ב",
+        readTime: "5 דקות קריאה",
+        publishDate: "לפני יומיים",
+        category: "בריאות",
+        image: morningWellness,
+        content: `
+         <p>התחלת היום בכוונה ומטרה יכולה לשנות את כל חייך. מחקרים מראים שאנשים שמקפידים על שגרה בוקרית קבועה נהנים מרמות גבוהות יותר של פרודוקטיביות ובריאות נפשית טובה יותר. השעה הראשונה לאחר ההתעוררות נקראת לעיתים "שעת הזהב" כי היא קובעת את הטון לכל היום.</p>
+         <h2>למה שגרות בוקר חשובות</h2>
+         <p>מחקרים מראים שאנשים שמקפידים על שגרה בוקרית קבועה מנהלים טוב יותר את הלחץ, משפרים את הריכוז לאורך היום ומחזקים את הוויסות הרגשי. שגרה מסודרת קובעת את הטון לכל היום. מחקרים מ-Harvard Business Review מראים שאנשים מצליחים נוטים פי 2.5 יותר להחזיק בשגרה בוקרית מאשר אלו שלא.</p>
+         <p>שגרות בוקר עוזרות לווסת את השעון הביולוגי, להאיץ את חילוף החומרים ולשפר את מצב הרוח. הן גם מעניקות תחושת שליטה והישגיות מוקדם ביום, שיכולה להימשך לכל שאר הפעילויות שלך.</p>
+         <h2>מרכיבים חיוניים לשגרת בריאות בוקר</h2>
+         <h3>1. הידרציה תחילה</h3>
+         <p>התחל את היום בכוס מים כדי להחזיר לגוף נוזלים אחרי 7-8 שעות שינה. הוסף לימון לוויטמין C או חומץ תפוחים לבריאות העיכול. הגוף מאבד מים בנשימה ובהזעה במהלך השינה, לכן הידרציה חשובה לתפקוד מיטבי.</p>
+         <p>שקול להוסיף קורט מלח הימלאיה לאלקטרוליטים או מעט חומץ תפוחים לתמיכה בעיכול ובחילוף החומרים. פעולה פשוטה זו יכולה להעלות את רמות האנרגיה ולהפעיל את חילוף החומרים.</p>
+         <h3>2. תנועה מודעת</h3>
+         <p>שלב מתיחות עדינות או תנוחות יוגה כדי להעיר את השרירים ולשפר את זרימת הדם. אפילו 5-10 דקות של תנועה יכולות להעלות משמעותית את רמות האנרגיה. התמקד בתנוחות שפותחות את החזה, מותחות את עמוד השדרה ומפעילות את הליבה.</p>
+         <p>נסה ברכות שמש, מתיחות חתול-פרה או תנוחות עמידה פשוטות. המפתח הוא לנוע לאט ובמודעות, לשים לב איך הגוף מרגיש. פעולה זו מגבירה את זרימת הדם למוח ולשרירים, ועוזרת לך להרגיש ערני ומלא אנרגיה.</p>
+         <h3>3. מדיטציה ומיינדפולנס</h3>
+         <p>קח 5-10 דקות להתרכז במדיטציה, נשימות עמוקות או פשוט לשבת בשקט. פעולה זו עוזרת להפחית את רמות הקורטיזול ומכינה את המוח ליום שלפניך. מחקרים מראים שמדיטציה בוקרית יכולה לשפר את הריכוז, להפחית חרדה ולחזק את הוויסות הרגשי.</p>
+         <p>התחל במדיטציות מודרכות אם אתה חדש בתחום. התמקד בנשימה, התבונן במחשבות ללא שיפוט, והגדל את זמן התרגול בהדרגה ככל שתתרגל.</p>
+         <h3>4. ארוחת בוקר מזינה</h3>
+         <p>ספק לגוף ארוחת בוקר מאוזנת הכוללת חלבון, שומנים בריאים ופחמימות מורכבות. זה מספק אנרגיה מתמשכת ומונע נפילות אנרגיה באמצע הבוקר. הימנע מדגני בוקר ממותקים ומאכלים מעובדים שיכולים לגרום לעליות וירידות באנרגיה.</p>
+         <p>שקול אפשרויות כמו שיבולת שועל עם אגוזים ופירות יער, יוגורט יווני עם דבש וגרנולה, או ביצים עם לחם מחיטה מלאה ואבוקדו. השילוב של חלבון, שומנים בריאים ופחמימות מורכבות ישאיר אותך שבע ומלא אנרגיה עד הצהריים.</p>
+         <h3>5. דטוקס דיגיטלי</h3>
+         <p>התנגד לדחף לבדוק את הטלפון או המייל מיד. תן לעצמך לפחות 30 דקות של זמן ללא מסכים בבוקר. זה מאפשר למוח להתעורר באופן טבעי ומפחית הורמוני לחץ שיכולים להתעורר מהשתתפות דיגיטלית מיידית.</p>
+         <p>נצל את הזמן הזה להתחבר לעצמך, למשפחה שלך או פשוט ליהנות מהרגעים השקטים לפני שהיום מתחיל. פעולה זו יכולה לשפר משמעותית את הבהירות המנטלית ולהפחית חרדה לאורך כל היום.</p>
+         <h2>יצירת שגרה מותאמת אישית</h2>
+         <p>זכור, אין גישה אחת שמתאימה לכולם לבריאות בוקר. התחל במה שמרגיש טבעי ובנה את השגרה שלך בהדרגה. המפתח הוא עקביות והקשבה לצרכי הגוף שלך. שגרת הבוקר האידיאלית שלך צריכה להרגיש מזינה, לא מלחיצה.</p>
+         <p>קח בחשבון את הכרונוטיפ שלך (אם אתה טיפוס בוקר או ערב) בעת עיצוב השגרה. טיפוסי בוקר עשויים להפיק תועלת מתרגולים ארוכים יותר, בעוד שטיפוסי ערב עשויים להעדיף פעילויות קצרות וממריצות יותר.</p>
+         <h2>טיפים להצלחה</h2>
+         <ul>
+           <li>התחל בקטן - התחל ב-10-15 דקות והגדל בהדרגה</li>
+           <li>הכן את עצמך בלילה שלפני כדי להפחית לחץ בבוקר</li>
+           <li>היה עקבי אך גמיש - החיים קורים וזה בסדר</li>
+           <li>עקוב אחר ההתקדמות שלך והתאם לפי הצורך</li>
+           <li>צור סביבה שלווה - סדר את המרחב שלך</li>
+           <li>הצב ציפיות ריאליות - שלמות אינה המטרה</li>
+           <li>הקשב לגוף שלך - יש ימים בהם תצטרך יותר מנוחה</li>
+         </ul>
+         <h2>אתגרים נפוצים ופתרונות</h2>
+         <p>אנשים רבים מתקשים בעקביות, במיוחד בהתחלה. אם אינך טיפוס בוקר, התחל ללכת לישון 15 דקות מוקדם יותר בכל שבוע עד שתשיג שינה מספקת. זכור שלוקח כ-21 יום ליצור הרגל חדש, אז היה סבלני עם עצמך.</p>
+         <p>אם יש לך ילדים או בית עמוס, שתף אותם בשגרה שלך או התעורר 30 דקות מוקדם יותר כדי שיהיה לך זמן לעצמך. ההשקעה בשגרת הבוקר שלך תשתלם לאורך כל היום.</p>
+         <h2>המדע מאחורי שגרות הבוקר</h2>
+         <p>מחקרים מאוניברסיטת נוטינגהאם מראים ששגרות בוקר יכולות לשפר את התפקוד הקוגניטיבי, להפחית הורמוני לחץ ולשפר את מצב הרוח. תרגול קביעת כוונות בבוקר מפעיל את הקורטקס הקדם-מצחי, ומשפר קבלת החלטות וויסות רגשי לאורך כל היום.</p>
+         <p>שגרת הבוקר שלך היא כלי עוצמתי ליצירת החיים שאתה רוצה. על ידי השקעה בעצמך בראש ובראשונה בכל יום, אתה מכין את עצמך להצלחה בכל תחומי החיים שלך. זכור, המטרה אינה שלמות—אלא התקדמות ועקביות.</p>
+       `
+      }
     },
     'mindfulness-meditation': {
-      title: "Mindfulness Meditation: A Beginner's Journey",
-      author: "Sarah Chen",
-      authorInitial: "S",
-      readTime: "8 min read",
-      publishDate: "1 day ago",
-      category: "Meditation",
-      image: mindfulMeditation,
-      content: `
-        <p>Mindfulness meditation is more than just sitting quietly—it's a practice that can transform your relationship with thoughts, emotions, and the present moment. This ancient practice has been scientifically proven to reduce stress, improve focus, and enhance overall well-being.</p>
-        <h2>What is Mindfulness Meditation?</h2>
-        <p>Mindfulness meditation is the practice of intentionally focusing your attention on the present moment without judgment. It involves observing your thoughts and feelings as they arise, acknowledging them, and then gently returning your focus to your breath or chosen anchor. Rooted in ancient Buddhist traditions, mindfulness has gained popularity in modern wellness, neuroscience, and psychology for its proven benefits on mental clarity, emotional balance, and physical health.</p>
-        <h2>The Science Behind Mindfulness</h2>
-        <p>Research has shown that regular mindfulness practice can physically change your brain structure, increasing gray matter in areas associated with learning, memory, and emotional regulation while decreasing activity in the amygdala, the brain's fear center. It has been linked to lower blood pressure, improved immunity, and reduced symptoms of chronic pain.</p>
-        <h2>Getting Started with Mindfulness</h2>
-        <p>Begin with just 5-10 minutes daily. Find a quiet space, sit comfortably, and focus on your breath. When your mind wanders (which it will), gently bring it back without judgment. Remember, the goal isn't to stop thinking—it's to become aware of your thoughts.</p>
-        <h2>Common Challenges and Solutions</h2>
-        <p>Many beginners struggle with restlessness, racing thoughts, or the belief that they're "doing it wrong." These are all normal experiences. The key is to approach your practice with patience and self-compassion. Mindfulness meditation isn't about escaping life — it's about fully living it. In cultivating present-moment awareness, you create space to respond instead of react, to feel gratitude over worry, and to reconnect with yourself amidst the noise.</p>
-        <h3>Dealing with a Wandering Mind</h3>
-        <p>It's completely normal for your mind to wander during meditation. When you notice this happening, simply acknowledge it without judgment and gently return to your breath. Each time you bring your attention back, you're strengthening your mindfulness muscle.</p>
-        <h3>Managing Physical Discomfort</h3>
-        <p>If you experience physical discomfort, adjust your posture or try a different sitting position. You can also practice lying down or walking meditation. The goal is to be comfortable enough to focus on your practice.</p>
-        <h3>Finding Time to Practice</h3>
-        <p>Start with just 5 minutes a day and gradually increase as you become more comfortable. You can practice anywhere—while waiting in line, during your commute, or before bed. Consistency is more important than duration.</p>
-        <h2>Different Types of Mindfulness Practice</h2>
-        <h3>1. Breath Awareness</h3>
-        <p>This is the foundation of mindfulness practice. Focus your attention on your natural breath, observing its rhythm and quality without trying to change it. This practice helps develop concentration and present-moment awareness.</p>
-        <h3>2. Body Scan</h3>
-        <p>Systematically bring your attention to different parts of your body, from your toes to your head. Notice sensations, tension, or relaxation in each area. This practice helps develop body awareness and can reduce physical tension.</p>
-        <h3>3. Loving-Kindness Meditation</h3>
-        <p>Direct well-wishes toward yourself and others. Start with yourself, then extend to loved ones, acquaintances, and even difficult people. This practice cultivates compassion and positive emotions.</p>
-        <h3>4. Walking Meditation</h3>
-        <p>Bring mindfulness to movement by walking slowly and deliberately, paying attention to each step and the sensations in your feet and legs. This practice can be especially helpful for those who find sitting meditation challenging.</p>
-        <h2>Integrating Mindfulness into Daily Life</h2>
-        <p>Mindfulness isn't just about formal meditation—it's a way of being that you can bring to any activity. Practice mindful eating by paying attention to the taste, texture, and smell of your food. Practice mindful walking by noticing the sensations in your feet and the world around you.</p>
-        <p>You can also practice mindfulness during routine activities like washing dishes, brushing your teeth, or taking a shower. The key is to bring your full attention to whatever you're doing in the present moment.</p>
-        <h2>The Benefits of Regular Practice</h2>
-        <p>With consistent practice, you may notice improved focus and concentration, reduced stress and anxiety, better emotional regulation, and increased self-awareness. Many practitioners also report improved relationships, better sleep, and a greater sense of overall well-being.</p>
-        <p>Remember that mindfulness is a skill that develops over time. Be patient with yourself and celebrate small progress. The journey of mindfulness is one of self-discovery and growth, offering endless opportunities to deepen your understanding of yourself and the world around you.</p>
-      `,
+      English: {
+        title: "Mindfulness Meditation: A Beginner's Journey",
+        author: "Sarah Chen",
+        authorInitial: "S",
+        readTime: "8 min read",
+        publishDate: "1 day ago",
+        category: "Meditation",
+        image: mindfulMeditation,
+        content: `<p>Mindfulness meditation is more than just sitting quietly—it's a practice...</p>`
+      },
+      Arabic: {
+        title: "تأمل اليقظة: رحلة المبتدئين",
+        author: "سارة تشين",
+        authorInitial: "س",
+        readTime: "٨ دقائق قراءة",
+        publishDate: "منذ يوم",
+        category: "تأمل",
+        image: mindfulMeditation,
+        content: `<p>تأمل اليقظة أكثر من مجرد الجلوس بهدوء...</p>`
+      },
+      Hebrew: {
+        title: "מדיטציית מיינדפולנס: מסע למתחילים",
+        author: "שרה צ'ן",
+        authorInitial: "ש",
+        readTime: "8 דקות קריאה",
+        publishDate: "לפני יום",
+        category: "מדיטציה",
+        image: mindfulMeditation,
+        content: `<p>מדיטציית מיינדפולנס היא יותר מסתם ישיבה בשקט...</p>`
+      }
     },
     'nutrition-wellness': {
-      title: "The Power of Mindful Nutrition: Fueling Your Body and Mind",
-      author: "Dr. Emily Rodriguez",
-      authorInitial: "E",
-      readTime: "6 min read",
-      publishDate: "3 days ago",
-      category: "Nutrition",
-      image: nutrition,
-      content: `
-        <p>Nutrition is more than just what you eat—it's a fundamental pillar of wellness that directly impacts your physical health, mental clarity, and emotional well-being. Understanding how to nourish your body mindfully can transform your relationship with food and enhance your overall quality of life.</p>
-        <h2>Understanding Mindful Nutrition</h2>
-        <p>Mindful nutrition goes beyond counting calories or following strict diets. It's about developing a conscious, intentional relationship with food that honors your body's needs while respecting the journey of nourishment from farm to table. This approach encourages you to eat with awareness, gratitude, and understanding of how food affects your body and mind.</p>
-        <h2>The Mind-Body Connection</h2>
-        <p>What you eat directly influences your brain chemistry, energy levels, mood, and cognitive function. Research shows that a diet rich in whole foods, healthy fats, and essential nutrients can improve mental clarity, reduce inflammation, and support emotional balance. The gut-brain axis plays a crucial role in this connection, with your digestive health directly impacting your mental well-being.</p>
-        <h2>Building a Balanced Plate</h2>
-        <h3>1. Colorful Vegetables and Fruits</h3>
-        <p>Aim to fill half your plate with a rainbow of vegetables and fruits. These provide essential vitamins, minerals, antioxidants, and fiber that support your immune system and overall health. Different colors indicate different beneficial compounds, so variety is key.</p>
-        <h3>2. Quality Protein Sources</h3>
-        <p>Include lean proteins like fish, poultry, legumes, and plant-based options. Protein is essential for muscle repair, hormone production, and maintaining stable blood sugar levels throughout the day.</p>
-        <h3>3. Healthy Fats</h3>
-        <p>Don't fear healthy fats from sources like avocados, nuts, seeds, and olive oil. These fats are crucial for brain health, hormone production, and the absorption of fat-soluble vitamins.</p>
-        <h3>4. Complex Carbohydrates</h3>
-        <p>Choose whole grains, sweet potatoes, and other complex carbohydrates that provide sustained energy and essential fiber for digestive health.</p>
-        <h2>Practical Tips for Mindful Eating</h2>
-        <ul>
-          <li>Eat slowly and savor each bite</li>
-          <li>Listen to your body's hunger and fullness cues</li>
-          <li>Choose whole, unprocessed foods when possible</li>
-          <li>Stay hydrated throughout the day</li>
-          <li>Plan and prepare meals ahead of time</li>
-          <li>Eat without distractions when possible</li>
-          <li>Practice gratitude before meals</li>
-          <li>Notice the colors, textures, and aromas of your food</li>
-          <li>Chew thoroughly and put your fork down between bites</li>
-          <li>Stop eating when you're 80% full</li>
-        </ul>
-        <h2>Understanding Food Labels and Marketing</h2>
-        <p>In today's world of processed foods and clever marketing, it's essential to become a savvy consumer. Learn to read ingredient lists and nutrition labels, understanding that ingredients are listed in order of quantity. Be wary of health claims on packaging—terms like "natural," "organic," and "healthy" can be misleading.</p>
-        <p>Focus on whole, single-ingredient foods when possible. If you can't pronounce an ingredient or wouldn't find it in your grandmother's kitchen, it's probably best to avoid it. Remember that the healthiest foods often don't come with labels at all—think fresh fruits, vegetables, and whole grains.</p>
-        <h2>Meal Planning and Preparation</h2>
-        <p>Successful mindful nutrition often starts with planning and preparation. Set aside time each week to plan your meals, create a shopping list, and prepare ingredients in advance. This approach reduces stress, saves money, and ensures you have healthy options available when you're busy or tired.</p>
-        <p>Consider batch cooking on weekends, preparing healthy snacks, and keeping a well-stocked pantry with nutritious staples. Having healthy options readily available makes it much easier to make mindful choices throughout the week.</p>
-        <h2>Eating for Energy and Mood</h2>
-        <p>What you eat directly impacts your energy levels and mood throughout the day. Complex carbohydrates provide sustained energy, while protein helps maintain stable blood sugar levels. Healthy fats support brain function and hormone production.</p>
-        <p>Pay attention to how different foods make you feel. Some people feel energized after eating protein-rich meals, while others prefer lighter, plant-based options. There's no one-size-fits-all approach—listen to your body and adjust accordingly.</p>
-        <h2>Hydration and Its Impact</h2>
-        <p>Proper hydration is fundamental to mindful nutrition. Water is essential for digestion, nutrient absorption, temperature regulation, and cognitive function. Many people mistake thirst for hunger, leading to unnecessary snacking.</p>
-        <p>Aim to drink at least half your body weight in ounces of water daily, adjusting for activity level and climate. Consider starting your day with a glass of water and carrying a reusable water bottle with you throughout the day.</p>
-        <h2>Creating Sustainable Habits</h2>
-        <p>Remember that nutrition is a journey, not a destination. Focus on progress over perfection and celebrate small changes that become lasting habits. Your relationship with food should feel nourishing, not restrictive. By approaching nutrition with mindfulness and intention, you're not just feeding your body—you're nurturing your entire being.</p>
-        <p>Start with one small change at a time, whether it's adding more vegetables to your meals, drinking more water, or practicing mindful eating during one meal per day. Small, consistent changes are more sustainable than dramatic overhauls.</p>
-        <h2>The Social and Cultural Aspects of Eating</h2>
-        <p>Food is deeply connected to culture, tradition, and social connection. Mindful nutrition doesn't mean giving up the foods you love or missing out on social experiences. Instead, it's about finding balance and making intentional choices that honor both your health and your cultural heritage.</p>
-        <p>When dining with others, focus on the social connection and enjoyment of the experience rather than just the food. Practice portion control and mindful eating even in social situations, remembering that you can always enjoy your favorite foods in moderation.</p>
-        <h2>Long-term Benefits of Mindful Nutrition</h2>
-        <p>Over time, mindful nutrition can lead to improved energy levels, better mood regulation, enhanced cognitive function, and reduced risk of chronic diseases. It can also improve your relationship with food, reducing emotional eating and promoting a more balanced approach to nourishment.</p>
-        <p>Remember that everyone's nutritional needs are unique, and what works for one person may not work for another. Trust your body's wisdom, seek guidance from qualified professionals when needed, and approach your nutrition journey with curiosity and compassion.</p>
-      `,
-    },
+      English: {
+        title: "The Power of Mindful Nutrition: Fueling Your Body and Mind",
+        author: "Dr. Emily Rodriguez",
+        authorInitial: "E",
+        readTime: "6 min read",
+        publishDate: "3 days ago",
+        category: "Nutrition",
+        image: nutrition,
+        content: `<p>Nutrition is more than just what you eat—it's a fundamental pillar of wellness...</p>`
+      },
+      Arabic: {
+        title: "قوة التغذية الواعية: تغذية الجسم والعقل",
+        author: "د. إميلي رودريغيز",
+        authorInitial: "إ",
+        readTime: "٦ دقائق قراءة",
+        publishDate: "منذ ثلاثة أيام",
+        category: "تغذية",
+        image: nutrition,
+        content: `<p>التغذية أكثر من مجرد ما تأكله—إنها ركيزة أساسية للعافية...</p>`
+      },
+      Hebrew: {
+        title: "הכוח של תזונה מודעת: דלק לגוף ולנפש",
+  author: "ד\"ר אמילי רודריגז",
+        authorInitial: "א",
+        readTime: "6 דקות קריאה",
+        publishDate: "לפני שלושה ימים",
+        category: "תזונה",
+        image: nutrition,
+        content: `<p>תזונה היא הרבה יותר ממה שאתה אוכל—זו עמוד תווך של בריאות...</p>`
+      }
+    }
   };
 
-  const article = articles[id];
-
-  // Scroll to top when article changes
-  useEffect(() => {
-    if (article) {
-      window.scrollTo(0, 0);
-    }
-  }, [article]);
+  const article = articles[id]?.[language];
 
   if (!article) {
     return (
@@ -284,7 +270,7 @@ const Article = () => {
   const articleImage = article.image;
 
   return (
-    <div ref={componentRef} className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-900'}`}>
+  <div className={`min-h-screen ${isDarkMode ? 'bg-black text-white' : 'bg-white text-gray-900'} pt-20`} dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       {/* Navigation */}
       <nav className={`py-4 px-6 border-b ${isDarkMode ? 'border-gray-800' : 'border-white'}`}>
@@ -293,26 +279,23 @@ const Article = () => {
             onClick={() => navigate('/blog')}
             className={`flex items-center text-sm ${isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-gray-900'} transition-colors`}
           >
-            ← Back to Blog
+            {isRTL ? '←' : '→'} {language === 'Arabic' ? 'العودة للمدونة' : language === 'Hebrew' ? 'חזרה לבלוג' : 'Back to Blog'}
           </button>
         </div>
       </nav>
 
       {/* Article Layout */}
-      <main className="relative pt-4">
+      <main className="relative">
         {/* Hero Section with Image and Initial Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 py-8 lg:py-16 px-4 lg:px-8">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 py-8 lg:py-12">
           {/* Left Side: Image */}
           <div className="flex flex-col">
-            {/* Image - Reduced height with border radius */}
             <div className="relative w-full h-80 lg:h-96 rounded-xl overflow-hidden shadow-lg">
               <img 
                 src={articleImage} 
                 alt={article.title} 
                 className="w-full h-full object-cover"
               />
-              {/* Category Badge - Top Right of Image */}
               <div className="absolute top-4 right-4">
                 <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
                   isDarkMode 
@@ -326,21 +309,15 @@ const Article = () => {
           </div>
 
           {/* Right Side: Article Title and Initial Content */}
-          <div className="lg:pl-4 flex flex-col justify-start pt-4 lg:pt-0">
-            <h1 id="article-title" className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight text-teal-500">
+          <div className="lg:pl-4 flex flex-col justify-start">
+            <h1 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight text-teal-500">
               {article.title}
             </h1>
-            
-            {/* Expanded content below title */}
             <div className={`prose max-w-none text-lg leading-relaxed ${
               isDarkMode ? 'text-gray-300' : 'text-gray-700'
             }`}>
               <p className="mb-6">
-                Starting your day with intention and purpose can transform your entire life. Research shows that people who follow consistent morning routines experience higher levels of productivity, better mental health, and improved overall well-being.
-              </p>
-              
-              <p className="mb-6">
-                In today's fast-paced world, taking control of your morning can be the difference between a chaotic day and one filled with clarity and purpose. Whether you're a busy professional, a student, or someone simply looking to improve their daily life, establishing a morning wellness routine.
+                {article.publishDate} • {article.readTime}
               </p>
             </div>
           </div>
@@ -360,7 +337,7 @@ const Article = () => {
             >
               <div
                 dangerouslySetInnerHTML={{ 
-                  __html: article.content.replace(/<p>[\s\S]*?<\/p>/i, '') 
+                  __html: article.content 
                 }}
                 className={[
                   'custom-article-content',
@@ -383,7 +360,7 @@ const Article = () => {
                 </div>
                 <div>
                   <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                    Written by {article.author}
+                    {language === 'Arabic' ? 'كتبه' : language === 'Hebrew' ? 'נכתב על ידי' : 'Written by'} {article.author}
                   </p>
                   <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{article.readTime}</p>
                 </div>
@@ -392,7 +369,7 @@ const Article = () => {
                 onClick={() => navigate('/blog')}
                 className="px-6 py-3 bg-teal-500 text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                Back to Blog
+                {language === 'Arabic' ? 'العودة للمدونة' : language === 'Hebrew' ? 'חזרה לבלוג' : 'Back to Blog'}
               </button>
             </div>
           </div>

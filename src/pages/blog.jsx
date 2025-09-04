@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../footer';
@@ -10,7 +9,8 @@ import mindfulMeditation from '../assets/mindfulMeditation.jpeg';
 import nutrition from '../assets/nutrition.jpeg';
 import blogVideo from '../assets/blogVideo.mp4';
 import quizImage from '../assets/quiz.jpg';
-
+import { LanguageContext } from '../LanguageContext';
+ 
 function Blog() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const navigate = useNavigate();
@@ -20,6 +20,278 @@ function Blog() {
   const [currentMythFact, setCurrentMythFact] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('fitness');
   const [currentSentenceIndex, setCurrentSentenceIndex] = useState(0);
+  // Self-contained translations object for English, Arabic, and Hebrew
+  const translations = {
+    English: {
+      heroTitle: "Welcome to the Wellness Blog",
+      heroDesc: "Explore expert articles, tips, and resources to help you live your healthiest life.",
+      featuredArticles: "Featured Articles",
+      articles: [
+        {
+          title: "Morning Wellness Routine",
+          desc: "Kickstart your day with energizing habits for a healthier lifestyle."
+        },
+        {
+          title: "Mindful Meditation",
+          desc: "Discover the power of mindfulness for stress relief and mental clarity."
+        },
+        {
+          title: "Nutrition Essentials",
+          desc: "Learn the basics of balanced nutrition for optimal health."
+        }
+      ],
+      authorWellness: "Wendy Lee",
+      authorSarah: "Sarah Kim",
+      authorEmily: "Emily Stone",
+      timeAgo: ["2 hours ago", "1 day ago", "3 days ago"],
+      readMore: "Read More",
+      findYourPerfectWorkout: "Find Your Perfect Workout",
+      compareWorkouts: "Compare different workout styles to find what fits you best.",
+      workoutType: "Workout Type",
+      intensity: "Intensity",
+      focusArea: "Focus Area",
+      bestFor: "Best For",
+      equipment: "Equipment",
+      flexibility: "Flexibility",
+      balance: "Balance",
+      mindfulness: "Mindfulness",
+      stressRelief: "Stress Relief",
+      beginners: "Beginners",
+      matOnly: "Mat Only",
+      endurance: "Endurance",
+      heartHealth: "Heart Health",
+      fatLoss: "Fat Loss",
+      stamina: "Stamina",
+      shoes: "Shoes",
+      treadmillBike: "Treadmill/Bike",
+      strength: "Strength",
+      muscleBuilding: "Muscle Building",
+      bodySculpting: "Body Sculpting",
+      weights: "Weights",
+      machines: "Machines",
+      fullBody: "Full Body",
+      power: "Power",
+      advancedFitness: "Advanced Fitness",
+      ropes: "Ropes",
+      rigs: "Rigs",
+      coreStrength: "Core Strength",
+      posture: "Posture",
+      rehab: "Rehab",
+      mat: "Mat",
+      reformer: "Reformer",
+      exploreWellnessCategories: "Explore Wellness Categories",
+      keyBenefits: "Key Benefits",
+      proTip: "Pro Tip",
+      categories: "Categories",
+      fitness: "Fitness",
+      healthyEating: "Healthy Eating",
+      weightLoss: "Weight Loss",
+      wellness: "Wellness",
+      healthyMind: "Healthy Mind",
+      sleep: "Sleep",
+      stressManagement: "Stress Management",
+      meditation: "Meditation",
+      nutrition: "Nutrition",
+      selfCare: "Self Care",
+      mythsVsFacts: "Myths vs Facts",
+      debunkMyths: "Debunk common health myths and discover the facts.",
+      myths: "Myths",
+      commonMisconceptions: "Common misconceptions about health and wellness.",
+      facts: "Facts",
+      evidenceBasedTruths: "Evidence-based truths for a healthier you.",
+      question: "Question",
+      of: "of",
+      previous: "Previous",
+      next: "Next",
+      seeResults: "See Results",
+      quizResults: "Quiz Results",
+      excellent: "Excellent! You're a wellness expert.",
+      goodJob: "Good job! You know your stuff.",
+      notBad: "Not bad! Keep learning.",
+      keepLearning: "Keep learning and improving!",
+      takeQuizAgain: "Take Quiz Again"
+    },
+    Arabic: {
+      heroTitle: "مرحبًا بك في مدونة العافية",
+      heroDesc: "استكشف مقالات الخبراء والنصائح والموارد لمساعدتك على عيش حياة صحية.",
+      featuredArticles: "مقالات مميزة",
+      articles: [
+        {
+          title: "روتين العافية الصباحية",
+          desc: "ابدأ يومك بعادات تعزز الصحة والحيوية."
+        },
+        {
+          title: "تأمل اليقظة الذهنية",
+          desc: "اكتشف قوة اليقظة الذهنية لتخفيف التوتر وصفاء الذهن."
+        },
+        {
+          title: "أساسيات التغذية",
+          desc: "تعلم أساسيات التغذية المتوازنة لصحة مثالية."
+        }
+      ],
+      authorWellness: "ويندي لي",
+      authorSarah: "سارة كيم",
+      authorEmily: "إميلي ستون",
+      timeAgo: ["منذ ساعتين", "منذ يوم", "منذ 3 أيام"],
+      readMore: "اقرأ المزيد",
+      findYourPerfectWorkout: "اعثر على التمرين المثالي",
+      compareWorkouts: "قارن بين أنماط التمارين المختلفة للعثور على الأنسب لك.",
+      workoutType: "نوع التمرين",
+      intensity: "الشدة",
+      focusArea: "منطقة التركيز",
+      bestFor: "الأفضل لـ",
+      equipment: "المعدات",
+      flexibility: "المرونة",
+      balance: "التوازن",
+      mindfulness: "اليقظة الذهنية",
+      stressRelief: "تخفيف التوتر",
+      beginners: "المبتدئين",
+      matOnly: "حصيرة فقط",
+      endurance: "التحمل",
+      heartHealth: "صحة القلب",
+      fatLoss: "فقدان الدهون",
+      stamina: "القدرة على التحمل",
+      shoes: "أحذية",
+      treadmillBike: "جهاز المشي/دراجة",
+      strength: "القوة",
+      muscleBuilding: "بناء العضلات",
+      bodySculpting: "نحت الجسم",
+      weights: "أوزان",
+      machines: "آلات",
+      fullBody: "كامل الجسم",
+      power: "القوة",
+      advancedFitness: "اللياقة المتقدمة",
+      ropes: "حبال",
+      rigs: "معدات",
+      coreStrength: "قوة الجذع",
+      posture: "الوضعية",
+      rehab: "إعادة التأهيل",
+      mat: "حصيرة",
+      reformer: "جهاز البيلاتس",
+      exploreWellnessCategories: "استكشف فئات العافية",
+      keyBenefits: "الفوائد الرئيسية",
+      proTip: "نصيحة احترافية",
+      categories: "الفئات",
+      fitness: "اللياقة البدنية",
+      healthyEating: "الأكل الصحي",
+      weightLoss: "فقدان الوزن",
+      wellness: "العافية",
+      healthyMind: "العقل الصحي",
+      sleep: "النوم",
+      stressManagement: "إدارة التوتر",
+      meditation: "التأمل",
+      nutrition: "التغذية",
+      selfCare: "العناية الذاتية",
+      mythsVsFacts: "الخرافات مقابل الحقائق",
+      debunkMyths: "اكشف الخرافات الصحية واكتشف الحقائق.",
+      myths: "الخرافات",
+      commonMisconceptions: "مفاهيم خاطئة شائعة حول الصحة والعافية.",
+      facts: "الحقائق",
+      evidenceBasedTruths: "حقائق قائمة على الأدلة لصحة أفضل.",
+      question: "سؤال",
+      of: "من",
+      previous: "السابق",
+      next: "التالي",
+      seeResults: "عرض النتائج",
+      quizResults: "نتائج الاختبار",
+      excellent: "ممتاز! أنت خبير في العافية.",
+      goodJob: "عمل رائع! لديك معرفة جيدة.",
+      notBad: "لا بأس! استمر في التعلم.",
+      keepLearning: "استمر في التعلم والتطور!",
+      takeQuizAgain: "أعد الاختبار"
+    },
+    Hebrew: {
+      heroTitle: "ברוכים הבאים לבלוג הבריאות",
+      heroDesc: "גלו מאמרים, טיפים ומשאבים שיעזרו לכם לחיות חיים בריאים יותר.",
+      featuredArticles: "מאמרים נבחרים",
+      articles: [
+        {
+          title: "שגרת בריאות בוקר",
+          desc: "התחילו את היום בהרגלים שמעניקים אנרגיה ובריאות."
+        },
+        {
+          title: "מדיטציה מודעת",
+          desc: "גלו את כוח המודעות להפחתת לחץ ולבהירות מחשבתית."
+        },
+        {
+          title: "יסודות התזונה",
+          desc: "למדו את עקרונות התזונה המאוזנת לבריאות מיטבית."
+        }
+      ],
+      authorWellness: "ונדי לי",
+      authorSarah: "שרה קים",
+      authorEmily: "אמילי סטון",
+      timeAgo: ["לפני שעתיים", "לפני יום", "לפני 3 ימים"],
+      readMore: "קרא עוד",
+      findYourPerfectWorkout: "מצאו את האימון המושלם",
+      compareWorkouts: "השוו בין סוגי אימונים כדי למצוא את המתאים לכם ביותר.",
+      workoutType: "סוג אימון",
+      intensity: "עצימות",
+      focusArea: "תחום מיקוד",
+      bestFor: "הכי מתאים ל-",
+      equipment: "ציוד",
+      flexibility: "גמישות",
+      balance: "איזון",
+      mindfulness: "מודעות",
+      stressRelief: "הפחתת לחץ",
+      beginners: "מתחילים",
+      matOnly: "מזרן בלבד",
+      endurance: "סיבולת",
+      heartHealth: "בריאות הלב",
+      fatLoss: "אובדן שומן",
+      stamina: "כושר גופני",
+      shoes: "נעליים",
+      treadmillBike: "הליכון/אופניים",
+      strength: "כוח",
+      muscleBuilding: "בניית שרירים",
+      bodySculpting: "פיסול גוף",
+      weights: "משקולות",
+      machines: "מכשירים",
+      fullBody: "כל הגוף",
+      power: "עוצמה",
+      advancedFitness: "כושר מתקדם",
+      ropes: "חבלים",
+      rigs: "מתקנים",
+      coreStrength: "חוזק ליבה",
+      posture: "יציבה",
+      rehab: "שיקום",
+      mat: "מזרן",
+      reformer: "רפורמר",
+      exploreWellnessCategories: "גלו קטגוריות בריאות",
+      keyBenefits: "יתרונות עיקריים",
+      proTip: "טיפ מקצועי",
+      categories: "קטגוריות",
+      fitness: "כושר",
+      healthyEating: "אכילה בריאה",
+      weightLoss: "ירידה במשקל",
+      wellness: "בריאות",
+      healthyMind: "מוח בריא",
+      sleep: "שינה",
+      stressManagement: "ניהול לחץ",
+      meditation: "מדיטציה",
+      nutrition: "תזונה",
+      selfCare: "טיפוח עצמי",
+      mythsVsFacts: "מיתוסים מול עובדות",
+      debunkMyths: "חשפו מיתוסים בריאותיים וגלו את העובדות.",
+      myths: "מיתוסים",
+      commonMisconceptions: "תפיסות מוטעות נפוצות על בריאות.",
+      facts: "עובדות",
+      evidenceBasedTruths: "עובדות מבוססות מחקר לבריאות טובה יותר.",
+      question: "שאלה",
+      of: "מתוך",
+      previous: "הקודם",
+      next: "הבא",
+      seeResults: "הצג תוצאות",
+      quizResults: "תוצאות החידון",
+      excellent: "מצוין! אתה מומחה לבריאות.",
+      goodJob: "עבודה טובה! יש לך ידע רב.",
+      notBad: "לא רע! המשך ללמוד.",
+      keepLearning: "המשך ללמוד ולהשתפר!",
+      takeQuizAgain: "נסה שוב"
+    }
+  };
+  const { language } = useContext(LanguageContext);
+  const isRTL = language === 'Arabic' || language === 'Hebrew';
 
   // Scroll to top when component mounts
   useScrollToTop();
@@ -320,137 +592,132 @@ function Blog() {
   };
 
   return (
-    <div className={`min-h-screen overflow-x-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+    <div dir={isRTL ? 'rtl' : 'ltr'} className={`min-h-screen ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       <Header />
       {/* Section 1 - Hero Section */}
-      <section className={`w-full min-h-screen relative overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-teal-50'}`}>
+      <section className={`w-full h-screen relative overflow-hidden ${isDarkMode ? 'bg-gray-900' : 'bg-teal-50'}`}>
         {/* Background Video */}
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          className="absolute inset-0 w-full h-full object-cover"
-        >
+        <video autoPlay muted loop className="absolute inset-0 w-full h-full object-cover">
           <source src={blogVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         
         {/* Content Overlay */}
-        <div className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-4 py-8">
-          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 transition-all duration-1000 ease-out animate-fade-in-up ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
-            Wellness Blog
+        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+          <h1 className={`text-4xl md:text-6xl font-bold mb-6 transition-all duration-1000 ease-out animate-fade-in-up ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
+            {translations[language]?.heroTitle}
           </h1>
-          <p className={`text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto px-4 transition-all duration-1000 ease-out delay-300 animate-fade-in-up-delay-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            Discover expert insights, tips, and stories to help you on your wellness journey
+          <p className={`text-xl md:text-2xl max-w-3xl mx-auto transition-all duration-1000 ease-out delay-300 animate-fade-in-up-delay-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            {translations[language]?.heroDesc}
           </p>
         </div>
       </section>
 
-             {/* Section 2 - Featured Articles */}
-       <section className={`w-full py-12 sm:py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      {/* Section 2 - Featured Articles */}
+       <section className={`w-full py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
          <div className="max-w-7xl mx-auto">
-           <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 transition-all duration-1000 ease-out animate-fade-in-up ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
-             Featured Articles
+           <h2 className={`text-3xl font-bold text-center mb-12 transition-all duration-1000 ease-out animate-fade-in-up ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
+             {translations[language]?.featuredArticles}
            </h2>
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
              {/* Featured Article Card 1 */}
              <div className={`rounded-xl shadow-lg overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'} hover:shadow-xl transition-shadow duration-300`}>
-               <div className="h-40 sm:h-48 overflow-hidden">
+               <div className="h-48 overflow-hidden">
                  <img 
                    src={morningWellness} 
                    alt="Morning Wellness" 
                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                  />
                </div>
-               <div className="p-4 sm:p-6">
-                 <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                   The Complete Guide to Morning Wellness Routines
+               <div className="p-6">
+                 <h3 className={`text-xl font-bold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                   {translations[language]?.articles?.[0]?.title}
                  </h3>
-                 <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                   Discover how to start your day with energy and purpose through proven wellness practices
+                 <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                   {translations[language]?.articles?.[0]?.desc}
                  </p>
-                 <div className="flex items-center mb-3 sm:mb-4">
-                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-teal-100 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                     <span className="text-teal-600 text-xs sm:text-sm font-bold">W</span>
+                 <div className="flex items-center mb-4">
+                   <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center mr-3">
+                     <span className="text-teal-600 text-sm font-bold">W</span>
                    </div>
                    <div className="flex-1">
-                     <p className={`text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Wellness Team</p>
-                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>2d ago • 5 min read</p>
+                     <p className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{translations[language]?.authorWellness}</p>
+                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{translations[language]?.timeAgo?.[0]}</p>
                    </div>
                  </div>
                  <button 
                    onClick={() => navigate('/article/morning-wellness')}
-                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors text-sm sm:text-base"
+                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors"
                  >
-                   Read More →
+                   {translations[language]?.readMore}
                  </button>
                </div>
              </div>
 
              {/* Featured Article Card 2 */}
              <div className={`rounded-xl shadow-lg overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'} hover:shadow-xl transition-shadow duration-300`}>
-               <div className="h-40 sm:h-48 overflow-hidden">
+               <div className="h-48 overflow-hidden">
                  <img 
                    src={mindfulMeditation} 
                    alt="Mindful Meditation" 
                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                  />
                </div>
-               <div className="p-4 sm:p-6">
-                 <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                   Mindfulness Meditation: A Beginner's Journey
+               <div className="p-6">
+                 <h3 className={`text-xl font-bold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                   {translations[language]?.articles?.[1]?.title}
                  </h3>
-                 <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                   Learn the fundamentals of meditation and how it can transform your mental health
+                 <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                   {translations[language]?.articles?.[1]?.desc}
                  </p>
-                 <div className="flex items-center mb-3 sm:mb-4">
-                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-purple-100 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                     <span className="text-purple-600 text-xs sm:text-sm font-bold">S</span>
+                 <div className="flex items-center mb-4">
+                   <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                     <span className="text-purple-600 text-sm font-bold">S</span>
                    </div>
                    <div className="flex-1">
-                     <p className={`text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Sarah Chen</p>
-                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>1d ago • 8 min read</p>
+                     <p className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{translations[language]?.authorSarah}</p>
+                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{translations[language]?.timeAgo?.[1]}</p>
                    </div>
                  </div>
                  <button 
                    onClick={() => navigate('/article/mindfulness-meditation')}
-                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors text-sm sm:text-base"
+                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors"
                  >
-                   Read More →
+                   {translations[language]?.readMore}
                  </button>
                </div>
              </div>
 
              {/* Featured Article Card 3 */}
              <div className={`rounded-xl shadow-lg overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'} hover:shadow-xl transition-shadow duration-300`}>
-               <div className="h-40 sm:h-48 overflow-hidden">
+               <div className="h-48 overflow-hidden">
                  <img 
                    src={nutrition} 
                    alt="Nutrition" 
                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                  />
                </div>
-               <div className="p-4 sm:p-6">
-                 <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                   The Power of Mindful Nutrition: Fueling Your Body and Mind
+               <div className="p-6">
+                 <h3 className={`text-xl font-bold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                   {translations[language]?.articles?.[2]?.title}
                  </h3>
-                 <p className={`text-xs sm:text-sm mb-3 sm:mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                   Understanding how to nourish your body mindfully can transform your relationship with food
+                 <p className={`text-sm mb-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                   {translations[language]?.articles?.[2]?.desc}
                  </p>
-                 <div className="flex items-center mb-3 sm:mb-4">
-                   <div className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-100 rounded-full flex items-center justify-center mr-2 sm:mr-3">
-                     <span className="text-orange-600 text-xs sm:text-sm font-bold">E</span>
+                 <div className="flex items-center mb-4">
+                   <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                     <span className="text-orange-600 text-sm font-bold">E</span>
                    </div>
                    <div className="flex-1">
-                     <p className={`text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Dr. Emily Rodriguez</p>
-                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>3d ago • 6 min read</p>
+                     <p className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{translations[language]?.authorEmily}</p>
+                     <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{translations[language]?.timeAgo?.[2]}</p>
                    </div>
                  </div>
                  <button 
                    onClick={() => navigate('/article/nutrition-wellness')}
-                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors text-sm sm:text-base"
+                   className="text-teal-500 font-semibold hover:text-teal-600 transition-colors"
                  >
-                   Read More →
+                   {translations[language]?.readMore}
                  </button>
                </div>
              </div>
@@ -459,131 +726,136 @@ function Blog() {
        </section>
 
        {/* Section 3 - Workout Comparison */}
-       <section className={`w-full py-12 sm:py-16 px-4 ${isDarkMode ? 'bg-teal-500' : 'bg-teal-500'}`}>
+       <section className={`w-full py-16 px-4 ${isDarkMode ? 'bg-teal-500' : 'bg-teal-500'}`}>
          <div className="max-w-7xl mx-auto">
-           <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
-             Find Your Perfect Workout
+           <h2 className={`text-3xl font-bold text-center mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
+             {translations[language]?.findYourPerfectWorkout}
            </h2>
-           <p className={`text-base sm:text-lg text-center mb-8 sm:mb-12 max-w-3xl mx-auto px-4 ${isDarkMode ? 'text-gray-300' : 'text-white'}`}>
-             Compare different workout types to discover which one matches your fitness goals and lifestyle
+           <p className={`text-lg text-center mb-12 max-w-3xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-white'}`}>
+             {translations[language]?.compareWorkouts}
            </p>
            
            <div className="overflow-x-auto">
              <div className={`rounded-xl shadow-lg overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
                <div className="min-w-full">
                  {/* Table Header */}
-                 <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 border-b-2 ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-teal-50 border-teal-200'}`}>
-                   <div className={`font-bold text-sm sm:text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>Workout Type</div>
-                   <div className={`font-bold text-sm sm:text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>Intensity</div>
-                   <div className={`font-bold text-sm sm:text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>Focus Area</div>
-                   <div className={`font-bold text-sm sm:text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>Best For</div>
-                   <div className={`font-bold text-sm sm:text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>Equipment</div>
+                 <div className={`grid grid-cols-5 gap-4 p-6 border-b-2 ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-teal-50 border-teal-200'}`}>
+                   <div className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>{translations[language]?.workoutType}</div>
+                   <div className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>{translations[language]?.intensity}</div>
+                   <div className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>{translations[language]?.focusArea}</div>
+                   <div className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>{translations[language]?.bestFor}</div>
+                   <div className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>{translations[language]?.equipment}</div>
                  </div>
-                 
                  {/* Table Rows */}
                  <div className="divide-y divide-gray-200">
                    {/* Yoga Row */}
-                   <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
+                   <div className={`grid grid-cols-5 gap-4 p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
                      <div className="flex items-center">
-                       
-                       <span className={`font-semibold text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Yoga</span>
+                       <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                         {language === 'English' ? 'Yoga' : language === 'Arabic' ? 'يوغا' : 'יוגה'}
+                       </span>
                      </div>
                      <div className="flex items-center">
-                       <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-black'}`}
-                       >Low</span>
+                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                         {language === 'English' ? 'Low' : language === 'Arabic' ? 'منخفضة' : 'נמוכה'}
+                       </span>
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
-                       Flexibility, Balance, Mindfulness
+                     <div className={`${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                       {language === 'English' ? 'Flexibility, Balance, Mindfulness' : language === 'Arabic' ? 'المرونة، التوازن، اليقظة الذهنية' : 'גמישות, איזון, מודעות'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
-                       Stress Relief, Beginners
+                     <div className={`${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                       {language === 'English' ? 'Stress Relief, Beginners' : language === 'Arabic' ? 'تخفيف التوتر، المبتدئين' : 'הפחתת לחץ, מתחילים'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
-                       Mat only
+                     <div className={`${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                       {language === 'English' ? 'Mat Only' : language === 'Arabic' ? 'حصيرة فقط' : 'מזרן בלבד'}
                      </div>
                    </div>
-                   
                    {/* Cardio Row */}
-                   <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
+                   <div className={`grid grid-cols-5 gap-4 p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
                      <div className="flex items-center">
-                       
-                       <span className={`font-semibold text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Cardio</span>
+                       <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                         {language === 'English' ? 'Cardio' : language === 'Arabic' ? 'تمارين القلب' : 'קרדיו'}
+                       </span>
                      </div>
                      <div className="flex items-center">
-                       <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-black'}`}
-                       >Moderate to High</span>
+                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                         {language === 'English' ? 'Moderate to High' : language === 'Arabic' ? 'متوسطة إلى عالية' : 'בינונית עד גבוהה'}
+                       </span>
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
-                       Endurance, Heart Health
+                     <div className={`${isDarkMode ? 'text-gray-300' : 'text-black'}`}>
+                       {language === 'English' ? 'Endurance, Heart Health' : language === 'Arabic' ? 'التحمل، صحة القلب' : 'סיבולת, בריאות הלב'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Fat Loss, Stamina
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Fat Loss, Stamina' : language === 'Arabic' ? 'فقدان الدهون، القدرة على التحمل' : 'אובדן שומן, כושר גופני'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Shoes, treadmill/bike
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Shoes, Treadmill/Bike' : language === 'Arabic' ? 'أحذية، جهاز المشي/دراجة' : 'נעליים, הליכון/אופניים'}
                      </div>
                    </div>
-                   
                    {/* Weight Lifting Row */}
-                   <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
+                   <div className={`grid grid-cols-5 gap-4 p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
                      <div className="flex items-center">
-                       
-                       <span className={`font-semibold text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Weight Lifting</span>
+                       <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                         {language === 'English' ? 'Weight Lifting' : language === 'Arabic' ? 'رفع الأثقال' : 'הרמת משקולות'}
+                       </span>
                      </div>
                      <div className="flex items-center">
-                       <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}
-                       >High</span>
+                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                         {language === 'English' ? 'High' : language === 'Arabic' ? 'عالية' : 'גבוהה'}
+                       </span>
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Strength, Muscle Building
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Strength, Muscle Building' : language === 'Arabic' ? 'القوة، بناء العضلات' : 'כוח, בניית שרירים'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Body Sculpting
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Body Sculpting' : language === 'Arabic' ? 'نحت الجسم' : 'פיסול גוף'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Weights, Machines
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Weights, Machines' : language === 'Arabic' ? 'أوزان، آلات' : 'משקולות, מכשירים'}
                      </div>
                    </div>
-                   
                    {/* CrossFit Row */}
-                   <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
+                   <div className={`grid grid-cols-5 gap-4 p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
                      <div className="flex items-center">
-                       
-                       <span className={`font-semibold text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>CrossFit</span>
+                       <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                         {language === 'English' ? 'CrossFit' : language === 'Arabic' ? 'كروس فيت' : 'קרוספיט'}
+                       </span>
                      </div>
                      <div className="flex items-center">
-                       <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}
-                       >High</span>
+                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                         {language === 'English' ? 'High' : language === 'Arabic' ? 'عالية' : 'גבוהה'}
+                       </span>
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Full Body, Power
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Full Body, Power' : language === 'Arabic' ? 'كامل الجسم، القوة' : 'כל הגוף, עוצמה'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Advanced Fitness
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Advanced Fitness' : language === 'Arabic' ? 'اللياقة المتقدمة' : 'כושר מתקדם'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Weights, Ropes, Rigs
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Weights, Ropes, Rigs' : language === 'Arabic' ? 'أوزان، حبال، معدات' : 'משקולות, חבלים, מתקנים'}
                      </div>
                    </div>
-                   
                    {/* Pilates Row */}
-                   <div className={`grid grid-cols-5 gap-2 sm:gap-4 p-3 sm:p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
+                   <div className={`grid grid-cols-5 gap-4 p-6 hover:bg-teal-50 transition-colors ${isDarkMode ? 'hover:bg-gray-700' : ''}`}>
                      <div className="flex items-center">
-                       
-                       <span className={`font-semibold text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>Pilates</span>
+                       <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                         {language === 'English' ? 'Pilates' : language === 'Arabic' ? 'بيلاتس' : 'פילאטיס'}
+                       </span>
                      </div>
                      <div className="flex items-center">
-                       <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}
-                       >Low to Moderate</span>
+                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                         {language === 'English' ? 'Low to Moderate' : language === 'Arabic' ? 'منخفضة إلى متوسطة' : 'נמוכה עד בינונית'}
+                       </span>
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Core Strength, Posture
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Core Strength, Posture' : language === 'Arabic' ? 'قوة الجذع، الوضعية' : 'חוזק ליבה, יציבה'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Beginners, Rehab
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Beginners, Rehab' : language === 'Arabic' ? 'المبتدئين، إعادة التأهيل' : 'מתחילים, שיקום'}
                      </div>
-                     <div className={`text-xs sm:text-sm ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                       Mat, reformer
+                     <div className={`${isDarkMode ? 'text-white' : 'text-black'}`}>
+                       {language === 'English' ? 'Mat, Reformer' : language === 'Arabic' ? 'حصيرة، جهاز البيلاتس' : 'מזרן, רפורמר'}
                      </div>
                    </div>
                  </div>
@@ -594,29 +866,37 @@ function Blog() {
         </section>
 
              {/* Section 4 - Categories */}
-             <section className={`w-full py-12 sm:py-16 px-4 overflow-hidden ${isDarkMode ? 'bg-black' : 'bg-teal-50'}`}>
+             <section className={`w-full py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-teal-50'}`}>
                <div className="max-w-7xl mx-auto">
-                 <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
-                   Explore Wellness Categories
+                 <h2 className={`text-3xl font-bold text-center mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
+                   {translations[language]?.exploreWellnessCategories}
                  </h2>
                  
-                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                    {/* Left Side - Category Content */}
-                   <div className={`p-4 sm:p-8 text-justify rounded-xl shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-                     <h3 className={`text-xl sm:text-2xl font-bold mb-3 sm:mb-4 ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>
-                       {categoryContent[selectedCategory].title}
+                   <div className={`p-8 text-justify rounded-xl shadow-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                     <h3 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>
+                       {translations[language]?.fitness}
                      </h3>
-                     
-                     <p className={`text-base sm:text-lg mb-4 sm:mb-6 leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                       {categoryContent[selectedCategory].description}
+                     <p className={`text-lg mb-6 leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                       {language === 'English' ?
+                         "Transform your life through movement and strength training. Our fitness category covers everything from beginner workouts to advanced training programs."
+                         : language === 'Arabic' ?
+                         "حوّل حياتك من خلال الحركة وتدريب القوة. تغطي فئة اللياقة البدنية لدينا كل شيء من التمارين للمبتدئين إلى برامج التدريب المتقدمة."
+                         : "שנה את חייך באמצעות תנועה ואימוני כוח. קטגוריית הכושר שלנו כוללת הכל מאימונים למתחילים ועד תוכניות מתקדמות."
+                       }
                      </p>
-                     
                      <div className="mb-6">
                        <h4 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                         Key Benefits:
+                         {translations[language]?.keyBenefits}:
                        </h4>
                        <ul className="space-y-2">
-                         {categoryContent[selectedCategory].benefits.map((benefit, index) => (
+                         {(language === 'English' ?
+                           ["Improved cardiovascular health", "Increased strength and flexibility", "Better mood and mental clarity", "Enhanced energy levels throughout the day"]
+                           : language === 'Arabic' ?
+                           ["تحسين صحة القلب والأوعية الدموية", "زيادة القوة والمرونة", "تحسين المزاج وصفاء الذهن", "زيادة مستويات الطاقة طوال اليوم"]
+                           : ["שיפור בריאות הלב וכלי הדם", "הגברת כוח וגמישות", "מצב רוח טוב יותר ובהירות מחשבתית", "רמות אנרגיה גבוהות יותר לאורך היום"]
+                         ).map((benefit, index) => (
                            <li key={index} className={`flex items-start ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                              <svg className="w-5 h-5 text-teal-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -626,238 +906,196 @@ function Blog() {
                          ))}
                        </ul>
                      </div>
-                     
                      <div className="mb-6">
                        <h4 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                         Pro Tip:
+                         {translations[language]?.proTip}:
                        </h4>
                        <p className={`italic ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                         {categoryContent[selectedCategory].tips}
+                         {language === 'English' ?
+                           "Start with 30 minutes of moderate exercise daily and gradually increase intensity. Remember, consistency is key to seeing results."
+                           : language === 'Arabic' ?
+                           "ابدأ بـ 30 دقيقة من التمارين المعتدلة يوميًا وزد الشدة تدريجيًا. تذكر أن الاستمرارية هي مفتاح تحقيق النتائج."
+                           : "התחילו ב-30 דקות של פעילות גופנית מתונה ביום והגבירו את העצימות בהדרגה. זכרו, התמדה היא המפתח לתוצאות."
+                         }
                        </p>
                      </div>
-                     
-                     <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-teal-900/20 border border-teal-500' : 'bg-teal-50 border border-teal-200'}`}>
+                     <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-teal-900/20 border border-teal-500' : 'bg-teal-50 border-teal-200'}`}>
                        <p className={`text-sm font-medium ${isDarkMode ? 'text-teal-300' : 'text-teal-700'}`}>
-                         {categoryContent[selectedCategory].articles}
+                         {language === 'English' ?
+                           "50+ articles on workouts, training plans, and fitness tips"
+                           : language === 'Arabic' ?
+                           "+50 مقالة حول التمارين وخطط التدريب ونصائح اللياقة البدنية"
+                           : "+50 מאמרים על אימונים, תוכניות אימון וטיפים לכושר"
+                         }
                        </p>
                      </div>
                    </div>
                    
                    {/* Right Side - Circular Category Wheel */}
                    <div className="flex justify-center">
-                     <div className="relative w-[350px] h-[350px] sm:w-[400px] sm:h-[400px] lg:w-[550px] lg:h-[550px] xl:w-[650px] xl:h-[650px]">
+                     <div className="relative w-[500px] h-[500px]">
                        {/* Center */}
-                       <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-16 sm:h-16 lg:w-22 lg:h-22 xl:w-26 xl:h-26 rounded-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl flex items-center justify-center z-20 border-4 border-teal-500`}>
-                         <span className={`text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>CATEGORIES</span>
+                       <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-28 h-28 rounded-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl flex items-center justify-center z-20 border-4 border-teal-500`}>
+                         <span className={`text-lg font-bold ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>{translations[language]?.categories}</span>
                        </div>
                        
-                       {/* Connecting Lines - Responsive SVG */}
-                       <svg className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 10 }} viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
-                         <circle cx="250" cy="250" r="200" fill="none" stroke="#26A69A" strokeWidth="2" strokeDasharray="5,5"/>
-                         <circle cx="250" cy="250" r="120" fill="none" stroke="#26A69A" strokeWidth="1" strokeDasharray="3,3"/>
+                       {/* Connecting Lines */}
+                       <svg className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 10 }}>
+                         <circle cx="250" cy="250" r="230" fill="none" stroke="#26A69A" strokeWidth="2" strokeDasharray="5,5"/>
+                         <circle cx="250" cy="250" r="140" fill="none" stroke="#26A69A" strokeWidth="1" strokeDasharray="3,3"/>
                        </svg>
                        
-                       {/* Category Segments - Responsive positioning */}
+                       {/* Category Segments - Positioned in a perfect circle */}
                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full" style={{ zIndex: 15 }}>
-                         {/* Fitness - Top (0 degrees) */}
+                         {/* Fitness - Top */}
                          <div 
                            onClick={() => setSelectedCategory('fitness')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-22 lg:h-22 xl:w-26 xl:h-26 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'fitness' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-400 to-teal-600'
                            }`}
-                           style={{
-                             top: 'calc(50% - 140px - 8px)',
-                             left: 'calc(50% - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
                            </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">FITNESS</span>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.fitness}</span>
                          </div>
                          
-                         {/* Healthy Eating - Top Right (45 degrees) */}
+                         {/* Healthy Eating - Top Right */}
                          <div 
                            onClick={() => setSelectedCategory('healthyEating')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute top-[8%] right-[8%] w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'healthyEating' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-500 to-teal-700'
                            }`}
-                           style={{
-                             top: 'calc(50% - 99px - 8px)',
-                             left: 'calc(50% + 99px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
                            </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">HEALTHY<br/>EATING</span>
+                           <span className="text-[8px] text-white font-bold text-center">{translations[language]?.healthyEating}</span>
                          </div>
                          
-                         {/* Weight Loss - Right (90 degrees) */}
+                         {/* Weight Loss - Right */}
                          <div 
                            onClick={() => setSelectedCategory('weightLoss')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute top-1/2 right-0 transform translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'weightLoss' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-600 to-teal-800'
                            }`}
-                           style={{
-                             top: 'calc(50% - 8px)',
-                             left: 'calc(50% + 140px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                            </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">WEIGHT<br/>LOSS</span>
+                           <span className="text-[8px] text-white font-bold text-center">{translations[language]?.weightLoss}</span>
                          </div>
                          
-                         {/* Wellness - Bottom Right (135 degrees) */}
+                         {/* Wellness - Bottom Right */}
                          <div 
                            onClick={() => setSelectedCategory('wellness')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute bottom-[8%] right-[8%] w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'wellness' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-700 to-teal-900'
                            }`}
-                           style={{
-                             top: 'calc(50% + 99px - 8px)',
-                             left: 'calc(50% + 99px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                            </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">WELLNESS</span>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.wellness}</span>
                          </div>
                          
-                         {/* Sleep - Bottom (180 degrees) */}
-                         <div 
-                           onClick={() => setSelectedCategory('sleep')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
-                             selectedCategory === 'sleep' 
-                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
-                               : 'bg-gradient-to-br from-teal-300 to-teal-500'
-                           }`}
-                           style={{
-                             top: 'calc(50% + 140px - 8px)',
-                             left: 'calc(50% - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
-                         >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
-                             <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/>
-                             <path d="M9 11h3.63L9 15.2V17h6v-2h-3.63L15 10.8V9H9z"/>
-                           </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">SLEEP</span>
-                         </div>
-                         
-                         {/* Stress Management - Bottom Left (225 degrees) */}
-                         <div 
-                           onClick={() => setSelectedCategory('stressManagement')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
-                             selectedCategory === 'stressManagement' 
-                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
-                               : 'bg-gradient-to-br from-teal-400 to-teal-600'
-                           }`}
-                           style={{
-                             top: 'calc(50% + 99px - 8px)',
-                             left: 'calc(50% - 99px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
-                         >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
-                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                           </svg>
-                           <span className="text-[5px] sm:text-[6px] lg:text-[8px] xl:text-[10px] text-white font-bold text-center leading-tight">STRESS<br/>MANAGEMENT</span>
-                         </div>
-                         
-                         {/* Meditation - Left (270 degrees) */}
-                         <div 
-                           onClick={() => setSelectedCategory('meditation')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
-                             selectedCategory === 'meditation' 
-                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
-                               : 'bg-gradient-to-br from-teal-500 to-teal-700'
-                           }`}
-                           style={{
-                             top: 'calc(50% - 8px)',
-                             left: 'calc(50% - 140px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
-                         >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
-                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                           </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">MEDITATION</span>
-                         </div>
-                         
-                         {/* Healthy Mind - Top Left (315 degrees) */}
+                         {/* Healthy Mind - Bottom */}
                          <div 
                            onClick={() => setSelectedCategory('healthyMind')}
-                           className={`absolute w-16 h-16 sm:w-18 sm:h-18 lg:w-24 lg:h-24 xl:w-28 xl:h-28 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'healthyMind' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-800 to-teal-900'
                            }`}
-                           style={{
-                             top: 'calc(50% - 99px - 8px)',
-                             left: 'calc(50% - 99px - 8px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
                            </svg>
-                           <span className="text-[6px] sm:text-[7px] lg:text-[9px] xl:text-[11px] text-white font-bold text-center">HEALTHY<br/>MIND</span>
+                           <span className="text-[8px] text-white font-bold text-center">{translations[language]?.healthyMind}</span>
                          </div>
                          
-                         {/* Nutrition - Inner circle bottom (180 degrees) */}
+                         {/* Sleep - Bottom Left */}
+                         <div 
+                           onClick={() => setSelectedCategory('sleep')}
+                           className={`absolute bottom-[8%] left-[8%] w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                             selectedCategory === 'sleep' 
+                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
+                               : 'bg-gradient-to-br from-teal-300 to-teal-500'
+                           }`}
+                         >
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                             <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7z"/>
+                             <path d="M9 11h3.63L9 15.2V17h6v-2h-3.63L15 10.8V9H9z"/>
+                           </svg>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.sleep}</span>
+                         </div>
+                         
+                         {/* Stress Management - Left */}
+                         <div 
+                           onClick={() => setSelectedCategory('stressManagement')}
+                           className={`absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                             selectedCategory === 'stressManagement' 
+                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
+                               : 'bg-gradient-to-br from-teal-400 to-teal-600'
+                           }`}
+                         >
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                           </svg>
+                           <span className="text-[7px] text-white font-bold text-center leading-tight">{translations[language]?.stressManagement}</span>
+                         </div>
+                         
+                         {/* Meditation - Top Left */}
+                         <div 
+                           onClick={() => setSelectedCategory('meditation')}
+                           className={`absolute top-[8%] left-[8%] w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                             selectedCategory === 'meditation' 
+                               ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
+                               : 'bg-gradient-to-br from-teal-500 to-teal-700'
+                           }`}
+                         >
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                           </svg>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.meditation}</span>
+                         </div>
+                         
+                         {/* Nutrition - Bottom Center */}
                          <div 
                            onClick={() => setSelectedCategory('nutrition')}
-                           className={`absolute w-18 h-18 sm:w-20 sm:h-20 lg:w-26 lg:h-26 xl:w-30 xl:h-30 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute bottom-[25%] left-1/2 transform -translate-x-1/2 translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'nutrition' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-600 to-teal-800'
                            }`}
-                           style={{
-                             top: 'calc(50% + 84px - 9px)',
-                             left: 'calc(50% - 9px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.66l4.19 4.18zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/>
                            </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">NUTRITION</span>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.nutrition}</span>
                          </div>
                          
-                         {/* Self Care - Inner circle top (0 degrees) */}
+                         {/* Self Care - Top Center */}
                          <div 
                            onClick={() => setSelectedCategory('selfCare')}
-                           className={`absolute w-18 h-18 sm:w-20 sm:h-20 lg:w-26 lg:h-26 xl:w-30 xl:h-30 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
+                           className={`absolute top-[25%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full flex flex-col items-center justify-center cursor-pointer hover:scale-125 hover:z-50 transition-all duration-300 shadow-xl border-2 border-white ${
                              selectedCategory === 'selfCare' 
                                ? 'bg-gradient-to-br from-teal-500 to-teal-700 ring-4 ring-teal-300' 
                                : 'bg-gradient-to-br from-teal-700 to-teal-900'
                            }`}
-                           style={{
-                             top: 'calc(50% - 84px - 9px)',
-                             left: 'calc(50% - 9px)',
-                             transform: 'translate(-50%, -50%)'
-                           }}
                          >
-                           <svg className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
+                           <svg className="w-6 h-6 text-white mb-1" fill="currentColor" viewBox="0 0 24 24">
                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                            </svg>
-                           <span className="text-[7px] sm:text-[8px] lg:text-[10px] xl:text-[12px] text-white font-bold">SELF CARE</span>
+                           <span className="text-[10px] text-white font-bold">{translations[language]?.selfCare}</span>
                          </div>
                        </div>
                      </div>
@@ -865,7 +1103,7 @@ function Blog() {
                  </div>
                  
                  {/* Category List for Mobile */}
-                 {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 lg:hidden">
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 lg:hidden">
                    {[
                      { name: 'Fitness', icon: '💪', key: 'fitness' },
                      { name: 'Healthy Eating', icon: '🥗', key: 'healthyEating' },
@@ -891,73 +1129,85 @@ function Blog() {
                        <h3 className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{category.name}</h3>
                      </div>
                    ))}
-                 </div> */}
+                 </div>
                </div>
              </section>
         
         {/* Section 5 - Myths vs Facts - Two Column Layout */}
-        <section className={`w-full text-justify py-12 sm:py-20 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+        <section className={`w-full text-justify py-20 ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
           {/* Section Header */}
-          <div className="text-center mb-8 sm:mb-16 px-4 max-w-7xl mx-auto">
-            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 ${isDarkMode ? 'text-white' : 'text-teal-500'}`}>
-              Myths vs Facts
+          <div className="text-center mb-16 px-4 max-w-7xl mx-auto">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-teal-500'}`}>
+              {language === 'English' ? 'Myths vs Facts' : language === 'Arabic' ? 'الخرافات مقابل الحقائق' : 'מיתוסים מול עובדות'}
             </h2>
-            <p className={`text-lg sm:text-xl max-w-3xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              Let's debunk common wellness misconceptions with science-backed facts
+            <p className={`text-xl max-w-3xl mx-auto ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              {language === 'English' ? 'Debunk common health myths and discover the facts.' : language === 'Arabic' ? 'اكشف الخرافات الصحية واكتشف الحقائق.' : 'חשפו מיתוסים בריאותיים וגלו את העובדות.'}
             </p>
           </div>
 
           {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[400px] sm:min-h-[600px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 min-h-[600px]">
               {/* Left Column: Myths */}
-              <div className="bg-gradient-to-b from-teal-700 to-teal-500 p-6 sm:p-12 flex flex-col justify-center">
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6">Myths</h3>
-                <p className="text-white text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
-                  Common misconceptions about health and wellness that many people believe to be true, but are actually myths that can mislead our wellness journey.
+              <div className="bg-gradient-to-b from-teal-700 to-teal-500 p-12 flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-white mb-6">{language === 'English' ? 'Myths' : language === 'Arabic' ? 'الخرافات' : 'מיתוסים'}</h3>
+                <p className="text-white text-lg mb-8 leading-relaxed">
+                  {language === 'English' ? 'Common misconceptions about health and wellness.' : language === 'Arabic' ? 'مفاهيم خاطئة شائعة حول الصحة والعافية.' : 'תפיסות מוטעות נפוצות על בריאות.'}
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-white rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-white text-base">{mythsAndFacts[currentMythFact].myth[currentSentenceIndex]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-white rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-white text-base">{mythsAndFacts[currentMythFact].myth[(currentSentenceIndex + 1) % mythsAndFacts[currentMythFact].myth.length]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-white rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-white text-base">{mythsAndFacts[currentMythFact].myth[(currentSentenceIndex + 2) % mythsAndFacts[currentMythFact].myth.length]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-white rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-white text-base">{mythsAndFacts[currentMythFact].myth[(currentSentenceIndex + 3) % mythsAndFacts[currentMythFact].myth.length]}</p>
-                  </div>
+                  {[0,1,2,3].map((i) => (
+                    <div className="flex items-start" key={i}>
+                      <div className="w-3 h-3 bg-white rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                      <p className="text-white text-base">
+                        {language === 'English' ? mythsAndFacts[currentMythFact].myth[(currentSentenceIndex + i) % mythsAndFacts[currentMythFact].myth.length]
+                        : language === 'Arabic' ?
+                          [
+                            "شرب 8 أكواب من الماء يوميًا ضروري للجميع.",
+                            "تناول الطعام في وقت متأخر يسبب زيادة الوزن.",
+                            "الكربوهيدرات ضارة ويجب تجنبها.",
+                            "تحتاج إلى ممارسة الرياضة لساعات لرؤية النتائج."
+                          ][(currentSentenceIndex + i) % 4]
+                        : [
+                            "שתיית 8 כוסות מים ביום הכרחית לכולם.",
+                            "אכילה מאוחרת גורמת לעלייה במשקל.",
+                            "פחמימות מזיקות ויש להימנע מהן.",
+                            "צריך להתאמן שעות כדי לראות תוצאות."
+                          ][(currentSentenceIndex + i) % 4]
+                        }
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Right Column: Facts */}
-              <div className="bg-white p-6 sm:p-12 flex flex-col justify-center">
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-teal-700 mb-4 sm:mb-6">Facts</h3>
-                <p className="text-teal-700 text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
-                  Evidence-based truths about health and wellness that can guide us toward better lifestyle choices and improved well-being.
+              <div className="bg-white p-12 flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-teal-700 mb-6">{language === 'English' ? 'Facts' : language === 'Arabic' ? 'الحقائق' : 'עובדות'}</h3>
+                <p className="text-teal-700 text-lg mb-8 leading-relaxed">
+                  {language === 'English' ? 'Evidence-based truths for a healthier you.' : language === 'Arabic' ? 'حقائق قائمة على الأدلة لصحة أفضل.' : 'עובדות מבוססות מחקר לבריאות טובה יותר.'}
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-teal-700 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-teal-700 text-base">{mythsAndFacts[currentMythFact].fact[currentSentenceIndex]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-teal-700 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-teal-700 text-base">{mythsAndFacts[currentMythFact].fact[(currentSentenceIndex + 1) % mythsAndFacts[currentMythFact].fact.length]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-teal-700 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-teal-700 text-base">{mythsAndFacts[currentMythFact].fact[(currentSentenceIndex + 2) % mythsAndFacts[currentMythFact].fact.length]}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-teal-700 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                    <p className="text-teal-700 text-base">{mythsAndFacts[currentMythFact].fact[(currentSentenceIndex + 3) % mythsAndFacts[currentMythFact].fact.length]}</p>
-                  </div>
+                  {[0,1,2,3].map((i) => (
+                    <div className="flex items-start" key={i}>
+                      <div className="w-3 h-3 bg-teal-700 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                      <p className="text-teal-700 text-base">
+                        {language === 'English' ? mythsAndFacts[currentMythFact].fact[(currentSentenceIndex + i) % mythsAndFacts[currentMythFact].fact.length]
+                        : language === 'Arabic' ?
+                          [
+                            "احتياجات الماء تختلف حسب الفرد. عوامل مثل مستوى النشاط والمناخ والنظام الغذائي تحدد احتياجك الفعلي.",
+                            "زيادة الوزن تتعلق بإجمالي السعرات الحرارية المستهلكة مقابل المحروقة، وليس التوقيت.",
+                            "الكربوهيدرات ضرورية للطاقة. المفتاح هو اختيار الكربوهيدرات المعقدة بدلاً من المكررة.",
+                            "حتى 30 دقيقة من التمارين المعتدلة يوميًا توفر فوائد صحية كبيرة."
+                          ][(currentSentenceIndex + i) % 4]
+                        : [
+                            "צריכת מים משתנה בין אנשים. גורמים כמו רמת פעילות, אקלים ותזונה קובעים את הצורך שלך.",
+                            "עלייה במשקל תלויה בכמות הקלוריות הנצרכת לעומת הנשרפת, לא בזמן האכילה.",
+                            "פחמימות חיוניות לאנרגיה. חשוב לבחור פחמימות מורכבות על פני מעובדות.",
+                            "גם 30 דקות של פעילות גופנית מתונה ביום מספקות יתרונות בריאותיים משמעותיים."
+                          ][(currentSentenceIndex + i) % 4]
+                        }
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -965,35 +1215,33 @@ function Blog() {
 
 
       {/* Section 6 - 2 Minute Quiz */}
-      <section className={`w-full py-12 sm:py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+      <section className={`w-full py-16 px-4 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
         <div className="max-w-6xl mx-auto">
-          <h2 className={`text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
-            2 Minute Quiz
+          <h2 className={`text-3xl font-bold text-center mb-12 ${isDarkMode ? 'text-white' : 'text-teal-700'}`}>
+            {language === 'English' ? '2 Minute Quiz' : language === 'Arabic' ? 'اختبار دقيقتين' : 'חידון של 2 דקות'}
           </h2>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
             {/* Left Side - Quiz Image */}
             <div className="flex justify-center lg:justify-start">
               <div className="relative w-full max-w-xl h-full">
                 <img 
                   src={quizImage} 
-                  alt="Wellness Quiz" 
+                  alt={language === 'English' ? 'Wellness Quiz' : language === 'Arabic' ? 'اختبار العافية' : 'חידון בריאות'}
                   className="w-full h-full object-cover rounded-xl shadow-lg"
                 />
               </div>
             </div>
-
             {/* Right Side - Quiz Content */}
             <div className="flex flex-col justify-center">
               {!showResults ? (
-                <div className={`rounded-xl shadow-lg p-4 sm:p-8 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                <div className={`rounded-xl shadow-lg p-8 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
                   {/* Progress Bar */}
-                  <div className="mb-6 sm:mb-8">
+                  <div className="mb-8">
                     <div className="flex justify-between items-center mb-2">
-                      <span className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                        Question {currentQuestion + 1} of {quizQuestions.length}
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {language === 'English' ? `Question ${currentQuestion + 1} of ${quizQuestions.length}` : language === 'Arabic' ? `سؤال ${currentQuestion + 1} من ${quizQuestions.length}` : `שאלה ${currentQuestion + 1} מתוך ${quizQuestions.length}`}
                       </span>
-                      <span className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                         {Math.round(((currentQuestion + 1) / quizQuestions.length) * 100)}%
                       </span>
                     </div>
@@ -1004,73 +1252,121 @@ function Blog() {
                       ></div>
                     </div>
                   </div>
-
                   {/* Question */}
-                  <h3 className={`text-lg sm:text-xl font-bold mb-4 sm:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                    {quizQuestions[currentQuestion].question}
+                  <h3 className={`text-xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                    {language === 'English' ? quizQuestions[currentQuestion].question
+                      : language === 'Arabic' ?
+                        [
+                          "ما هي كمية الماء الموصى بها يوميًا للبالغين؟",
+                          "أي مما يلي ليس فائدة من ممارسة الرياضة بانتظام؟",
+                          "كم عدد ساعات النوم التي يحتاجها البالغون عادةً في الليلة؟",
+                          "أي مجموعة غذائية يجب أن تشكل الجزء الأكبر من طبقك؟",
+                          "ما هو أفضل وقت لممارسة الرياضة لفقدان الوزن؟",
+                          "أي فيتامين يُعرف باسم 'فيتامين الشمس'؟",
+                          "كم مرة يجب أن تأخذ استراحة عند العمل على الكمبيوتر؟",
+                          "أي من هذه علامة على الصحة النفسية الجيدة؟",
+                          "ما النسبة المئوية من وزن الجسم يجب أن تأتي من البروتين؟",
+                          "أي نشاط هو الأفضل لتقليل التوتر؟"
+                        ][currentQuestion]
+                      : [
+                          "מהי כמות המים המומלצת ליום למבוגרים?",
+                          "איזו מהבאות אינה יתרון של פעילות גופנית סדירה?",
+                          "כמה שעות שינה מבוגרים צריכים בדרך כלל בלילה?",
+                          "איזו קבוצת מזון צריכה להיות העיקרית בצלחת שלך?",
+                          "מה הזמן הטוב ביותר להתאמן לירידה במשקל?",
+                          "איזה ויטמין ידוע כ'ויטמין השמש'?",
+                          "כל כמה זמן כדאי לקחת הפסקה בעבודה מול מחשב?",
+                          "איזו מהבאות היא סימן לבריאות נפשית טובה?",
+                          "איזה אחוז ממשקל הגוף צריך להיות מחלבון?",
+                          "איזו פעילות הכי טובה להפחתת לחץ?"
+                        ][currentQuestion]
+                    }
                   </h3>
-
                   {/* Options */}
-                  <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                  <div className="space-y-4 mb-8">
                     {quizQuestions[currentQuestion].options.map((option, index) => (
                       <button
                         key={index}
                         onClick={() => handleAnswerSelect(index)}
-                        className={`w-full text-left p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 ${
+                        className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
                           selectedAnswers[currentQuestion] === index
                             ? 'border-teal-500 bg-teal-50'
                             : `${isDarkMode ? 'border-gray-600 hover:border-gray-500' : 'border-gray-200 hover:border-gray-300'}`
                         } ${getAnswerColor(currentQuestion, index)}`}
                         disabled={selectedAnswers[currentQuestion] !== undefined}
                       >
-                        <span className={`font-medium text-sm sm:text-base ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                          {String.fromCharCode(65 + index)}. {option}
+                        <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                          {String.fromCharCode(65 + index)}. {language === 'English' ? option
+                            : language === 'Arabic' ?
+                              [
+                                ["4-6 أكواب", "6-8 أكواب", "8-10 أكواب", "10-12 أكواب"],
+                                ["تحسين المزاج", "نوم أفضل", "زيادة التوتر", "تقوية المناعة"],
+                                ["4-5 ساعات", "5-6 ساعات", "7-9 ساعات", "10-12 ساعة"],
+                                ["بروتينات", "خضروات", "حبوب", "فواكه"],
+                                ["الصباح الباكر", "بعد الظهر", "المساء", "أي وقت يناسب جدولك"],
+                                ["فيتامين A", "فيتامين C", "فيتامين D", "فيتامين E"],
+                                ["كل 30 دقيقة", "كل ساعة", "كل ساعتين", "فقط عند التعب"],
+                                ["الشعور بالسعادة دائمًا", "عدم التعرض للتوتر أبدًا", "القدرة على مواجهة التحديات", "دائمًا إيجابي"],
+                                ["5-10%", "10-15%", "15-20%", "20-25%"],
+                                ["مشاهدة التلفاز", "تأمل اليقظة الذهنية", "تصفح وسائل التواصل الاجتماعي", "تناول الطعام المريح"]
+                              ][currentQuestion][index]
+                            : [
+                                ["4-6 כוסות", "6-8 כוסות", "8-10 כוסות", "10-12 כוסות"],
+                                ["שיפור מצב הרוח", "שינה טובה יותר", "עלייה בלחץ", "חיזוק מערכת החיסון"],
+                                ["4-5 שעות", "5-6 שעות", "7-9 שעות", "10-12 שעות"],
+                                ["חלבונים", "ירקות", "דגנים", "פירות"],
+                                ["בוקר מוקדם", "אחר הצהריים", "ערב", "בכל זמן שנוח לך"],
+                                ["ויטמין A", "ויטמין C", "ויטמין D", "ויטמין E"],
+                                ["כל 30 דקות", "כל שעה", "כל שעתיים", "רק כשעייפים"],
+                                ["להרגיש שמח תמיד", "לא להרגיש לחץ אף פעם", "להתמודד עם אתגרים", "להיות תמיד חיובי"],
+                                ["5-10%", "10-15%", "15-20%", "20-25%"],
+                                ["צפייה בטלוויזיה", "מדיטציית מודעות", "גלישה ברשתות חברתיות", "אכילה מנחמת"]
+                              ][currentQuestion][index]
+                          }
                         </span>
                       </button>
                     ))}
                   </div>
-
                   {/* Navigation Buttons */}
                   <div className="flex justify-between items-center">
                     <button
                       onClick={handlePrevious}
                       disabled={currentQuestion === 0}
-                      className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
+                      className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
                         currentQuestion === 0
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                           : 'bg-teal-500 text-white hover:bg-teal-600'
                       }`}
                     >
-                      ← Previous
+                      {language === 'English' ? '← Previous' : language === 'Arabic' ? 'السابق ←' : '← הקודם'}
                     </button>
-                    
                     <button
                       onClick={handleNext}
-                      className="px-4 sm:px-6 py-2 sm:py-3 bg-teal-500 text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors text-sm sm:text-base"
+                      className="px-6 py-3 bg-teal-500 text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors"
                     >
-                      {currentQuestion === quizQuestions.length - 1 ? 'See Results' : 'Next →'}
+                      {currentQuestion === quizQuestions.length - 1 ?
+                        (language === 'English' ? 'See Results' : language === 'Arabic' ? 'عرض النتائج' : 'הצג תוצאות')
+                        : (language === 'English' ? 'Next' : language === 'Arabic' ? 'التالي' : 'הבא')}
                     </button>
                   </div>
                 </div>
               ) : (
                 /* Results Section */
-                <div className={`rounded-xl shadow-lg p-4 sm:p-8 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-                  <h3 className={`text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                    Quiz Results
+                <div className={`rounded-xl shadow-lg p-8 ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                  <h3 className={`text-2xl font-bold text-center mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                    {language === 'English' ? 'Quiz Results' : language === 'Arabic' ? 'نتائج الاختبار' : 'תוצאות החידון'}
                   </h3>
-                  
-                  <div className="text-center mb-6 sm:mb-8">
-                    <div className={`text-4xl sm:text-6xl font-bold mb-3 sm:mb-4 ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>
+                  <div className="text-center mb-8">
+                    <div className={`text-6xl font-bold mb-4 ${isDarkMode ? 'text-teal-400' : 'text-teal-600'}`}>
                       {calculateScore()}/{quizQuestions.length}
                     </div>
-                    <p className={`text-base sm:text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                      {calculateScore() >= 8 ? 'Excellent! You have great wellness knowledge!' :
-                       calculateScore() >= 6 ? 'Good job! You know your wellness basics!' :
-                       calculateScore() >= 4 ? 'Not bad! Keep learning about wellness!' :
-                       'Keep learning! Wellness is a journey!'}
+                    <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      {calculateScore() >= 8 ? (language === 'English' ? 'Excellent! You\'re a wellness expert.' : language === 'Arabic' ? 'ممتاز! أنت خبير في العافية.' : 'מצוין! אתה מומחה לבריאות.')
+                        : calculateScore() >= 6 ? (language === 'English' ? 'Good job! You know your stuff.' : language === 'Arabic' ? 'عمل رائع! لديك معرفة جيدة.' : 'עבודה טובה! יש לך ידע רב.')
+                        : calculateScore() >= 4 ? (language === 'English' ? 'Not bad! Keep learning.' : language === 'Arabic' ? 'لا بأس! استمر في التعلم.' : 'לא רע! המשך ללמוד.')
+                        : (language === 'English' ? 'Keep learning and improving!' : language === 'Arabic' ? 'استمر في التعلم والتطور!' : 'המשך ללמוד ולהשתפר!')}
                     </p>
                   </div>
-
                   <div className="text-center">
                     <button
                       onClick={() => {
@@ -1078,9 +1374,9 @@ function Blog() {
                         setSelectedAnswers({});
                         setShowResults(false);
                       }}
-                      className="px-4 sm:px-6 py-2 sm:py-3 bg-teal-500 text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors text-sm sm:text-base"
+                      className="px-6 py-3 bg-teal-500 text-white rounded-lg font-semibold hover:bg-teal-600 transition-colors"
                     >
-                      Take Quiz Again
+                      {language === 'English' ? 'Take Quiz Again' : language === 'Arabic' ? 'أعد الاختبار' : 'נסה שוב'}
                     </button>
                   </div>
                 </div>
