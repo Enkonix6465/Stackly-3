@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line, LabelList } from 'recharts';
-import mapImg from './assets/world.png';
-import Header from './Header.jsx';
-import { useContext } from 'react';
-import { LanguageContext } from './LanguageContext';
+import React, { useContext, useEffect, useState } from "react";
+import { LanguageContext } from "./LanguageContext";
+import Header from "./Header.jsx";
 import { 
   getRegisteredUsers, 
   getTotalUsersCount, 
@@ -12,6 +9,8 @@ import {
   getUserStatistics,
   simulateUserRegistration 
 } from './utils/userRegistration.js';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, LineChart, Line, LabelList } from 'recharts';
+import mapImg from './assets/world.png';
 
 // Section1 (KPI Cards Example)
 // Dashboard translations
@@ -208,7 +207,7 @@ const dashboardTranslations = {
     // Section5 Trainers
     trainerAmit: 'أميت شارما',
     trainerPriya: 'بريا سينغ',
-    trainerRahul: 'راهول فيرما',
+    trainerRahul: 'راهול فيرما',
     trainerSneha: 'سنيها باتيل',
     trainerArjun: 'أرجون ميهتا',
     yogaInstructor: 'مدرب يوغا',
@@ -993,7 +992,7 @@ function Section5({ t }) {
       icon: (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="32" height="32" rx="8" fill="#e1306c"/>
-          <path d="M16 12.5A3.5 3.5 0 1 0 16 19.5a3.5 3.5 0 0 0 0-7zm7.5-1.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0zM16 10c2.206 0 2.472.008 3.338.048.865.04 1.453.176 1.797.295.36.124.617.273.89.546.273.273.422.53.546.89.119.344.255.932.295 1.797.04.866.048 1.132.048 3.338s-.008 2.472-.048 3.338c-.04.865-.176 1.453-.295 1.797a2.36 2.36 0 0 1-.546.89 2.36 2.36 0 0 1-.89.546c-.344.119-.932.255-1.797.295-.866.04-1.132.048-3.338.048s-2.472-.008-3.338-.048c-.865-.04-1.453-.176-1.797-.295a2.36 2.36 0 0 1-.89-.546 2.36 2.36 0 0 1-.546-.89c-.119-.344-.255-.932-.295-1.797C10.008 18.472 10 18.206 10 16s.008-2.472.048-3.338c.04-.865.176-1.453.295-1.797a2.36 2.36 0 0 1 .546-.89 2.36 2.36 0 0 1 .89-.546c.344-.119.932-.255 1.797-.295C13.528 10.008 13.794 10 16 10zm0-2c-2.233 0-2.507.008-3.384.049-.877.041-1.477.177-2.002.377a4.36 4.36 0 0 0-1.591 1.04 4.36 4.36 0 0 0-1.04 1.591c-.2.525-.336 1.125-.377 2.002C10.008 13.493 10 13.767 10 16c0 2.233.008 2.507.049 3.384.041.877.177 1.477.377 2.002.24.63.563 1.17 1.04 1.591.421.477.961.8 1.591 1.04.525.2 1.125.336 2.002.377.877.041 1.151.049 3.384.049s2.507-.008 3.384-.049c.877-.041 1.477-.177 2.002-.377a4.36 4.36 0 0 0 1.591-1.04 4.36 4.36 0 0 0 1.04-1.591c.2-.525.336-1.125.377-2.002.041-.877.049-1.151.049-3.384s-.008-2.507-.049-3.384c-.041-.877-.177-1.477-.377-2.002a4.36 4.36 0 0 0-1.04-1.591 4.36 4.36 0 0 0-1.591-1.04c-.525-.2-1.125-.336-2.002-.377C18.507 8.008 18.233 8 16 8z" fill="white"/>
+          <path d="M16 12.5A3.5 3.5 0 1 0 16 19.5a3.5 3.5 0 0 0 0-7zm7.5-1.25a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0zM16 10c2.206 0 2.472.008 3.338.048.865.04 1.453.176 1.797.295.36.124.617.273.89.546.273.273.422.53.546.89.119.344.255.932.295 1.797.04.866.048 1.132.048 3.338s-.008 2.472-.048 3.338c-.04.865-.176 1.453-.295 1.797a2.36 2.36 0 0 1-.546.89 2.36 2.36 0 0 1-.89.546c-.344.119-.932.255-1.797.295-.866.04-1.132.048-3.338.048s-2.472-.008-3.338-.048c-.865-.04-1.453-.176-1.797-.295a2.36 2.36 0 0 1-.89-.546 2.36 2.36 0 0 1-.546-.89c-.119-.344-.255-.932-.295-1.797C10.008 13.493 10 13.767 10 16c0 2.233.008 2.507.049 3.384.041.877.177 1.477.377 2.002A4.36 4.36 0 0 0 11.04 22c.421.477.961.8 1.591 1.04.525.2 1.125.336 2.002.377.877.041 1.151.049 3.384.049s2.507-.008 3.384-.049c.877-.041 1.477-.177 2.002-.377a4.36 4.36 0 0 0 1.591-1.04 4.36 4.36 0 0 0 1.04-1.591c.2-.525.336-1.125.377-2.002.041-.877.049-1.151.049-3.384s-.008-2.507-.049-3.384c-.041-.877-.177-1.477-.377-2.002a4.36 4.36 0 0 0-1.04-1.591 4.36 4.36 0 0 0-1.591-1.04c-.525-.2-1.125-.336-2.002-.377C18.507 8.008 18.233 8 16 8z" fill="white"/>
         </svg>
       ),
     },
@@ -1325,12 +1324,115 @@ export default function FullDashboard() {
   const { language } = useContext(LanguageContext);
   const t = dashboardTranslations[language] || dashboardTranslations.English;
   const isRTL = language === 'Arabic' || language === 'Hebrew';
+
+  // Dark mode state synced with localStorage and custom event (like services.jsx)
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const darkMode = localStorage.getItem('darkMode') === 'true';
+    setIsDarkMode(darkMode);
+  }, []);
+
+  useEffect(() => {
+    const handleDarkModeChange = (event) => {
+      setIsDarkMode(event.detail);
+    };
+    window.addEventListener('darkModeChanged', handleDarkModeChange);
+    return () => {
+      window.removeEventListener('darkModeChanged', handleDarkModeChange);
+    };
+  }, []);
+
   return (
-    <div style={{ minHeight: '100vh', width: '100%', fontFamily: 'Inter, Arial, sans-serif', overflowX: 'hidden', background: '#f0f2f5' }} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div
+      className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-[#181c23] text-[#e3e8ee]' : 'bg-[#f0f2f5] text-[#1a3c34]'}`}
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <Header />
       <div className="dashboard-container" style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 16px' }}>
         <style>{`
-          @media (max-width: 768px) {
+          .dashboard-container {
+            box-sizing: border-box;
+          }
+          .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            width: 100%;
+            margin: 0;
+          }
+          .section-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+          }
+          .section5-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1.2fr 1fr;
+            gap: 24px;
+            overflow-x: auto;
+          }
+          .section5-col {
+            min-width: 260px;
+            margin-bottom: 32px;
+          }
+          .section6-flex {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 100px;
+            align-items: stretch;
+          }
+          .section6-map, .section6-chart {
+            flex: 1;
+            min-width: 420px;
+            max-width: 600px;
+            height: 260px;
+            border-radius: 12px;
+            background: ${isDarkMode ? '#222c37' : '#fff'};
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+            padding-top: 4px;
+            overflow-x: auto;
+            width: 100%;
+            color: ${isDarkMode ? '#e3e8ee' : '#1a3c34'};
+          }
+          .kpi-card, .section5-col, .section6-map, .section6-chart, .section2-chart-outer, .section2-chart-inner, .section-container > div, .section5-grid > div {
+            background: ${isDarkMode ? '#222c37' : '#fff'} !important;
+            color: ${isDarkMode ? '#e3e8ee' : '#1a3c34'} !important;
+            box-shadow: 0 2px 12px rgba(46,196,182,0.08) !important;
+          }
+          h1, h2, h3, h4, h5, h6 {
+            color: ${isDarkMode ? '#e3e8ee' : '#1a3c34'} !important;
+          }
+          .section2-filters button,
+          .button-group button,
+          select {
+            background: ${isDarkMode ? '#181c23' : '#fff'} !important;
+            color: ${isDarkMode ? '#2ec4b6' : '#222'} !important;
+            border: 1px solid #2ec4b6 !important;
+          }
+          .section2-filters button.selected,
+          .button-group button.selected {
+            background: #2ec4b6 !important;
+            color: #fff !important;
+          }
+          table {
+            background: ${isDarkMode ? '#222c37' : '#fff'} !important;
+            color: ${isDarkMode ? '#e3e8ee' : '#1a3c34'} !important;
+          }
+          th, td {
+            color: ${isDarkMode ? '#e3e8ee' : '#1a3c34'} !important;
+          }
+          .kpi-card:hover {
+            background: linear-gradient(90deg, #2ec4b6 0%, #20c997 100%) !important;
+            color: #fff !important;
+          }
+          .section5-col .trainer-status {
+            background: #2ec4b6 !important;
+            color: #fff !important;
+          }
+          @media (max-width: 900px) {
             .dashboard-container {
               padding: 0 12px !important;
             }
@@ -1341,17 +1443,6 @@ export default function FullDashboard() {
             .section-container {
               flex-direction: column !important;
               gap: 20px !important;
-            }
-            .chart-container {
-              min-height: 200px !important;
-            }
-            .button-group {
-              flex-wrap: wrap !important;
-              gap: 8px !important;
-            }
-            .button-group button {
-              font-size: 14px !important;
-              padding: 6px 16px !important;
             }
             .section5-grid {
               grid-template-columns: 1fr !important;
@@ -1371,7 +1462,7 @@ export default function FullDashboard() {
               height: 200px !important;
             }
           }
-          @media (max-width: 480px) {
+          @media (max-width: 600px) {
             .dashboard-container {
               padding: 0 8px !important;
             }
@@ -1386,14 +1477,39 @@ export default function FullDashboard() {
               font-size: 12px !important;
               padding: 4px 12px !important;
             }
+            .section5-grid {
+              display: flex !important;
+              flex-direction: column !important;
+              gap: 14px !important;
+              overflow-x: unset !important;
+              width: 100% !important;
+              min-width: 0 !important;
+            }
+            .section5-col {
+              min-width: 0 !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              box-sizing: border-box;
+              margin-bottom: 0 !important;
+            }
+            .section6-flex {
+              flex-direction: column !important;
+              gap: 18px !important;
+            }
+            .section6-map, .section6-chart {
+              min-width: 0 !important;
+              max-width: 100% !important;
+              width: 100% !important;
+              height: 140px !important;
+            }
           }
         `}</style>
-        {/* Pass translations to sections as props if needed */}
-  <div className="dashboard-section"><Section1 t={t} /></div>
-  <div className="dashboard-section"><Section2 t={t} /></div>
-  <div className="dashboard-section"><Section3 t={t} /></div>
-  <div className="dashboard-section"><Section5 t={t} /></div>
-  <div className="dashboard-section"><Section6 t={t} /></div>
+        {/* Dashboard Sections */}
+        <div className="dashboard-section"><Section1 t={t} /></div>
+        <div className="dashboard-section"><Section2 t={t} /></div>
+        <div className="dashboard-section"><Section3 t={t} /></div>
+        <div className="dashboard-section"><Section5 t={t} /></div>
+        <div className="dashboard-section"><Section6 t={t} /></div>
       </div>
     </div>
   );

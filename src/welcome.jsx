@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import background from './assets/background.jpg'; 
+import logo from './assets/logo.png'; // Add this at the top (adjust path if needed)
 import { useNavigate } from "react-router-dom";
 import { registerUser } from './utils/userRegistration.js';
 
@@ -19,7 +20,7 @@ export default function Welcome() {
     English: {
       welcome: "Welcome back",
       pleaseEnter: "Please enter your details.",
-  signup: "",
+  signup: "Sign up",
       signupDesc: "Create your account.",
       firstName: "First Name",
       lastName: "Last Name",
@@ -39,6 +40,7 @@ export default function Welcome() {
     Arabic: {
       welcome: "مرحبًا بعودتك",
   signupDesc: "",
+      signup: "إنشاء حساب",
       firstName: "الاسم الأول",
       lastName: "اسم العائلة",
       email: "البريد الإلكتروني",
@@ -57,7 +59,7 @@ export default function Welcome() {
     Hebrew: {
       welcome: "ברוך שובך",
       pleaseEnter: "אנא הזן את פרטיך.",
-  signup: "",
+  signup: "הרשמה",
       signupDesc: "צור את החשבון שלך.",
       firstName: "שם פרטי",
       lastName: "שם משפחה",
@@ -156,6 +158,10 @@ export default function Welcome() {
       dir={isRTL ? "rtl" : "ltr"}
     >
       <div className={`w-full max-w-md mx-auto rounded-xl p-10 shadow-2xl relative ${theme === "dark" ? "bg-black" : "bg-white/10 backdrop-blur"}`}>
+        {/* Stackly Logo */}
+        <div className="flex justify-center mb-6">
+          <img src={logo} alt="Stackly Logo" className="h-16 w-auto" />
+        </div>
         {/* Toggle Button */}
         <button
           onClick={toggleTheme}
@@ -290,14 +296,7 @@ export default function Welcome() {
             <form className="space-y-5" onSubmit={handleLogin}>
               {/* Toggle and Language Button Row */}
               <div className="mb-4 flex items-center gap-4">
-                {/* Toggle Button */}
-                <button
-                  type="button"
-                  className={`px-4 py-2 rounded-lg font-semibold shadow transition-colors duration-200 border ${theme === "dark" ? "bg-gray-800 text-white border-cyan-400" : "bg-white text-gray-700 border-gray-300"}`}
-                  onClick={() => setShowSignup(true)}
-                >
-                  {translations[language].signup}
-                </button>
+                {/* Remove Sign up Button */}
                 {/* Languages Button & Dropdown */}
                 <div className="relative">
                   <button

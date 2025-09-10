@@ -362,8 +362,7 @@ const translations = {
   }
 };
 
-const Home2 = () => {
-  // ...existing code...
+export default function Home2() {
   const { language } = useContext(LanguageContext);
   // Localized team members for experts section (must be after language is initialized)
   const teamMembers = [
@@ -507,9 +506,9 @@ const Home2 = () => {
     'David Thompson': trainer4,
     // Arabic
     'سارة تشين': trainer1,
-    'ماركوس رودريغيز': trainer2,
+    'ماركוס رودריגז': trainer2,
     'د. عائشة جونسون': trainer3,
-    'ديفيد طومسون': trainer4,
+    'ديفيد طומpson': trainer4,
     // Hebrew
     'שרה צ\'ן': trainer1,
     'מרקוס רודריגז': trainer2,
@@ -591,9 +590,11 @@ const Home2 = () => {
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'bg-gray-900' : 'bg-[#f6fffd]'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      <Header />
+      <div className="w-full" style={{ boxSizing: 'border-box', overflow: 'hidden' }}>
+        <Header />
+      </div>
       {/* Hero Section - Redesigned */}
-      <section className="w-full min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-16 relative overflow-hidden">
+      <section className="w-full min-h-screen flex flex-col items-center justify-center px-2 sm:px-6 md:px-8 lg:px-16 relative overflow-hidden">
         {/* Video Background */}
         <video 
           autoPlay 
@@ -607,52 +608,52 @@ const Home2 = () => {
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
         {/* Centered Content */}
-        <div className="relative z-10 text-center max-w-4xl px-4">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in-up">
+        <div className="relative z-10 text-center max-w-4xl px-2 sm:px-4">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 sm:mb-6 leading-tight animate-fade-in-up">
             {translations[language].heroTitle}
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-3">
+          <p className="text-sm sm:text-lg md:text-xl text-white mb-4 sm:mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in-up-delay-3">
             {translations[language].heroDesc}
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center animate-fade-in-up-delay-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center animate-fade-in-up-delay-4">
             <button 
               onClick={scrollToExperts}
-              className="bg-white text-[#26A0A2] font-semibold px-6 sm:px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition text-base sm:text-lg transform hover:scale-105">
+              className="bg-white text-[#26A0A2] font-semibold px-4 sm:px-8 py-2 sm:py-3 rounded-full shadow-lg hover:bg-gray-100 transition text-base sm:text-lg transform hover:scale-105">
               {translations[language].heroBtn}
             </button>
           </div>
         </div>
       </section>
       {/* Our Experts Section */}
-      <section id="experts-section" className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-gray-50'}`}>
+      <section id="experts-section" className={`w-full py-8 sm:py-16 px-2 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-gray-50'}`}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8 sm:mb-12" data-aos="fade-up" data-aos-duration="800">
-            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{translations[language].expertsTitle}</h2>
-            <p className={`text-base sm:text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[language].expertsDesc}</p>
+          <div className="text-center mb-6 sm:mb-12" data-aos="fade-up" data-aos-duration="800">
+            <h2 className={`text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{translations[language].expertsTitle}</h2>
+            <p className={`text-sm sm:text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[language].expertsDesc}</p>
           </div>
           {/* Team Members Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {teamMembers.map((member, idx) => (
               <div key={idx} className="text-center" data-aos="fade-up" data-aos-delay={idx * 200} data-aos-duration="800">
                 {/* Circular Headshot */}
-                <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-white shadow-lg mx-auto mb-4 sm:mb-6">
+                <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-hidden bg-white shadow-lg mx-auto mb-3 sm:mb-6">
                   <img 
                     src={member.img} 
                     alt={member.name} 
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <h3 className="font-bold text-lg mb-2">{member.name}</h3>
-                <p className="text-[#26A0A2] font-semibold mb-1">{member.role}</p>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-2">{member.description}</p>
+                <h3 className="font-bold text-base sm:text-lg mb-1">{member.name}</h3>
+                <p className="text-[#26A0A2] font-semibold mb-1 text-xs sm:text-base">{member.role}</p>
+                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-2">{member.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
       {/* Meet Our CEO Section */}
-      <section className="w-full relative min-h-screen">
+      <section className="w-full relative min-h-[350px] sm:min-h-screen">
         {/* CEO Image as Background */}
         <div className="absolute inset-0">
           <img 
@@ -664,24 +665,24 @@ const Home2 = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-[#26A0A2] via-[#26A0A2]/70 sm:via-[#26A0A2]/50 to-transparent"></div>
         </div>
         {/* Content overlay */}
-        <div className="relative z-10 text-justify flex items-center min-h-screen px-4 sm:px-6 md:px-8 lg:px-16 py-12">
-          <div className="text-white max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-black/20 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none rounded-lg sm:rounded-none p-6 sm:p-0">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">{translations[language].ceoTitle}</h2>
-            <p className="text-base sm:text-lg md:text-xl mb-4 sm:mb-6 leading-relaxed animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+        <div className="relative z-10 text-justify flex flex-col items-center min-h-[350px] sm:min-h-screen px-2 sm:px-6 md:px-8 lg:px-16 py-6 sm:py-12">
+          <div className="text-white max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md bg-black/20 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none rounded-lg sm:rounded-none p-4 sm:p-0">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-6 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">{translations[language].ceoTitle}</h2>
+            <p className="text-xs sm:text-lg md:text-xl mb-2 sm:mb-6 leading-relaxed animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
               {translations[language].ceoDesc}
             </p>
-            <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed opacity-90 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
+            <p className="text-xs sm:text-base md:text-lg mb-2 sm:mb-6 leading-relaxed opacity-90 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="600">
               {translations[language].ceoBio1}
             </p>
-            <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 leading-relaxed opacity-90 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
+            <p className="text-xs sm:text-base md:text-lg mb-2 sm:mb-6 leading-relaxed opacity-90 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800">
               {translations[language].ceoBio2}
             </p>
             {/* CEO Name */}
-            <p className="text-base sm:text-lg md:text-xl font-semibold mb-6 sm:mb-8 opacity-95 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1000">
+            <p className="text-xs sm:text-lg md:text-xl font-semibold mb-4 sm:mb-8 opacity-95 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1000">
               {translations[language].ceoName}
             </p>
             {/* Social Media Links */}
-            <div className="flex gap-3 sm:gap-4 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1200">
+            <div className="flex gap-2 sm:gap-4 animate-fade-in-up" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="1200">
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 hover:scale-110">
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
@@ -707,31 +708,31 @@ const Home2 = () => {
         </div>
       </section>
 
-             {/* Why Choose Us Section */}
-       <section className={`w-full py-12 sm:py-16 px-4 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
-         <div className="max-w-7xl mx-auto flex flex-col gap-8 sm:gap-10">
-           {/* Headline */}
-           <div className="text-center mb-6 sm:mb-8" data-aos="fade-up" data-aos-duration="800">
-             <span
-               className="inline-block px-3 sm:px-4 py-1 rounded-full font-extrabold text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 bg-clip-text text-transparent"
-               style={{ background: 'linear-gradient(135deg, #20c997, #0f766e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
-             >
-               {translations[language].whyChoose}
-             </span>
-             <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>{translations[language].whyTitle}</h2>
-             <p className={`max-w-2xl mx-auto text-sm sm:text-base ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[language].whyDesc}</p>
-           </div>
-                     {/* Main content grid: only one image and progress bars */}
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch min-h-[250px] sm:min-h-[300px]">
-             {/* Left: Single Image */}
-             <div className="flex flex-col justify-center h-full" data-aos="fade-right" data-aos-duration="800" data-aos-delay="200">
-               <img src={why1} alt="Wellness" className="rounded-xl w-full h-full min-h-[300px] object-cover" />
-             </div>
-             {/* Right: Progress Bars with heading and intro text */}
-             <div className="flex flex-col gap-4 sm:gap-6 justify-center h-full min-h-[250px] sm:min-h-[300px]" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
-              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#26A0A2] m-0 p-0">{translations[language].uniqueApproach}</h3>
-              <p className={`text-sm sm:text-base md:text-lg m-0 p-0 text-justify ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>{translations[language].uniqueDesc}</p>
-                                                           <div data-aos="fade-up" data-aos-delay="600" data-aos-duration="600">
+      {/* Why Choose Us Section */}
+      <section className={`w-full py-8 sm:py-16 px-2 sm:px-6 lg:px-8 transition-colors duration-300 ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <div className="max-w-7xl mx-auto flex flex-col gap-6 sm:gap-10">
+          {/* Headline */}
+          <div className="text-center mb-4 sm:mb-8" data-aos="fade-up" data-aos-duration="800">
+            <span
+              className="inline-block px-2 sm:px-4 py-1 rounded-full font-extrabold text-lg sm:text-2xl md:text-3xl mb-2 sm:mb-4 bg-clip-text text-transparent"
+              style={{ background: 'linear-gradient(135deg, #20c997, #0f766e)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+            >
+              {translations[language].whyChoose}
+            </span>
+            <h2 className={`text-lg sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>{translations[language].whyTitle}</h2>
+            <p className={`max-w-2xl mx-auto text-xs sm:text-base ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{translations[language].whyDesc}</p>
+          </div>
+          {/* Main content grid: only one image and progress bars */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8 items-stretch min-h-[200px] sm:min-h-[300px]">
+            {/* Left: Single Image */}
+            <div className="flex flex-col justify-center h-full" data-aos="fade-right" data-aos-duration="800" data-aos-delay="200">
+              <img src={why1} alt="Wellness" className="rounded-xl w-full h-full min-h-[200px] sm:min-h-[300px] object-cover" />
+            </div>
+            {/* Right: Progress Bars with heading and intro text */}
+            <div className="flex flex-col gap-2 sm:gap-6 justify-center h-full min-h-[200px] sm:min-h-[300px]" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
+              <h3 className="text-base sm:text-xl md:text-2xl font-bold text-[#26A0A2] m-0 p-0">{translations[language].uniqueApproach}</h3>
+              <p className={`text-xs sm:text-base md:text-lg m-0 p-0 text-justify ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>{translations[language].uniqueDesc}</p>
+              <div data-aos="fade-up" data-aos-delay="600" data-aos-duration="600">
                   <div className="flex justify-between mb-1">
                     <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-black'}`}>{translations[language].personalizedPlans}</span>
                     <span className="text-[#26A0A2] font-bold">95%</span>
@@ -788,23 +789,19 @@ const Home2 = () => {
         </div>
       </section>
 
-           
-
-         
-
       {/* Upcoming Events & Classes Section */}
-      <section className="w-full bg-gradient-to-br from-[#26A0A2] to-[#20c997] py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-8 sm:mb-12">{translations[language].upcomingEvents}</h2>
+      <section className="w-full bg-gradient-to-br from-[#26A0A2] to-[#20c997] py-8 sm:py-16 px-2 sm:px-6 lg:px-8">
+        <h2 className="text-lg sm:text-3xl md:text-4xl font-bold text-white text-center mb-6 sm:mb-12">{translations[language].upcomingEvents}</h2>
         <div className="max-w-7xl mx-auto">
           <div 
-            className="relative overflow-hidden"
+            className="relative overflow-x-auto"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             ref={carouselRef}
             dir={isRTL ? 'rtl' : 'ltr'}
           >
             <div 
-              className={`flex gap-6 transition-transform duration-100 ease-linear ${isRTL ? 'flex-row-reverse' : ''}`}
+              className={`flex gap-4 sm:gap-6 transition-transform duration-100 ease-linear ${isRTL ? 'flex-row-reverse' : ''}`}
               style={{ 
                 transform: isRTL
                   ? `translateX(${scrollPosition}px)`
@@ -818,14 +815,14 @@ const Home2 = () => {
                 return (
                   <div 
                     key={`${event.title}-${idx}`} 
-                    className={`event-card rounded-2xl shadow-md flex flex-col w-72 sm:w-80 flex-shrink-0 overflow-hidden transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl ${isDarkMode ? 'bg-black' : 'bg-white'}`}
+                    className={`event-card rounded-2xl shadow-md flex flex-col w-64 sm:w-72 md:w-80 flex-shrink-0 overflow-hidden transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl ${isDarkMode ? 'bg-black' : 'bg-white'}`}
                   >
-                    <img src={event.img} alt={event.title} className="w-full h-32 sm:h-40 object-cover" />
-                    <div className="p-4 sm:p-6 flex flex-col flex-1">
-                      <h3 className={`text-base sm:text-lg md:text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-[#17806d]'}`}>{event.title}</h3>
-                      <p className={`text-xs sm:text-sm mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{event.time}</p>
-                      <div className="flex items-center gap-2 mb-4">
-                        <img src={avatarImg} alt={event.instructor} className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover border-2 border-white shadow" />
+                    <img src={event.img} alt={event.title} className="w-full h-24 sm:h-40 object-cover" />
+                    <div className="p-3 sm:p-6 flex flex-col flex-1">
+                      <h3 className={`text-xs sm:text-lg md:text-xl font-bold mb-1 sm:mb-2 ${isDarkMode ? 'text-white' : 'text-[#17806d]'}`}>{event.title}</h3>
+                      <p className={`text-xs sm:text-sm mb-2 sm:mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{event.time}</p>
+                      <div className="flex items-center gap-2 mb-2 sm:mb-4">
+                        <img src={avatarImg} alt={event.instructor} className="w-5 h-5 sm:w-7 sm:h-7 rounded-full object-cover border-2 border-white shadow" />
                         <span className="text-[#17806d] font-semibold text-xs sm:text-sm">{event.instructor}</span>
                       </div>
                       <button 
@@ -1076,6 +1073,4 @@ const Home2 = () => {
       <Footer />
     </div>
   );
-};
-
-export default Home2;
+}

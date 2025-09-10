@@ -1,8 +1,9 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaInstagram, FaFacebookF, FaLinkedinIn, FaYoutube, FaWhatsapp, FaSpa, FaAppleAlt, FaBrain, FaDumbbell, FaBed, FaUserTie } from "react-icons/fa";
 import { LanguageContext } from "./LanguageContext";
+import logo from "./assets/logo.png";
+
 
 const translations = {
   English: {
@@ -23,12 +24,12 @@ const translations = {
     lifestyle: "Lifestyle Coaching",
     contactTitle: "Contact Information",
     address: "Address:",
-    addressVal: "123 Wellness St, Healthy City, Country",
+    addressVal: "Located in the heart of Manhattan. Schedule an in-person consultation at our state-of-the-art wellness facility with certified health coaches.",
     phone: "Phone:",
-    phoneVal: "+1 234 567 890",
+    phoneVal: "(+1) 555-123-4567",
     email: "Email:",
     hours: "Hours:",
-    hoursVal: "Mon-Fri 9am-6pm",
+    hoursVal: "Mon-Fri 9:00 AM - 6:00 PM",
     follow: "Follow Us",
     newsletter: "Newsletter Signup",
     newsletterDesc: "Subscribe to get the latest wellness tips and updates.",
@@ -141,15 +142,15 @@ export default function Footer() {
 
   return (
     <footer className={`${isDarkMode ? 'bg-black border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-700'} border-t pt-10 pb-4 px-4 md:px-0`}>
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 pb-8">
-        {/* Brand & Tagline */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8 pb-8 items-start">
+        {/* Brand & Tagline - Make it aligned with other columns */}
         <div className="flex flex-col items-start space-y-3">
-          <img src="/src/assets/logo.png" alt="Logo" className="h-28 w-28 object-contain" />
+          <img src={logo} alt="Logo" className="h-32 w-32 object-contain mb-2" />
           <span className="font-bold text-lg text-green-700">{t.brand}</span>
-          <span className="text-sm  text-white">{t.tagline}</span>
+          <span className="text-sm text-white">{t.tagline}</span>
         </div>
         {/* Quick Navigation */}
-        <div>
+        <div className="flex flex-col items-start">
           <h3 className="font-semibold mb-3 text-[#26A0A2]">{t.quickLinks}</h3>
           <ul className="space-y-2">
             <li><Link to="/home1" className="hover:text-blue-600">{t.home}</Link></li>
@@ -160,7 +161,7 @@ export default function Footer() {
           </ul>
         </div>
         {/* Explore Services */}
-        <div>
+        <div className="flex flex-col items-start">
           <h3 className="font-semibold mb-3 text-[#26A0A2]">{t.explore}</h3>
           <ul className="space-y-2">
             <li><Link to="/yoga" className="hover:text-blue-600">{t.yoga}</Link></li>
@@ -172,12 +173,12 @@ export default function Footer() {
           </ul>
         </div>
         {/* Contact Info */}
-        <div>
+        <div className="flex flex-col items-start">
           <h3 className="font-semibold mb-3 text-[#26A0A2]">{t.contactTitle}</h3>
           <ul className="space-y-2 text-sm">
             <li><span className="font-medium">{t.address}</span> {t.addressVal}</li>
             <li><span className="font-medium">{t.phone}</span> {t.phoneVal}</li>
-            <li><span className="font-medium">{t.email}</span> <a href="mailto:support@healthsite.com" className="hover:text-blue-600">support@healthsite.com</a></li>
+            <li><span className="font-medium">{t.email}</span> <a href="mailto:hello@wellness.com" className="hover:text-blue-600">hello@wellness.com</a></li>
             <li><span className="font-medium">{t.hours}</span> {t.hoursVal}</li>
           </ul>
           {/* Social Media Icons */}
@@ -203,7 +204,7 @@ export default function Footer() {
           </div>
         </div>
         {/* Newsletter Signup */}
-        <div>
+        <div className="flex flex-col items-start">
           <h3 className="font-semibold mb-3 text-[#26A0A2]">{t.newsletter}</h3>
           <p className="text-sm mb-2">{t.newsletterDesc}</p>
           <form className="flex flex-col sm:flex-row gap-2 w-full" onSubmit={handleSubscribe}>
